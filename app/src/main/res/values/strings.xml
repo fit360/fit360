@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">Spott</string>
+	<string name="app_name">Spott</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="activities_array">
+        <item>Strength</item>
+        <item>Cardio</item>
+        <item>Cycling</item>
+        <item>Soccer</item>
+    </string-array>
+
+    <string-array name="time_array">
+        <item>9:00am</item>
+        <item>12:00pm</item>
+    </string-array>
 </resources>
