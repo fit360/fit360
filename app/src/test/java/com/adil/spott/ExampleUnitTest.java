@@ -1,4 +1,4 @@
-package com.adil.spott;
+package com.app.spott;
 
 import org.junit.Test;
 
