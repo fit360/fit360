@@ -1,4 +1,4 @@
-package com.adil.spott.activities;
+package com.app.spott.activities;
 
 import android.app.Dialog;
 import android.location.Location;
@@ -35,7 +35,7 @@ import com.google.maps.android.SphericalUtil;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import com.adil.spott.R;
+import com.app.spott.R;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,

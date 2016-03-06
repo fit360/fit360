@@ -1,4 +1,4 @@
-package com.adil.spott.models;
+package com.app.spott.models;
 
 import com.parse.ParseGeoPoint;
 

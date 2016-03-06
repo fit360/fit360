@@ -1,9 +1,9 @@
-package com.adil.spott;
+package com.app.spott;
 
 import android.app.Application;
 import android.util.Log;
 
-import com.adil.spott.models.User;
+import com.app.spott.models.User;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
