@@ -1,6 +1,7 @@
 <resources>
-	<string name="app_name">Spott</string>
+    <string name="app_name">Spott</string>
     <string name="action_settings">Settings</string>
+    <string name="action_map">Map</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -16,4 +17,5 @@
         <item>9:00am</item>
         <item>12:00pm</item>
     </string-array>
+    <string name="title_activity_map">MapActivity</string>
 </resources>
