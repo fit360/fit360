@@ -10,11 +10,11 @@ import java.util.List;
 @ParseClassName("User")
 public class User extends Model {
 
-    private static String FIRST_NAME = "first_name";
-    private static String LAST_NAME = "last_name";
-    private static String AGE = "age";
-    private static String GENDER = "gender";
-    private static String OWNER = "owner";
+    private static final String FIRST_NAME = "first_name";
+    private static final String LAST_NAME = "last_name";
+    private static final String AGE = "age";
+    private static final String GENDER = "gender";
+    private static final String OWNER = "owner";
 
     private static final String TAG = User.class.getSimpleName();
 
