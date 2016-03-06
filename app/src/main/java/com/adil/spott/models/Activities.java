@@ -45,8 +45,8 @@ public enum Activities {
     YOGA("Yoga"),
     ZUMBA("Zumba");
 
-    private String name;
+    private String value;
 
-    Activities(String name){this.name = name;}
+    Activities(String value){this.value = value;}
 
     }

@@ -5,7 +5,11 @@ public enum Frequency {
     WEEKLY("Weekly"),
     MONTHLY("Monthly");
 
-    private String value;
+    private String name;
 
-    Frequency(String value){this.value = value;}
+    Frequency(String name){this.name = name;}
+
+    public String getName() {
+        return name;
+    }
 }
