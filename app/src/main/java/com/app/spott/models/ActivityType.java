@@ -1,6 +1,6 @@
 package com.app.spott.models;
 
-public enum Activities {
+public enum ActivityType {
     ARM_WRESTLING("Arm wrestling"),
     BMX_BIKE_RIDING("BMX bike riding"),
     BALLET("Ballet"),
@@ -47,6 +47,8 @@ public enum Activities {
 
     private String value;
 
-    Activities(String value){this.value = value;}
-
+    ActivityType(String value) {
+        this.value = value;
     }
+
+}

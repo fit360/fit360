@@ -1,11 +1,7 @@
 package com.app.spott.models;
 
 import com.parse.ParseClassName;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 @ParseClassName("User")
 public class User extends Model {
@@ -15,6 +11,7 @@ public class User extends Model {
     private static final String AGE = "age";
     private static final String GENDER = "gender";
     private static final String OWNER = "owner";
+    private static final String ACTIVITIES = "activities";
 
     private static final String TAG = User.class.getSimpleName();
 
@@ -63,14 +60,6 @@ public class User extends Model {
     public void setOwner(ParseUser owner){
         put(OWNER, owner);
     }
-
-    public List<User> getMatchedUsers() throws ParseException {
-        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        query.setLimit(10);
-
-        return query.find();
-    }
-
 
     @Override
     public String getLogTag() {
