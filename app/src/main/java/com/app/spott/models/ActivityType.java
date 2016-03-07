@@ -1,5 +1,8 @@
 package com.app.spott.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum ActivityType {
     ARM_WRESTLING("Arm wrestling"),
     BMX_BIKE_RIDING("BMX bike riding"),
@@ -49,6 +52,14 @@ public enum ActivityType {
 
     ActivityType(String value) {
         this.value = value;
+    }
+
+    public static List<String> getFriendlyNames(){
+        ArrayList<String> result = new ArrayList<>();
+        for(ActivityType activityType : ActivityType.values()){
+            result.add(activityType.value);
+        }
+        return result;
     }
 
 }
