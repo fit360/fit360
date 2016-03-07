@@ -84,7 +84,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Toast.makeText(this, "Sorry, could not load the map. Please try again later", Toast.LENGTH_LONG).show();
         }
 
-        ArrayAdapter<String> activitiesAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, ActivityType.getFriendlyNames());
+        ArrayAdapter<String> activitiesAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, ActivityType.getReadableStrings());
         activitiesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerActivities.setAdapter(activitiesAdapter);
 
