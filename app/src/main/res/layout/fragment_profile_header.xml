@@ -1,0 +1,35 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.app.spott.fragments.ProfileHeaderFragment">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/ivCoverPhoto"
+            android:background="#F3E5F5"
+            android:layout_alignParentTop="true">
+        </ImageView>
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerHorizontal="true"
+            android:background="#AB47BC"
+            android:id="@+id/ivProfilePicture"
+            android:layout_below="@id/ivCoverPhoto">
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvUserName"
+            android:text="John Doe"
+            android:layout_below="@id/ivProfilePicture"
+            android:layout_centerHorizontal="true"
+            >
+        </TextView>
+    </RelativeLayout>
+</FrameLayout>

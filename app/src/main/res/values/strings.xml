@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Spott</string>
     <string name="action_settings">Settings</string>
+    <string name="action_profile">Profile</string>
     <string name="action_map">Map</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -18,4 +19,5 @@
         <item>12:00pm</item>
     </string-array>
     <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>
