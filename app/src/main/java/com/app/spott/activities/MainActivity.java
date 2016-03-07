@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_map) {
+        if (id == R.id.action_map) {
             Intent mapIntent = new Intent(this, MapActivity.class);
             startActivity(mapIntent);
             return true;
+        }else if (id == R.id.action_profile) {
+            Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
