@@ -2,6 +2,12 @@ package com.app.spott.models;
 
 import com.app.spott.R;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public enum ActivityType {
     ARM_WRESTLING("Arm wrestling", R.drawable.ic_arm_wrestling),
     BALLET("Ballet", R.drawable.ic_ballet),
@@ -46,6 +52,16 @@ public enum ActivityType {
     private String value;
     private int icon;
 
+    private static final Map<String, ActivityType> lookup = new HashMap<>();
+    private static final ArrayList<String> readableStrings = new ArrayList<>();
+
+    static {
+        for(ActivityType activityType: EnumSet.allOf(ActivityType.class)) {
+            lookup.put(activityType.toString(), activityType);
+            readableStrings.add(activityType.toString());
+        }
+    }
+
     ActivityType(String value, int icon) {
         this.value = value;
         this.icon = icon;
@@ -57,4 +73,13 @@ public enum ActivityType {
     }
 
     public int getIcon(){return icon;}
+
+    public static List<String> getReadableStrings(){
+        return readableStrings;
+    }
+
+    public static ActivityType getActivityType(String activityString){
+        return lookup.get(activityString);
+    }
+
 }
