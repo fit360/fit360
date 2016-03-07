@@ -75,4 +75,9 @@ public class Activity extends Model {
         query.whereEqualTo(USER, user);
         return query.find();
     }
+
+    public static List<Activity> getAll() throws ParseException {
+        query = ParseQuery.getQuery(Activity.class);
+        return query.find();
+    }
 }

@@ -1,65 +1,85 @@
 package com.app.spott.models;
 
+import com.app.spott.R;
+
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum ActivityType {
-    ARM_WRESTLING("Arm wrestling"),
-    BMX_BIKE_RIDING("BMX bike riding"),
-    BALLET("Ballet"),
-    BASEBALL("Baseball"),
-    BASKETBALL("Basketball"),
-    BICYCLING("Bicycling"),
-    BOXING("Boxing"),
-    CALISTHENICS("Calisthenics"),
-    CANOEING("Canoeing"),
-    KAYAKING("Kayaking"),
-    ROWING("Rowing"),
-    CROSSFIT("Crossfit"),
-    DIVING("Diving"),
-    FOOTBALL("Football"),
-    GYMNASTICS("Gymnastics"),
-    HOCKEY("Hockey"),
-    RUNNING("Running"),
-    KUNG_FU("Kung-fu"),
-    MARATHON_RUNNING("Marathon running"),
-    POLE_DANCING("Pole dancing"),
-    POLE_VAULTING("Pole vaulting"),
-    POWERLIFTING("Powerlifting"),
-    ROCK_CLIMBING("Rock climbing"),
-    SKATEBOARDING("Skateboarding"),
-    ICE_SKATING("Ice skating"),
-    SKIING("Skiing"),
-    SNOWBOARDING("Snowboarding"),
-    SOCCER("Soccer"),
-    SPRINTING("Sprinting"),
-    STRETCHING("Stretching"),
-    SUPER_SQUATS("Super squats"),
-    SURFING("Surfing"),
-    SWIMMING("Swimming"),
-    SWORD_FIGHTING("Sword fighting"),
-    TAI_CHI("Tai-chi"),
-    TENNIS("Tennis"),
-    VOLLEYBALL("Volleyball"),
-    WALKING("Walking"),
-    WATER_AEROBICS("Water aerobics"),
-    WATER_POLO("Water polo"),
-    WRESTLING("Wrestling"),
-    YOGA("Yoga"),
-    ZUMBA("Zumba");
+    ARM_WRESTLING("Arm wrestling", R.drawable.ic_arm_wrestling),
+    BALLET("Ballet", R.drawable.ic_ballet),
+    BASEBALL("Baseball", R.drawable.ic_baseball),
+    BASKETBALL("Basketball", R.drawable.ic_basketball),
+    BICYCLING("Bicycling", R.drawable.ic_bicycling),
+    BOXING("Boxing", R.drawable.ic_boxing),
+    CALISTHENICS("Calisthenics", R.drawable.ic_calisthenics),
+    CANOEING("Canoeing", R.drawable.ic_canoeing),
+    CROSSFIT("Crossfit", R.drawable.ic_crossfit),
+    DIVING("Diving", R.drawable.ic_diving),
+    FOOTBALL("Football", R.drawable.ic_football),
+    GYMNASTICS("Gymnastics", R.drawable.ic_gymnastics),
+    HOCKEY("Hockey", R.drawable.ic_hockey),
+    ICE_SKATING("Ice skating", R.drawable.ic_ice_skating),
+    KAYAKING("Kayaking", R.drawable.ic_kayaking),
+    KUNG_FU("Kung-fu", R.drawable.ic_kung_fu),
+    POLE_VAULTING("Pole vaulting", R.drawable.ic_pole_vault),
+    ROCK_CLIMBING("Rock climbing", R.drawable.ic_rock_climbing),
+    ROLLERBLADING("Rollerblading", R.drawable.ic_rollerblading),
+    ROWING("Rowing", R.drawable.ic_rowing),
+    RUNNING("Running", R.drawable.ic_running),
+    SKATEBOARDING("Skateboarding", R.drawable.ic_skateboarding),
+    SKIING("Skiing", R.drawable.ic_skiing),
+    SNOWBOARDING("Snowboarding", R.drawable.ic_snowboarding),
+    SOCCER("Soccer", R.drawable.ic_soccer),
+    SPINNING("Spinning", R.drawable.ic_spinning),
+    STRETCHING("Stretching", R.drawable.ic_stretching),
+    SURFING("Surfing", R.drawable.ic_surfing),
+    SWIMMING("Swimming", R.drawable.ic_swimming),
+    SWORD_FIGHTING("Sword fighting", R.drawable.ic_sword_fighting),
+    TAI_CHI("Tai-chi", R.drawable.ic_tai_chi),
+    TENNIS("Tennis", R.drawable.ic_tennis),
+    VOLLEYBALL("Volleyball", R.drawable.ic_volleyball),
+    WALKING("Walking", R.drawable.ic_walking),
+    WATER_POLO("Water polo", R.drawable.ic_water_polo),
+    WEIGHT_LIFTING("Weight Lifting", R.drawable.ic_weight_lifting),
+    WRESTLING("Wrestling", R.drawable.ic_wrestling),
+    YOGA("Yoga", R.drawable.ic_yoga),
+    ZUMBA("Zumba", R.drawable.ic_zumba);
 
     private String value;
+    private int icon;
 
-    ActivityType(String value) {
-        this.value = value;
+    private static final Map<String, ActivityType> lookup = new HashMap<>();
+    private static final ArrayList<String> readableStrings = new ArrayList<>();
+
+    static {
+        for(ActivityType activityType: EnumSet.allOf(ActivityType.class)) {
+            lookup.put(activityType.toString(), activityType);
+            readableStrings.add(activityType.toString());
+        }
     }
 
-    public static List<String> getFriendlyNames(){
-        ArrayList<String> result = new ArrayList<>();
-        for(ActivityType activityType : ActivityType.values()){
-            result.add(activityType.value);
-        }
-        return result;
+    ActivityType(String value, int icon) {
+        this.value = value;
+        this.icon = icon;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    public int getIcon(){return icon;}
+
+    public static List<String> getReadableStrings(){
+        return readableStrings;
+    }
+
+    public static ActivityType getActivityType(String activityString){
+        return lookup.get(activityString);
     }
 
 }
