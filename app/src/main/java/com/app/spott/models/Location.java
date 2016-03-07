@@ -1,6 +1,10 @@
 package com.app.spott.models;
 
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 public class Location extends Model {
 
@@ -9,6 +13,8 @@ public class Location extends Model {
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
     private static final String POINT = "point";
+
+    private ParseQuery<Location> query;
 
     @Override
     public String getLogTag() {
@@ -37,6 +43,13 @@ public class Location extends Model {
 
     public void setAddress(String address){
         put(ADDRESS, address);
+    }
+
+    public List<Location> getNearByLocations() throws ParseException {
+        query = ParseQuery.getQuery(Location.class);
+        query.whereNear(POINT, getPoint());
+        query.setLimit(30);
+        return query.find();
     }
 
 }
