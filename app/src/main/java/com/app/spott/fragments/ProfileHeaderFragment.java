@@ -5,12 +5,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.app.spott.R;
+import com.app.spott.models.User;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ProfileHeaderFragment extends Fragment {
+    @Bind(R.id.tvUserName)
+    TextView tvUserName;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -24,6 +32,21 @@ public class ProfileHeaderFragment extends Fragment {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         ButterKnife.bind(this, view);
+
+        // Specify which class to query
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        //TODO: change the obj id later// Specify the object id
+        query.getInBackground("ZEOha5PCG0", new GetCallback<User>() {
+            public void done(User user, ParseException e) {
+                if (e == null) {
+                    // Access data using the `get` methods for the object
+                    tvUserName.setText(user.getFirstName());
+                    // Do whatever you want with the data...
+                } else {
+                    // something went wrong
+                }
+            }
+        });
     }
 
 }
