@@ -1,13 +1,6 @@
 # spott
 Workout buddy finder
 
-Fit360
-==============
-
-An all rounded fitness app that uses your social connections to motivate you.
-
-==============
-
 ####Required user stories-
 ###Home Page
 - [x] The user can enter daily tracking items like water, activity etc.
