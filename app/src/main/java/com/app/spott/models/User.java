@@ -1,5 +1,6 @@
 package com.app.spott.models;
 
+import com.app.spott.exceptions.ModelException;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -45,7 +46,7 @@ public class User extends Model {
     }
 
     public Gender getGender(){
-        return Gender.get(getString(GENDER));
+        return Gender.getGender(getString(GENDER));
     }
 
     public void setGender(Gender gender){
@@ -73,5 +74,10 @@ public class User extends Model {
         query = ParseQuery.getQuery(User.class);
         query.whereEqualTo(OWNER, owner);
         return query.getFirst();
+    }
+
+    @Override
+    public void saveModel() throws ModelException, ParseException {
+        super.saveModel();
     }
 }

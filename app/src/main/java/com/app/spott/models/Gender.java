@@ -21,7 +21,7 @@ public enum Gender {
         return value;
     }
 
-    public static Gender get(String gender){
+    public static Gender getGender(String gender){
         return lookup.get(gender);
     }
 }
