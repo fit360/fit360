@@ -39,7 +39,7 @@ public class ProfileHeaderFragment extends Fragment {
         query.getInBackground("ZEOha5PCG0", new GetCallback<User>() {
             public void done(User user, ParseException e) {
                 if (e == null) {
-                    // Access data using the `get` methods for the object
+                    // Access data using the `getGender` methods for the object
                     tvUserName.setText(user.getFirstName());
                     // Do whatever you want with the data...
                 } else {

@@ -57,8 +57,8 @@ public enum ActivityType {
 
     static {
         for(ActivityType activityType: EnumSet.allOf(ActivityType.class)) {
-            lookup.put(activityType.toString(), activityType);
-            readableStrings.add(activityType.toString());
+            lookup.put(activityType.getName(), activityType);
+            readableStrings.add(activityType.getName());
         }
     }
 
@@ -67,8 +67,7 @@ public enum ActivityType {
         this.icon = icon;
     }
 
-    @Override
-    public String toString() {
+    public String getName() {
         return value;
     }
 
