@@ -65,23 +65,29 @@ public class Activity extends Model {
         put(LOCATION, loc);
     }
 
+    private static ParseQuery<Activity> getQuery(){
+        ParseQuery<Activity> q = ParseQuery.getQuery(Activity.class);
+        q.include(LOCATION);
+        q.include(USER);
+        return q;
+    }
     public List<Activity> getMatchedActivities() throws ParseException {
 //        maybe use innerquery for optimization
         List<Location> nearByLocations = getLocation().getNearByLocations();
-        query = ParseQuery.getQuery(Activity.class);
+        query = getQuery();
         query.whereContainedIn(LOCATION, nearByLocations);
         query.setLimit(10);
         return query.find();
     }
 
     public static List<Activity> getForUser(User user) throws ParseException {
-        query = ParseQuery.getQuery(Activity.class);
+        query = getQuery();
         query.whereEqualTo(USER, user);
         return query.find();
     }
 
     public static List<Activity> getAll() throws ParseException {
-        query = ParseQuery.getQuery(Activity.class);
+        query = getQuery();
         return query.find();
     }
 
