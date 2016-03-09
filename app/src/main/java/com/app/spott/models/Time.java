@@ -1,6 +1,8 @@
 package com.app.spott.models;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 
 public enum Time {
@@ -13,17 +15,27 @@ public enum Time {
 
     private String name;
 
-    Time(String value){this.name = value;}
+    private static HashMap<String, Time> lookup = new HashMap<>();
+    private static ArrayList<String> readableNames = new ArrayList<>();
+
+    static {
+        for(Time t: EnumSet.allOf(Time.class)){
+            lookup.put(t.toString(), t);
+            readableNames.add(t.toString());
+        }
+    }
+
+    Time(String name){this.name = name;}
 
     public String getName() {
         return name;
     }
 
-    public static List<String> getFriendlyNames(){
-        ArrayList<String> result = new ArrayList<>();
-        for(Time time : Time.values()){
-            result.add(time.name);
-        }
-        return result;
+    public static List<String> getReadableNames(){
+        return readableNames;
+    }
+
+    public static Time getTime(String value){
+        return lookup.get(value);
     }
 }
