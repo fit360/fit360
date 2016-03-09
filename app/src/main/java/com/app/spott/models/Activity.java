@@ -1,10 +1,14 @@
 package com.app.spott.models;
 
+import com.app.spott.exceptions.ActivityModelException;
+import com.app.spott.exceptions.ModelException;
+import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.List;
 
+@ParseClassName("Activity")
 public class Activity extends Model {
 
     private static final String TAG = Activity.class.getSimpleName();
@@ -30,27 +34,27 @@ public class Activity extends Model {
     }
 
     public ActivityType getActivityType() {
-        return (ActivityType) get(ACTIVITY_TYPE);
+        return ActivityType.getActivityType(getString(ACTIVITY_TYPE));
     }
 
     public void setActivityType(ActivityType activityType) {
-        put(ACTIVITY_TYPE, activityType);
+        put(ACTIVITY_TYPE, activityType.getName());
     }
 
     public Time getTime() {
-        return (Time) get(TIME);
+        return Time.getTime(getString(TIME));
     }
 
     public void setTime(Time time) {
-        put(TIME, time);
+        put(TIME, time.getName());
     }
 
     public Frequency getFrequency() {
-        return (Frequency) get(FREQUENCY);
+        return Frequency.getFrequency(getString(FREQUENCY));
     }
 
     public void setFrequency(Frequency f) {
-        put(FREQUENCY, f);
+        put(FREQUENCY, f.getName());
     }
 
     public Location getLocation(){
@@ -79,5 +83,14 @@ public class Activity extends Model {
     public static List<Activity> getAll() throws ParseException {
         query = ParseQuery.getQuery(Activity.class);
         return query.find();
+    }
+
+    @Override
+    public void saveModel() throws ModelException, ParseException {
+        if (this.getActivityType() == null || this.getLocation() == null || this.getUser() == null)
+            throw new ActivityModelException();
+
+        this.getLocation().saveModel();
+        super.saveModel();
     }
 }

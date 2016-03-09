@@ -88,11 +88,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         activitiesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerActivities.setAdapter(activitiesAdapter);
 
-        ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, Time.getFriendlyNames());
+        ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, Time.getReadableNames());
         timeAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerTime.setAdapter(timeAdapter);
 
-        ArrayAdapter<String> frequencyAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, Frequency.getFriendlyNames());
+        ArrayAdapter<String> frequencyAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, Frequency.getReadableNames());
         frequencyAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerFrequency.setAdapter(frequencyAdapter);
 
