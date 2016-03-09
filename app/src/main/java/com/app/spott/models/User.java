@@ -1,6 +1,8 @@
 package com.app.spott.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 @ParseClassName("User")
@@ -11,9 +13,10 @@ public class User extends Model {
     private static final String AGE = "age";
     private static final String GENDER = "gender";
     private static final String OWNER = "owner";
-    private static final String ACTIVITIES = "activities";
 
     private static final String TAG = User.class.getSimpleName();
+
+    private static ParseQuery<User> query;
 
     public User(){super();}
 
@@ -42,11 +45,11 @@ public class User extends Model {
     }
 
     public Gender getGender(){
-        return (Gender) get(GENDER);
+        return Gender.get(getString(GENDER));
     }
 
     public void setGender(Gender gender){
-        put(GENDER, gender);
+        put(GENDER, gender.getName());
     }
 
     public String getId(String id){
@@ -64,5 +67,11 @@ public class User extends Model {
     @Override
     public String getLogTag() {
         return TAG;
+    }
+
+    public static User getByOwner(ParseUser owner) throws ParseException {
+        query = ParseQuery.getQuery(User.class);
+        query.whereEqualTo(OWNER, owner);
+        return query.getFirst();
     }
 }
