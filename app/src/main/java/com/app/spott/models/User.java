@@ -1,6 +1,7 @@
 package com.app.spott.models;
 
 import com.app.spott.exceptions.ModelException;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -70,10 +71,10 @@ public class User extends Model {
         return TAG;
     }
 
-    public static User getByOwner(ParseUser owner) throws ParseException {
+    public static void getByOwner(ParseUser owner, GetCallback<User> getCallback) throws ParseException {
         query = ParseQuery.getQuery(User.class);
         query.whereEqualTo(OWNER, owner);
-        return query.getFirst();
+        query.getFirstInBackground(getCallback);
     }
 
     @Override
