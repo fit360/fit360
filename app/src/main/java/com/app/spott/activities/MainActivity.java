@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         return loc;
     }
 
-    private
-
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
     void login() {
         ParseAnonymousUtils.logIn(new LogInCallback() {
