@@ -9,9 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.app.spott.R;
+import com.app.spott.models.Gender;
+import com.app.spott.models.Location;
+import com.app.spott.models.User;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
         if (ParseUser.getCurrentUser() != null) { // start with existing user
             startWithCurrentUser();
@@ -32,7 +36,54 @@ public class MainActivity extends AppCompatActivity {
     }
     // Get the userId from the cached currentUser object
     void startWithCurrentUser() {
-        // TODO:
+        ParseUser loggedInUser = ParseUser.getCurrentUser();
+        User user;
+        try {
+            user = User.getByOwner(loggedInUser);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            user = setupNewUser();
+        }
+
+        Log.d("User", user.getFirstName());
+    }
+
+    private User setupNewUser(){
+        return null;
+    }
+
+    private User setupAdil(){
+        User user = new User();
+        user.setFirstName("Adil");
+        user.setAge(25);
+        user.setLastName("Ansari");
+        user.setGender(Gender.MALE);
+        user.setOwner(ParseUser.getCurrentUser());
+        try {
+            user.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private Location addLocation(String placeId){
+        Location loc = new Location();
+        try {
+            loc = Location.getByPlaceId(placeId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            loc.setPoint(new ParseGeoPoint(37.78, -122.40));
+            loc.setName("Equinox");
+            loc.setPlaceId(placeId);
+            loc.setAddress("747 Market St, San Francisco, CA 94103, United States");
+            try {
+                loc.save();
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return loc;
     }
 
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
