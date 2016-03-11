@@ -10,15 +10,17 @@ import android.view.MenuItem;
 
 import com.app.spott.R;
 import com.app.spott.models.Gender;
-import com.app.spott.models.Location;
 import com.app.spott.models.User;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
+
+    private User currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,25 +34,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     // Get the userId from the cached currentUser object
     void startWithCurrentUser() {
         ParseUser loggedInUser = ParseUser.getCurrentUser();
-        User user;
-        try {
-            user = User.getByOwner(loggedInUser);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            user = setupNewUser();
-        }
+        User.getByOwner(loggedInUser, new GetCallback<User>() {
+            @Override
+            public void done(User object, ParseException e) {
+                if (object == null)
+                    currentUser = setupNewUser();
+                else
+                    currentUser = object;
+            }
+        });
 
-        Log.d("User", user.getFirstName());
+        Log.d("User", currentUser.getFirstName());
     }
 
-    private User setupNewUser(){
+    private User setupNewUser() {
         return null;
     }
 
-    private User setupAdil(){
+    private User setupAdil() {
         User user = new User();
         user.setFirstName("Adil");
         user.setAge(25);
@@ -63,25 +68,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return user;
-    }
-
-    private Location addLocation(String placeId){
-        Location loc = new Location();
-        try {
-            loc = Location.getByPlaceId(placeId);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            loc.setPoint(new ParseGeoPoint(37.78, -122.40));
-            loc.setName("Equinox");
-            loc.setPlaceId(placeId);
-            loc.setAddress("747 Market St, San Francisco, CA 94103, United States");
-            try {
-                loc.save();
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-            }
-        }
-        return loc;
     }
 
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
@@ -115,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
             Intent mapIntent = new Intent(this, MapActivity.class);
             startActivity(mapIntent);
             return true;
-        }else if (id == R.id.action_profile) {
+        } else if (id == R.id.action_profile) {
             Intent i = new Intent(this, ProfileActivity.class);
             startActivity(i);
-        }else if (id == R.id.action_community) {
+        } else if (id == R.id.action_community) {
             Intent i = new Intent(this, CommunityFeedActivity.class);
             startActivity(i);
         }
