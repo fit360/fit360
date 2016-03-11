@@ -71,7 +71,7 @@ public class User extends Model {
         return TAG;
     }
 
-    public static void getByOwner(ParseUser owner, GetCallback<User> getCallback) throws ParseException {
+    public static void getByOwner(ParseUser owner, GetCallback<User> getCallback) {
         query = ParseQuery.getQuery(User.class);
         query.whereEqualTo(OWNER, owner);
         query.getFirstInBackground(getCallback);
