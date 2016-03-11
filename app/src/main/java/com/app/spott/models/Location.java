@@ -1,13 +1,13 @@
 package com.app.spott.models;
 
-import com.app.spott.exceptions.ModelException;
 import com.app.spott.exceptions.LocationMissingPlaceId;
+import com.app.spott.exceptions.ModelException;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
-
-import java.util.List;
 
 @ParseClassName("Location")
 public class Location extends Model {
@@ -24,49 +24,49 @@ public class Location extends Model {
         return TAG;
     }
 
-    public ParseGeoPoint getPoint(){
+    public ParseGeoPoint getPoint() {
         return getParseGeoPoint(POINT);
     }
 
-    public void setPoint(ParseGeoPoint point){
+    public void setPoint(ParseGeoPoint point) {
         put(POINT, point);
     }
 
-    public String getName(){
+    public String getName() {
         return getString(NAME);
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         put(NAME, name);
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return getString(ADDRESS);
     }
 
-    public void setAddress(String address){
+    public void setAddress(String address) {
         put(ADDRESS, address);
     }
 
-    public String getPlaceId(){
+    public String getPlaceId() {
         return getString(PLACE_ID);
     }
 
-    public void setPlaceId(String placeId){
+    public void setPlaceId(String placeId) {
         put(PLACE_ID, placeId);
     }
 
-    public List<Location> getNearByLocations() throws ParseException {
+    public void getNearByLocations(FindCallback<Location> findCallback) throws ParseException {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
         query.whereNear(POINT, getPoint());
         query.setLimit(30);
-        return query.find();
+        query.findInBackground(findCallback);
     }
 
-    public static Location getByPlaceId(String placeId) throws ParseException {
+    public static void getByPlaceId(String placeId, GetCallback<Location> getCallback) throws ParseException {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
         query.whereEqualTo(PLACE_ID, placeId);
-        return query.getFirst();
+        query.getFirstInBackground(getCallback);
     }
 
     @Override
@@ -74,13 +74,14 @@ public class Location extends Model {
         if (this.getPlaceId() == null) {
             throw new LocationMissingPlaceId();
         }
-        Location existingLoc = getByPlaceId(this.getPlaceId());
-        if (existingLoc == null){
-            super.saveModel();
-        } else {
-            existingLoc.setName(this.getName());
-            existingLoc.setAddress(this.getAddress());
-            existingLoc.saveModel();
-        }
+
+        getByPlaceId(this.getPlaceId(), new GetCallback<Location>() {
+            @Override
+            public void done(Location object, ParseException e) {
+                if (object != null)
+                    return;
+            }
+        });
+        super.saveModel();
     }
 }
