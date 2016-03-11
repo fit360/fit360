@@ -2,6 +2,7 @@ package com.app.spott.models;
 
 import com.app.spott.exceptions.ActivityModelException;
 import com.app.spott.exceptions.ModelException;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -71,24 +72,28 @@ public class Activity extends Model {
         q.include(USER);
         return q;
     }
-    public List<Activity> getMatchedActivities() throws ParseException {
+    public void getMatchedActivities(final FindCallback<Activity> findCallback) throws ParseException {
 //        maybe use innerquery for optimization
-        List<Location> nearByLocations = getLocation().getNearByLocations();
-        query = getQuery();
-        query.whereContainedIn(LOCATION, nearByLocations);
-        query.setLimit(10);
-        return query.find();
+        getLocation().getNearByLocations(new FindCallback<Location>() {
+            @Override
+            public void done(List<Location> nearByLocations, ParseException e) {
+                query = getQuery();
+                query.whereContainedIn(LOCATION, nearByLocations);
+                query.setLimit(10);
+                query.findInBackground(findCallback);
+            }
+        });
     }
 
-    public static List<Activity> getForUser(User user) throws ParseException {
+    public static void getForUser(User user, FindCallback<Activity> findCallback) throws ParseException {
         query = getQuery();
         query.whereEqualTo(USER, user);
-        return query.find();
+        query.findInBackground(findCallback);
     }
 
-    public static List<Activity> getAll() throws ParseException {
+    public static void getAll(FindCallback<Activity> findCallback) throws ParseException {
         query = getQuery();
-        return query.find();
+        query.findInBackground(findCallback);
     }
 
     @Override
