@@ -15,8 +15,6 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }else if (id == R.id.action_profile) {
             Intent i = new Intent(this, ProfileActivity.class);
+            startActivity(i);
+        }else if (id == R.id.action_community) {
+            Intent i = new Intent(this, CommunityFeedActivity.class);
             startActivity(i);
         }
 
