@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text="beansandBananas"
             android:id="@+id/tvUsername"
             android:layout_gravity="center_vertical"
             android:textStyle="bold"
@@ -55,32 +55,35 @@
 
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
         android:id="@+id/ivPhoto"
         android:layout_below="@id/viewHeader"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:minHeight="50dp"
         android:background="#fadede" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:layout_below="@id/ivPhoto"
-        android:id="@+id/tvLikes"
-        android:layout_marginTop="10dp"
-        />
     <ImageView
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:id="@+id/ivHeart"
-        android:layout_toLeftOf="@id/tvLikes"
+        android:layout_below="@id/ivPhoto"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/ic_heart"
         android:background="#090465" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="411 Likes"
+        android:layout_below="@id/ivPhoto"
+        android:id="@+id/tvLikes"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,31 +91,9 @@
         android:text="Test"
         android:layout_below="@id/tvLikes"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/tvCaption"
         android:maxLines="3"
         android:ellipsize="end" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvComments1"
-        android:layout_below="@id/tvCaption"
-        android:layout_centerVertical="true"
-        android:textColor="@color/colorPrimary"
-        android:layout_alignParentLeft="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tvComments2"
-        android:layout_below="@id/tvComments1"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginTop="10dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true" />
-
-
 
 </RelativeLayout>
