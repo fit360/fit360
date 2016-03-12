@@ -3,6 +3,7 @@ package com.app.spott;
 import android.app.Application;
 import android.util.Log;
 
+import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -23,6 +24,7 @@ public class ParseApplication extends Application {
         Parse.enableLocalDatastore(this);
 //        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         ParseObject.registerSubclass(User.class);
+        ParseObject.registerSubclass(Post.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(PARSE_APPLICATION_ID)

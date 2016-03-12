@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Log.d("User", currentUser.getFirstName());
+//        Log.d("User", currentUser.getFirstName());
     }
 
     private User setupNewUser() {

@@ -44,7 +44,7 @@ public class CommunityFeedActivity extends AppCompatActivity {
             public void done(List<Post> posts, ParseException e) {
                 if (e == null) {
                     // Access data using the `getGender` methods for the object
-                    mPosts = (ArrayList)posts;
+                    mPosts.addAll((ArrayList)posts);
                     aPosts.notifyDataSetChanged();
                     // Do whatever you want with the data...
                 } else {
