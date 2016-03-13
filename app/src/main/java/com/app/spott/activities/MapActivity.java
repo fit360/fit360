@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.app.spott.models.Activity;
 import com.app.spott.models.ActivityType;
 import com.app.spott.models.Frequency;
 import com.app.spott.models.Time;
+import com.app.spott.models.User;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -43,7 +45,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +80,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Bind(R.id.slidingPanelLayout)
     com.sothree.slidinguppanel.SlidingUpPanelLayout slidingPanelLayout;
 
+    @Bind(R.id.dragView)
+    LinearLayout dragView;
+
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<com.app.spott.models.Activity> mActivities;
@@ -83,6 +91,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LatLng mRefLatLng;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public final static String INTENT_USER_ID = "userId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +149,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mActivitiesListViewAdapter = new ActivitiesListViewAdapter(this, mFilteredActivities);
         lvActivities.setAdapter(mActivitiesListViewAdapter);
         slidingPanelLayout.setAnchorPoint(0.7f);
+        lvActivities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Activity activity = mFilteredActivities.get(position);
+                User user = activity.getUser();
+                Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+                intent.putExtra(INTENT_USER_ID, user.getObjectId());
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -225,9 +244,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (location != null) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             mRefLatLng = latLng;
-            updateMapAndUserList(latLng);
+            updateUsingChosenActivitiesFallBackCurrentLoc(latLng);
         } else {
             Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            updateUsingChosenActivitiesFallBackCurrentLoc(null);
         }
     }
 
@@ -236,23 +256,51 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    public void updateMapAndUserList(final LatLng latLng) {
+    public void updateMapAndUserList(final LatLng latLng){
         try {
             Activity.getActivitiesAroundLatLng(latLng.latitude, latLng.longitude, new FindCallback<Activity>() {
                 @Override
                 public void done(List<Activity> activities, ParseException e) {
                     mActivities.clear();
-                    if (activities != null) {
+                    if (activities != null && !activities.isEmpty()) {
                         mActivities.addAll(activities);
+                        filterActivities();
+                        slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    } else {
+                        slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                     }
                     moveMapToLocation(latLng);
-                    filterActivities();
                 }
             });
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
+    }
 
+    public void updateUsingChosenActivitiesFallBackCurrentLoc(final LatLng latLng) {
+        User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
+            @Override
+            public void done(User user, ParseException e) {
+                if (user != null) {
+                    user.getChosenAcitivities(new FindCallback<Activity>() {
+                        @Override
+                        public void done(List<Activity> activities, ParseException e) {
+                            LatLng finalLatLng = null;
+                            if (activities != null && !activities.isEmpty()) {
+                                Activity activity = activities.get(0);
+                                double lat = activity.getLocation().getPoint().getLatitude();
+                                double lng = activity.getLocation().getPoint().getLongitude();
+                                finalLatLng = new LatLng(lat, lng);
+                            } else {
+                                finalLatLng = latLng;
+                            }
+                            updateMapAndUserList(finalLatLng);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void updateMapAndUserList() {
