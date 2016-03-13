@@ -10,11 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.app.spott.R;
+import com.app.spott.adapters.ActivitiesListViewAdapter;
 import com.app.spott.adapters.CustomWindowAdapter;
+import com.app.spott.models.Activity;
 import com.app.spott.models.ActivityType;
 import com.app.spott.models.Frequency;
 import com.app.spott.models.Time;
@@ -33,11 +36,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +58,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //TODO: Pull new activities data ONLY on location change based on new lat/long
     //TODO: Implement marker clustering
     //TODO: Multiselect spinner
+    //TODO: group activites in same geo area for each user in the user listview
 
     @Bind(R.id.spinnerActivities)
     Spinner spinnerActivities;
@@ -62,9 +69,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Bind(R.id.spinnerFrequency)
     Spinner spinnerFrequency;
 
+    @Bind(R.id.lvActivities)
+    ListView lvActivities;
+
+    @Bind(R.id.slidingPanelLayout)
+    com.sothree.slidinguppanel.SlidingUpPanelLayout slidingPanelLayout;
+
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-    private List<com.app.spott.models.Activity> mActivities;
+    private ArrayList<com.app.spott.models.Activity> mActivities;
+    private ArrayList<com.app.spott.models.Activity> mFilteredActivities;
+    private ActivitiesListViewAdapter mActivitiesListViewAdapter;
+    private LatLng mRefLatLng;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
@@ -76,7 +92,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -84,60 +100,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Toast.makeText(this, "Sorry, could not load the map. Please try again later", Toast.LENGTH_LONG).show();
         }
 
-        ArrayAdapter<String> activitiesAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, ActivityType.getReadableStrings());
+        List<String> activityTypes = ActivityType.getReadableStrings();
+        activityTypes.add(0, "Activities");
+        ArrayAdapter<String> activitiesAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, activityTypes);
         activitiesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerActivities.setAdapter(activitiesAdapter);
 
-        ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, Time.getReadableNames());
+        List<String> times = Time.getReadableNames();
+        times.add(0, "Times");
+        ArrayAdapter<String> timeAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, times);
         timeAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerTime.setAdapter(timeAdapter);
 
-        ArrayAdapter<String> frequencyAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, Frequency.getReadableNames());
+        List<String> frequencies = Frequency.getReadableNames();
+        frequencies.add(0, "Freqs");
+        ArrayAdapter<String> frequencyAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, frequencies);
         frequencyAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerFrequency.setAdapter(frequencyAdapter);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
-
-        spinnerActivities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<com.app.spott.models.Activity> activities = filterActivities();
-                showActivitesOnMap(activities);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spinnerFrequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<com.app.spott.models.Activity> activities = filterActivities();
-                showActivitesOnMap(activities);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<com.app.spott.models.Activity> activities = filterActivities();
-                showActivitesOnMap(activities);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -153,6 +136,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
 
         mActivities = new ArrayList<>();
+        mFilteredActivities = new ArrayList<>();
+        mActivitiesListViewAdapter = new ActivitiesListViewAdapter(this, mFilteredActivities);
+        lvActivities.setAdapter(mActivitiesListViewAdapter);
+        slidingPanelLayout.setAnchorPoint(0.7f);
 
     }
 
@@ -174,11 +161,54 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+        mMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                LatLng latLng = mMap.getCameraPosition().target;
+                if (latLng != null && mRefLatLng != null &&
+                        Math.abs(mRefLatLng.latitude - latLng.latitude) > 0.01 &&
+                        Math.abs(mRefLatLng.longitude - latLng.longitude) > 0.01) {
+                    mRefLatLng = latLng;
+                    updateMapAndUserList(latLng);
+                }
+            }
+        });
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        spinnerActivities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterActivities();
+            }
 
-        //TODO: move map to preferred activity location
-        fetchActivities();
-        List<com.app.spott.models.Activity> activities = filterActivities();
-        showActivitesOnMap(activities);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerFrequency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterActivities();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterActivities();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     protected void connectClient() {
@@ -194,7 +224,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location != null) {
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            moveMapToLocation(latLng);
+            mRefLatLng = latLng;
+            updateMapAndUserList(latLng);
         } else {
             Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
         }
@@ -203,6 +234,30 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onConnectionSuspended(int i) {
 
+    }
+
+    public void updateMapAndUserList(final LatLng latLng) {
+        try {
+            Activity.getActivitiesAroundLatLng(latLng.latitude, latLng.longitude, new FindCallback<Activity>() {
+                @Override
+                public void done(List<Activity> activities, ParseException e) {
+                    mActivities.clear();
+                    if (activities != null) {
+                        mActivities.addAll(activities);
+                    }
+                    moveMapToLocation(latLng);
+                    filterActivities();
+                }
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateMapAndUserList() {
+        showActivitesOnMap(mFilteredActivities);
+        mActivitiesListViewAdapter.notifyDataSetChanged();
     }
 
 
@@ -221,11 +276,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             // If Google Play services can provide an error dialog
             if (errorDialog != null) {
-                //TODO
-                // Create a new DialogFragment for the error dialog
-//                ErrorDialogFragment errorFragment = new ErrorDialogFragment();
-//                errorFragment.setDialog(errorDialog);
-//                errorFragment.show(getSupportFragmentManager(), "Location Updates");
+                Toast.makeText(this, "Google Play Services not available", Toast.LENGTH_LONG).show();
             }
 
             return false;
@@ -233,7 +284,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void moveMapToLocation(LatLng latLng) {
-        int distanceFromOriginInMeters = 2000;
+        int distanceFromOriginInMeters = 700;
         LatLngBounds latLngBounds = new LatLngBounds.Builder()
                 .include(SphericalUtil.computeOffset(latLng, distanceFromOriginInMeters, 0))
                 .include(SphericalUtil.computeOffset(latLng, distanceFromOriginInMeters, 90))
@@ -244,116 +295,52 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
     }
 
-    private void fetchActivities() {
-        //TODO:
-    }
+    private void filterActivities() {
+        mFilteredActivities.clear();
+        ActivityType activityType = ActivityType.values()[Math.max(0, spinnerActivities.getSelectedItemPosition() - 1)];
+        Time time = Time.values()[Math.max(0, spinnerTime.getSelectedItemPosition() - 1)];
+        Frequency frequency = Frequency.values()[Math.max(0, spinnerFrequency.getSelectedItemPosition() - 1)];
 
-    private List<com.app.spott.models.Activity> filterActivities() {
-        //TODO:
-        ActivityType activityType = ActivityType.values()[spinnerActivities.getSelectedItemPosition()];
-//        Time time = Time.values()[spinnerTime.getSelectedItemPosition()];
-//        Frequency frequency = Frequency.values()[spinnerFrequency.getSelectedItemPosition()];
+        for (Activity activity : mActivities) {
+            if (spinnerActivities.getSelectedItemPosition() != 0 && activity.getActivityType() != activityType)
+                continue;
+            if (spinnerTime.getSelectedItemPosition() != 0 && activity.getTime() != time)
+                continue;
+            if (spinnerFrequency.getSelectedItemPosition() != 0 && activity.getFrequency() != frequency)
+                continue;
 
-        ArrayList<com.app.spott.models.Activity> result = new ArrayList<>();
-//        for (Activity activity : mActivities) {
-//            if (activity.getActivityType() == activityType &&
-//                    activity.getTime() == time &&
-//                    activity.getFrequency() == frequency) {
-//                result.add(activity);
-//            }
-//        }
-        return result;
+            mFilteredActivities.add(activity);
+        }
+        updateMapAndUserList();
     }
 
     private void showActivitesOnMap(List<com.app.spott.models.Activity> activities) {
         mMap.clear();
 
-        BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_fitness_default);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.774, -122.439))
-                .title("Foo Bar")
-                .snippet("General Strength")
-                .icon(icon));
+        if (activities != null) {
+            for (Activity activity : activities) {
+                ActivityType activityType = activity.getActivityType();
 
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_yoga);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.771, -122.438))
-                .title("Foo Bar")
-                .snippet("Yoga")
-                .icon(icon));
 
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_boxing);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.777, -122.446))
-                .title("Foo Bar")
-                .snippet("Boxing")
-                .icon(icon));
+                int icon = R.drawable.ic_fitness_default;
+                if (activityType != null) {
+                    icon = activityType.getIcon();
+                }
 
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_yoga);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.764, -122.430))
-                .title("Foo Bar")
-                .snippet("Yoga")
-                .icon(icon));
+                BitmapDescriptor marker =
+                        BitmapDescriptorFactory.fromResource(icon);
 
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_yoga);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.781, -122.454))
-                .title("Foo Bar")
-                .snippet("General Strength")
-                .icon(icon));
+                LatLng latLng = new LatLng(activity.getLocation().getPoint().getLatitude(), activity.getLocation().getPoint().getLongitude());
+                mMap.addMarker(new MarkerOptions().position(latLng)
+                        .title("Barbell")
+                        .icon(marker));
 
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_yoga);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.760, -122.454))
-                .title("Foo Bar")
-                .snippet("Yoga")
-                .icon(icon));
-
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_fitness_default);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.781, -122.428))
-                .title("Foo Bar")
-                .snippet("General Strength")
-                .icon(icon));
-
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_basketball);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.790, -122.424))
-                .title("Foo Bar")
-                .snippet("Basketball")
-                .icon(icon));
-
-        icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.ic_cycling);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(37.788, -122.446))
-                .title("Foo Bar")
-                .snippet("Cycling")
-                .icon(icon));
-
-//TODO
-//        if (activities != null) {
-//            for (Activity activity : activities) {
-//                ActivityType activityType = activity.getActivityType();
-//
-
-//                int resourceId = R.drawable.ic_benchpress;
-//                if (activityType.getResourceId() != -1) {
-//                    resourceId = activityType.getResourceId();
-//                }
-
-//                BitmapDescriptor icon =
-//                        BitmapDescriptorFactory.fromResource(resourceId);
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(-34, 151))
-//                        .title("Barbell")
-//                        .icon(icon));
-//            }
-//        }
+            }
+        }
     }
 
     @Override
     public void onLocationChanged(Location location) {
-
     }
 
     @Override
