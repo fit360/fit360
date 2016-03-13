@@ -24,7 +24,7 @@ import java.io.File;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TrackingFragment extends Fragment {
+public class ProfileActivitiesFragment extends Fragment {
     @Bind(R.id.etWeight)
     EditText etWeight;
     @Bind(R.id.etWater) EditText etWater;
@@ -42,7 +42,7 @@ public class TrackingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
-        return inflater.inflate(R.layout.fragment_tracking, parent, false);
+        return inflater.inflate(R.layout.fragment_profile_activities, parent, false);
     }
 
     // This event is triggered soon after onCreateView().

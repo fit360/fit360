@@ -47,11 +47,11 @@ public class User extends Model {
     }
 
     public Gender getGender(){
-        return Gender.getGender(getString(GENDER));
+        return Gender.valueOf(getString(GENDER));
     }
 
     public void setGender(Gender gender){
-        put(GENDER, gender.getName());
+        put(GENDER, gender.toString());
     }
 
     public String getId(String id){
