@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.app.spott.R;
+import com.app.spott.SpottApplication;
 import com.app.spott.models.User;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,9 +17,15 @@ import butterknife.ButterKnife;
 public class ProfileHeaderFragment extends Fragment {
     @Bind(R.id.tvUserName)
     TextView tvUserName;
+    @Bind(R.id.tvGenderAge)
+    TextView tvGenderAge;
+
+    private User currentUser;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        // Defines the xml file for the fragment
+        SpottApplication app = (SpottApplication) this.getActivity().getApplicationContext();
+        currentUser = app.getCurrentUser();
         return inflater.inflate(R.layout.fragment_profile_header, parent, false);
     }
 
@@ -32,21 +36,8 @@ public class ProfileHeaderFragment extends Fragment {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         ButterKnife.bind(this, view);
-
-        // Specify which class to query
-        ParseQuery<User> query = ParseQuery.getQuery(User.class);
-        //TODO: change the obj id later// Specify the object id
-        query.getInBackground("ZEOha5PCG0", new GetCallback<User>() {
-            public void done(User user, ParseException e) {
-                if (e == null) {
-                    // Access data using the `getGender` methods for the object
-                    tvUserName.setText(user.getFirstName());
-                    // Do whatever you want with the data...
-                } else {
-                    // something went wrong
-                }
-            }
-        });
+        tvUserName.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+        tvGenderAge.setText(currentUser.getGender().getName() + ", "+ currentUser.getAge());
     }
 
 }
