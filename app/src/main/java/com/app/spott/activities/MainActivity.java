@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.app.spott.R;
+import com.app.spott.SpottApplication;
 import com.app.spott.models.Gender;
 import com.app.spott.models.User;
 import com.parse.GetCallback;
@@ -19,12 +20,13 @@ import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private User currentUser;
+    private SpottApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        app = (SpottApplication) getApplicationContext();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
         if (ParseUser.getCurrentUser() != null) { // start with existing user
@@ -32,23 +34,22 @@ public class MainActivity extends AppCompatActivity {
         } else { // If not logged in, login as a new anonymous user
             login();
         }
-
     }
 
     // Get the userId from the cached currentUser object
     void startWithCurrentUser() {
         ParseUser loggedInUser = ParseUser.getCurrentUser();
+        Log.d("login", loggedInUser.getSessionToken());
         User.getByOwner(loggedInUser, new GetCallback<User>() {
             @Override
-            public void done(User object, ParseException e) {
-                if (object == null)
-                    currentUser = setupNewUser();
-                else
-                    currentUser = object;
+            public void done(User user, ParseException e) {
+                if (e == null) {
+                    app.setCurrentUser(user);
+                } else {
+                    app.setCurrentUser(setupNewUser());
+                }
             }
         });
-
-        Log.d("User", currentUser.getFirstName());
     }
 
     private User setupNewUser() {
