@@ -3,6 +3,7 @@ package com.app.spott.models;
 import com.app.spott.exceptions.ActivityModelException;
 import com.app.spott.exceptions.ModelException;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -12,6 +13,7 @@ import java.util.List;
 @ParseClassName("Activity")
 public class Activity extends Model {
 
+    private static final String ID = "_id";
     private static final String TAG = Activity.class.getSimpleName();
     private static final String USER = "user";
     private static final String ACTIVITY_TYPE = "activity_type";
@@ -94,6 +96,12 @@ public class Activity extends Model {
     public static void getAll(FindCallback<Activity> findCallback) throws ParseException {
         query = getQuery();
         query.findInBackground(findCallback);
+    }
+
+    public static void getByObjectId(String objectId, GetCallback<Activity> getCallback){
+        query = getQuery();
+        query.whereEqualTo(ID, objectId);
+        query.getFirstInBackground(getCallback);
     }
 
     @Override
