@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivProfilePicture"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher"
+        app:riv_oval="true" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ivProfilePicture"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@id/ivProfilePicture"
+        android:layout_toRightOf="@id/ivProfilePicture"
+        android:text="first last" />
+
+    <TextView
+        android:id="@+id/tvAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvUserName"
+        android:layout_toRightOf="@id/tvUserName"
+        android:layout_toEndOf="@id/tvUserName"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="age"/>
+
+    <TextView
+        android:id="@+id/tvGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tvUserName"
+        android:layout_toRightOf="@id/tvUserName"
+        android:layout_toEndOf="@id/tvAge"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="gender"/>
+
+    <TextView
+        android:id="@+id/tvActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tvUserName"
+        android:layout_below="@id/tvUserName"
+        android:text="activity"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUserName"
+        android:layout_toRightOf="@id/tvActivity"
+        android:layout_toEndOf="@id/tvActivity"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="time"/>
+
+    <TextView
+        android:id="@+id/tvFrequency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvUserName"
+        android:layout_toRightOf="@id/tvTime"
+        android:layout_toEndOf="@id/tvTime"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="frequency"/>
+</RelativeLayout>

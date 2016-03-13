@@ -16,8 +16,8 @@ public class Location extends Model {
 
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
-    private static final String POINT = "point";
     private static final String PLACE_ID = "place_id";
+    public static final String POINT = "point";
 
     @Override
     public String getLogTag() {
