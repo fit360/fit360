@@ -55,7 +55,7 @@ public class CommunityFeedActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CommunityFeedActivity.this, MapActivity.class);
+                Intent intent = new Intent(CommunityFeedActivity.this, CreatePostActivity.class);
                 startActivity(intent);
             }
         });
