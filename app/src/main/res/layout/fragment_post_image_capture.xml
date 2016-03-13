@@ -7,7 +7,8 @@
     android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@android:color/black">
 
 
     <FrameLayout
@@ -17,8 +18,15 @@
         app:layout_widthPercent="100%"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:padding="4dp"
+        android:padding="1dp"
         android:background="@drawable/drawable_placeholder_cam_preview_selected">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Click here to start camera or choose from gallery"
+            android:textAlignment="center"/>
 
         <ImageView
             android:id="@+id/ivCaptureImage1"
@@ -26,6 +34,8 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:visibility="gone"/>
+
+
     </FrameLayout>
 
 
@@ -38,8 +48,15 @@
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/cameraPreview1"
         android:visibility="gone"
-        android:padding="4dp"
+        android:padding="1dp"
         android:background="@drawable/drawable_placeholder_cam_preview">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Click here to start camera or choose from gallery"
+            android:textAlignment="center"/>
 
         <ImageView
             android:id="@+id/ivCaptureImage2"
