@@ -14,11 +14,11 @@ import java.util.List;
 public class Activity extends Model {
 
     private static final String TAG = Activity.class.getSimpleName();
-    private static final String USER = "user";
+    public static final String USER = "user";
     private static final String ACTIVITY_TYPE = "activity_type";
     private static final String TIME = "time";
     private static final String FREQUENCY = "frequency";
-    private static final String LOCATION = "location";
+    public static final String LOCATION = "location";
 
     private static ParseQuery<Activity> query;
 
