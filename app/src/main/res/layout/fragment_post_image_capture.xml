@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <FrameLayout
+        android:id="@+id/cameraPreview1"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_widthPercent="100%"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:padding="4dp"
+        android:background="@drawable/drawable_placeholder_cam_preview_selected">
+
+        <ImageView
+            android:id="@+id/ivCaptureImage1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/cameraPreview2"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_widthPercent="50%"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/cameraPreview1"
+        android:visibility="gone"
+        android:padding="4dp"
+        android:background="@drawable/drawable_placeholder_cam_preview">
+
+        <ImageView
+            android:id="@+id/ivCaptureImage2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+
+
+    <Button
+        android:id="@+id/btnFull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full"
+        android:layout_below="@+id/cameraPreview1"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnSplit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Split"
+        android:layout_below="@+id/cameraPreview1"
+        android:layout_marginRight="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pick from Gallery"
+        android:layout_below="@+id/btnFull"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click"
+        android:layout_below="@+id/btnGallery"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:id="@+id/ivTest"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+
+
+
+</android.support.percent.PercentRelativeLayout>
+
