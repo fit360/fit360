@@ -1,11 +1,11 @@
 package com.app.spott.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.app.spott.R;
+import com.app.spott.activities.CommunityFeedActivity;
 import com.app.spott.exceptions.ModelException;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
@@ -101,7 +102,8 @@ public class PostComposeFragment extends Fragment {
                             } catch (ParseException e1) {
                                 e1.printStackTrace();
                             }
-                            ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().remove(PostComposeFragment.this).commit();
+                            Intent intent = new Intent(mContext, CommunityFeedActivity.class);
+                            mContext.startActivity(intent);
                         }
                     });
 
