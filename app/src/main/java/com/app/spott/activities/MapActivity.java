@@ -166,7 +166,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
-        mMap.setInfoWindowAdapter(new CustomWindowAdapter(getLayoutInflater()));
+        mMap.setInfoWindowAdapter(new CustomWindowAdapter(this, getLayoutInflater()));
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -378,9 +378,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 BitmapDescriptor marker =
                         BitmapDescriptorFactory.fromResource(icon);
 
+                User user = activity.getUser();
+                //TODO user profilepic url
+                String profilePicUrl =  "https://c2.staticflickr.com/2/1489/25240204189_a8b13f66d5_q_d.jpg";
+                String text = String.format("%s %s", user.getFirstName(), user.getLastName());
+                String userName = text;
+                String age = String.valueOf(user.getAge());
+
+                String snippet = String.format("%s;%s;%s", profilePicUrl, userName, age);
                 LatLng latLng = new LatLng(activity.getLocation().getPoint().getLatitude(), activity.getLocation().getPoint().getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng)
-                        .title("Barbell")
+                        .snippet(snippet)
                         .icon(marker));
 
             }
