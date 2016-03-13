@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,9 +14,12 @@ import android.provider.MediaStore;
 import android.support.percent.PercentLayoutHelper;
 import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -45,6 +49,7 @@ public class PostImageCaptureFragment extends Fragment {
 
     //TODO use Camera2 API
     //TODO normalize orientation to straight for camera preview, its different for different devices
+    //TODO implement auto focus
 
 
     @Bind(R.id.cameraPreview1)
@@ -87,6 +92,8 @@ public class PostImageCaptureFragment extends Fragment {
     private int MODE_SPLIT = 1;
     private int CAMERA_SELECT_1 = 0;
     private int CAMERA_SELECT_2 = 1;
+    public static final String FINAL_IMAGE_NAME = "post_image.png";
+    private final String TEMP_IMAGE_NAME = "tmp_post_image.png";
 
     private int mMode;
     private int mCameraSelect;
@@ -153,6 +160,7 @@ public class PostImageCaptureFragment extends Fragment {
                 cameraPreviewLayout1.requestLayout();
                 cameraPreviewLayout2.setVisibility(View.VISIBLE);
                 mMode = MODE_SPLIT;
+                verifyReadyToSubmit();
 
             }
         });
@@ -242,7 +250,7 @@ public class PostImageCaptureFragment extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                setBitmapAndVerifyReadToSubmit(selectedImage);
+                setBitmap(selectedImage);
             }
 
         }
@@ -266,8 +274,8 @@ public class PostImageCaptureFragment extends Fragment {
                 Toast.makeText(mContext, "Captured image is empty", Toast.LENGTH_LONG).show();
                 return;
             }
-            bitmap = scaleDownBitmapImage(bitmap);
-            setBitmapAndVerifyReadToSubmit(bitmap);
+            bitmap = normalizeCameraImage(bitmap);
+            setBitmap(bitmap);
         }
     };
 
@@ -277,7 +285,7 @@ public class PostImageCaptureFragment extends Fragment {
     }
 
 
-    private void setBitmapAndVerifyReadToSubmit(Bitmap bitmap) {
+    private void setBitmap(Bitmap bitmap) {
         if (mCameraSelect == CAMERA_SELECT_1) {
             mCapturedBitmap1 = bitmap;
             ivCapturedImage1.setImageBitmap(bitmap);
@@ -294,35 +302,55 @@ public class PostImageCaptureFragment extends Fragment {
             }
         }
 
+        verifyReadyToSubmit();
+    }
+
+    private void verifyReadyToSubmit(){
         if (mMode == MODE_FULL) {
             if (ivCapturedImage1.getDrawable() != null) {
                 mFinalBitmap = mCapturedBitmap1;
-                btnTakePicture.setText("Submit");
+                btnTakePicture.setText("Next");
                 btnTakePicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        saveImage(mFinalBitmap);
+                        saveImage(mFinalBitmap, FINAL_IMAGE_NAME);
+                        mListener.startComposeFragment();
+                    }
+                });
+            } else {
+                btnTakePicture.setText("Click");
+                btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        camera.takePicture(null, null, pictureCallback);
                     }
                 });
             }
         } else {
             if (ivCapturedImage1.getDrawable() != null && ivCapturedImage2.getDrawable() != null) {
                 mFinalBitmap = combineImages(mCapturedBitmap1, mCapturedBitmap2);
-                btnTakePicture.setText("Submit");
+                btnTakePicture.setText("Next");
                 btnTakePicture.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        saveImage(mFinalBitmap);
+                        saveImage(mFinalBitmap, FINAL_IMAGE_NAME);
+                        mListener.startComposeFragment();
+                    }
+                });
+            } else {
+                btnTakePicture.setText("Click");
+                btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        camera.takePicture(null, null, pictureCallback);
                     }
                 });
             }
         }
-
-
     }
 
-    private void saveImage(Bitmap bitmap){
-        Uri uri = Utils.getPhotoFileUri(mContext, "post_image.png");
+    private String saveImage(Bitmap bitmap, String name){
+        Uri uri = Utils.getPhotoFileUri(mContext, name);
         File file = new File(uri.getPath());
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -334,7 +362,7 @@ public class PostImageCaptureFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mListener.startComposeFragment();
+        return uri.getPath();
     }
 
     private void clear() {
@@ -357,13 +385,85 @@ public class PostImageCaptureFragment extends Fragment {
 
     private Bitmap combineImages(Bitmap a, Bitmap b) {
 
-        Bitmap c = Bitmap.createBitmap(a.getWidth() + b.getWidth(), a.getHeight() + b.getHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap c = Bitmap.createBitmap(a.getWidth() + b.getWidth(), a.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas comboImage = new Canvas(c);
 
         comboImage.drawBitmap(a, 0f, 0f, null);
         comboImage.drawBitmap(b, a.getWidth(), 0f, null);
 
-        return c;
+        return scaleDownBitmapImage(c);
+    }
+
+    private Bitmap normalizeCameraImage(Bitmap bitmap){
+        Bitmap transformedBitmap = scaleDownBitmapImage(bitmap);
+        transformedBitmap = rotateBitmapOrientation(camera, transformedBitmap);
+        return transformedBitmap;
+    }
+
+    public Bitmap rotateBitmapOrientation(Camera camera, Bitmap bitmap) {
+        int rotationAngle = getRotationAngleFix(camera);
+        Matrix matrix = new Matrix();
+        matrix.setRotate(rotationAngle, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        // Return result
+        return rotatedBitmap;
+    }
+
+    private int getRotationAngleFix(Camera camera){
+        Camera.Parameters parameters = camera.getParameters();
+
+        android.hardware.Camera.CameraInfo camInfo =
+                new android.hardware.Camera.CameraInfo();
+        android.hardware.Camera.getCameraInfo(getBackFacingCameraId(), camInfo);
+
+
+        Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        int rotation = display.getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (camInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (camInfo.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (camInfo.orientation - degrees + 360) % 360;
+        }
+        return result;
+    }
+
+    public void setCameraDisplayOrientation(android.hardware.Camera camera) {
+        int result = getRotationAngleFix(camera);
+        camera.setDisplayOrientation(result);
+    }
+
+    private int getBackFacingCameraId() {
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+
+                cameraId = i;
+                break;
+            }
+        }
+        return cameraId;
     }
 
 

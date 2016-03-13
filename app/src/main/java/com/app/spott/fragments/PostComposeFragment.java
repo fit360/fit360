@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.app.spott.R;
+import com.app.spott.exceptions.ModelException;
+import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.app.spott.utils.Utils;
 import com.parse.GetCallback;
@@ -61,14 +64,14 @@ public class PostComposeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_post_compose, container, false);
+        View view = inflater.inflate(R.layout.fragment_post_compose, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        final Uri imageUri = Utils.getPhotoFileUri(mContext, "post_image.png");
+        final Uri imageUri = Utils.getPhotoFileUri(mContext, PostImageCaptureFragment.FINAL_IMAGE_NAME);
         ivPostImage.setImageURI(imageUri);
         etPostMessage.requestFocus();
 
@@ -83,17 +86,28 @@ public class PostComposeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    Utils.saveImageToCloud(imageUri.getPath());
+                    final String imageUrl = Utils.saveImageToCloud(imageUri.getPath());
+                    User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
+                        @Override
+                        public void done(User user, ParseException e) {
+                            Post post = new Post();
+                            post.setUser(user);
+                            post.setImageUrl(imageUrl);
+                            post.setBody(etPostMessage.getText().toString());
+                            try {
+                                post.saveModel();
+                            } catch (ModelException e1) {
+                                e1.printStackTrace();
+                            } catch (ParseException e1) {
+                                e1.printStackTrace();
+                            }
+                            ((AppCompatActivity)mContext).getSupportFragmentManager().beginTransaction().remove(PostComposeFragment.this).commit();
+                        }
+                    });
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
-                    @Override
-                    public void done(User object, ParseException e) {
-                        //save post
-                    }
-                });
-
             }
         });
     }

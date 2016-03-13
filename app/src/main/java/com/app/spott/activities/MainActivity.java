@@ -52,7 +52,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private User setupNewUser() {
-        return null;
+        User user = new User();
+        user.setFirstName("FOO");
+        user.setAge(25);
+        user.setLastName("BAR");
+        user.setGender(Gender.MALE);
+        user.setOwner(ParseUser.getCurrentUser());
+        try {
+            user.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     private User setupAdil() {
