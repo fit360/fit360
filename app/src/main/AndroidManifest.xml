@@ -53,6 +53,10 @@
         <activity
             android:name=".activities.CommunityFeedActivity"
             android:label="@string/title_activity_community_feed"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

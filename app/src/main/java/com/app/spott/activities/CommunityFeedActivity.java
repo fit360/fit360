@@ -27,6 +27,8 @@ public class CommunityFeedActivity extends AppCompatActivity {
     RecyclerView rvPosts;
     LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout swipeContainer;
+    private static final String USER = "user";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class CommunityFeedActivity extends AppCompatActivity {
 
     void fetchFeeds(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.include(USER);
         //TODO: get posts for this user
         query.findInBackground(new FindCallback<Post>() {
             public void done(List<Post> posts, ParseException e) {

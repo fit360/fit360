@@ -1,13 +1,14 @@
 package com.app.spott.models;
 
 import com.parse.ParseClassName;
-import com.parse.ParseUser;
 
 /**
  * Created by aparnajain on 3/10/16.
  */
 @ParseClassName("Post")
 public class Post extends Model {
+    private static final String USER = "user";
+
     // Ensure that your subclass has a public default constructor
     public Post() {
         super();
@@ -30,15 +31,21 @@ public class Post extends Model {
     public void setBody(String value) {
         put("body", value);
     }
+    public void setImageUrl(String value) {
+        put("image_url", value);
+    }
 
-    // Get the user for this item
-    public ParseUser getUser()  {
-        return getParseUser("User");
+    public User getUser() {
+        return (User) get(USER);
+    }
+
+    public void setUser(User user) {
+        put(USER, user);
     }
 
     // Associate each item with a user
-    public void setOwner(ParseUser user) {
-        put("User", user);
+    public void setOwner(User user) {
+        put(USER, user);
     }
 
     @Override

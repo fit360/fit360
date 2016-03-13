@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.app.spott.R;
 import com.app.spott.models.Gender;
+import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         } else { // If not logged in, login as a new anonymous user
             login();
         }
-
+//        randomPost();
     }
 
     // Get the userId from the cached currentUser object
@@ -54,7 +55,17 @@ public class MainActivity extends AppCompatActivity {
     private User setupNewUser() {
         return null;
     }
-
+    private Post randomPost(){
+        Post post = new Post();
+        post.setBody("We're having so much fun!");
+        post.setImageUrl("http://www.imagesource.com/Doc/IS0/Media/TR16/a/5/d/c/38YDP0062RMG.jpg");
+        try {
+            post.save();
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
     private User setupAdil() {
         User user = new User();
         user.setFirstName("Adil");
