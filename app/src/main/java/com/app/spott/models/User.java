@@ -1,6 +1,7 @@
 package com.app.spott.models;
 
 import com.app.spott.exceptions.ModelException;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -85,4 +86,15 @@ public class User extends Model {
     public void saveModel() throws ModelException, ParseException {
         super.saveModel();
     }
+
+
+    public void getChosenAcitivities(FindCallback<Activity> findCallback){
+        ParseQuery<Activity> parseQuery = ParseQuery.getQuery(Activity.class);
+        parseQuery.whereEqualTo(Activity.USER, this);
+        parseQuery.orderByAscending("createdAt");
+        parseQuery.include(Activity.USER);
+        parseQuery.include(Activity.LOCATION);
+        parseQuery.findInBackground(findCallback);
+    }
+
 }
