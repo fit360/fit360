@@ -5,6 +5,7 @@ import com.app.spott.exceptions.ModelException;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
 import java.util.List;
@@ -13,11 +14,11 @@ import java.util.List;
 public class Activity extends Model {
 
     private static final String TAG = Activity.class.getSimpleName();
-    private static final String USER = "user";
+    public static final String USER = "user";
     private static final String ACTIVITY_TYPE = "activity_type";
     private static final String TIME = "time";
     private static final String FREQUENCY = "frequency";
-    private static final String LOCATION = "location";
+    public static final String LOCATION = "location";
 
     private static ParseQuery<Activity> query;
 
@@ -103,5 +104,14 @@ public class Activity extends Model {
 
         this.getLocation().saveModel();
         super.saveModel();
+    }
+
+    public static void getActivitiesAroundLatLng(double lat, double lng, FindCallback<Activity> findCallback) throws ParseException {
+        ParseGeoPoint parseGeoPoint = new ParseGeoPoint(lat, lng);
+        ParseQuery<Location> locationParseQuery = ParseQuery.getQuery(Location.class);
+        locationParseQuery.whereWithinKilometers(Location.POINT, parseGeoPoint, 1);
+        ParseQuery<Activity> activityParseQuery = getQuery();
+        activityParseQuery.whereMatchesQuery(LOCATION, locationParseQuery);
+        activityParseQuery.findInBackground(findCallback);
     }
 }

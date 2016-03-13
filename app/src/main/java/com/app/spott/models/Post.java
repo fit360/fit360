@@ -8,8 +8,9 @@ import com.parse.ParseClassName;
 @ParseClassName("Post")
 public class Post extends Model {
     private static final String USER = "user";
+    private static final String IMAGE_URL = "image_url";
+    private static final String BODY = "body";
 
-    // Ensure that your subclass has a public default constructor
     public Post() {
         super();
     }
@@ -29,10 +30,7 @@ public class Post extends Model {
     }
     // Use put to modify field values
     public void setBody(String value) {
-        put("body", value);
-    }
-    public void setImageUrl(String value) {
-        put("image_url", value);
+        put(BODY, value);
     }
 
     public User getUser() {
@@ -46,6 +44,10 @@ public class Post extends Model {
     // Associate each item with a user
     public void setOwner(User user) {
         put(USER, user);
+    }
+
+    public void setImageUrl(String imageUrl){
+        put(IMAGE_URL, imageUrl);
     }
 
     @Override
