@@ -3,6 +3,7 @@ package com.app.spott.models;
 import android.util.Log;
 
 import com.app.spott.exceptions.ModelException;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -26,9 +27,9 @@ public abstract class Model extends ParseObject {
         });
     }
 
-    public ParseObject findOne(String id) throws ParseException {
-        ParseQuery query = ParseQuery.getQuery(this.getClass());
+    public static void findOne(Class modelClass, String id, GetCallback getCallback) {
+        ParseQuery query = ParseQuery.getQuery(modelClass);
         query.whereEqualTo(objectId, id);
-        return query.getFirst();
+        query.getFirstInBackground(getCallback);
     }
 }
