@@ -56,6 +56,10 @@ public class Location extends Model {
         put(PLACE_ID, placeId);
     }
 
+    public String getNameAddress() {
+        return getName() + ", " + getAddress();
+    }
+    
     public void getNearByLocations(FindCallback<Location> findCallback) {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
         query.whereNear(POINT, getPoint());
@@ -84,4 +88,5 @@ public class Location extends Model {
         });
         super.saveModel();
     }
+
 }
