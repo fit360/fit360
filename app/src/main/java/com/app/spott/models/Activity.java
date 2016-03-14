@@ -73,7 +73,7 @@ public class Activity extends Model {
         q.include(USER);
         return q;
     }
-    public void getMatchedActivities(final FindCallback<Activity> findCallback) throws ParseException {
+    public void getMatchedActivities(final FindCallback<Activity> findCallback) {
 //        maybe use innerquery for optimization
         getLocation().getNearByLocations(new FindCallback<Location>() {
             @Override
@@ -86,19 +86,19 @@ public class Activity extends Model {
         });
     }
 
-    public static void getForUser(User user, FindCallback<Activity> findCallback) throws ParseException {
+    public static void getForUser(User user, FindCallback<Activity> findCallback) {
         query = getQuery();
         query.whereEqualTo(USER, user);
         query.findInBackground(findCallback);
     }
 
-    public static void getAll(FindCallback<Activity> findCallback) throws ParseException {
+    public static void getAll(FindCallback<Activity> findCallback) {
         query = getQuery();
         query.findInBackground(findCallback);
     }
 
     @Override
-    public void saveModel() throws ModelException{
+    public void saveModel() throws ModelException {
         if (this.getActivityType() == null || this.getLocation() == null || this.getUser() == null)
             throw new ActivityModelException();
 
@@ -106,7 +106,7 @@ public class Activity extends Model {
         super.saveModel();
     }
 
-    public static void getActivitiesAroundLatLng(double lat, double lng, FindCallback<Activity> findCallback) throws ParseException {
+    public static void getActivitiesAroundLatLng(double lat, double lng, FindCallback<Activity> findCallback) {
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(lat, lng);
         ParseQuery<Location> locationParseQuery = ParseQuery.getQuery(Location.class);
         locationParseQuery.whereWithinKilometers(Location.POINT, parseGeoPoint, 1);
