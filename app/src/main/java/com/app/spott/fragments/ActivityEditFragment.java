@@ -1,6 +1,7 @@
 package com.app.spott.fragments;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -61,9 +62,13 @@ public class ActivityEditFragment extends DialogFragment {
     private ArrayAdapter<Frequency> frequencyAdapter;
     private ArrayAdapter<ActivityType> activityTypeAdapter;
     private User currentUser;
+    private OnSaveListener listener;
 
-    public ActivityEditFragment() {
+    public interface OnSaveListener {
+        public void onActivitySave(Activity activity);
     }
+
+    public ActivityEditFragment() {}
 
     public static ActivityEditFragment newInstance(String activityId) {
         ActivityEditFragment f = new ActivityEditFragment();
@@ -75,6 +80,16 @@ public class ActivityEditFragment extends DialogFragment {
 
     public static ActivityEditFragment newInstance() {
         return new ActivityEditFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnSaveListener){
+            listener = (OnSaveListener) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement ActivityEditFragment.OnSaveListener");
+        }
     }
 
     @NonNull
@@ -137,6 +152,7 @@ public class ActivityEditFragment extends DialogFragment {
         activity.setUser(currentUser);
         try {
             activity.saveModel();
+            listener.onActivitySave(activity);
         } catch (ModelException e) {
             e.printStackTrace();
         }

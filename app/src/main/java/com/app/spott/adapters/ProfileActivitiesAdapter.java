@@ -1,5 +1,8 @@
 package com.app.spott.adapters;
 
+import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
+import com.app.spott.fragments.ActivityEditFragment;
 import com.app.spott.models.Activity;
 
 import java.util.List;
@@ -15,23 +19,44 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileActivitiesAdapter extends RecyclerView.Adapter {
+public class ProfileActivitiesAdapter extends RecyclerView.Adapter implements ActivityEditFragment.OnSaveListener {
 
     private List<Activity> activities;
+    private Context mContext;
+    private int currentEditPosition = -1;
 
-    public ProfileActivitiesAdapter(List<Activity> activities) {
+    public ProfileActivitiesAdapter(Context context, List<Activity> activities) {
         this.activities = activities;
+        this.mContext = context;
     }
 
-    public void addActivities(List<Activity> activities){
+    public void addActivities(List<Activity> activities) {
         int curSize = this.getItemCount();
         this.activities.addAll(activities);
         notifyItemRangeInserted(curSize, this.getItemCount() - 1);
     }
 
-    public void addActivity(Activity activity){
+    public void addActivity(Activity activity) {
         this.activities.add(activity);
         notifyItemInserted(this.getItemCount() - 1);
+    }
+
+    private void setCurrentEditPosition(int pos){
+        this.currentEditPosition = pos;
+    }
+
+    private void resetCurrentEditPosition(){
+        this.currentEditPosition = -1;
+    }
+
+    public void updateActivity(Activity activity){
+        if (currentEditPosition >= 0){
+            this.activities.add(currentEditPosition, activity);
+            notifyItemChanged(currentEditPosition);
+            resetCurrentEditPosition();
+        } else {
+            addActivity(activity);
+        }
     }
 
     @Override
@@ -57,7 +82,12 @@ public class ProfileActivitiesAdapter extends RecyclerView.Adapter {
         return this.activities.size();
     }
 
-    public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    @Override
+    public void onActivitySave(Activity activity) {
+        //get index of item to be updated
+    }
+
+    public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.ivActivityIcon)
         ImageView ivActivityIcon;
@@ -79,7 +109,11 @@ public class ProfileActivitiesAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-
+            setCurrentEditPosition(getLayoutPosition());
+            Activity activity = activities.get(currentEditPosition);
+            FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
+            ActivityEditFragment activityEditFragment = ActivityEditFragment.newInstance(activity.getObjectId());
+            activityEditFragment.show(fm, "tag");
         }
     }
 }
