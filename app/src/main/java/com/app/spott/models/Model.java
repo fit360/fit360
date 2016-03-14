@@ -14,7 +14,7 @@ public abstract class Model extends ParseObject {
 
     private static String objectId = "_id";
 
-    public void saveModel() throws ModelException, ParseException {
+    public void saveModel() throws ModelException {
         this.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
