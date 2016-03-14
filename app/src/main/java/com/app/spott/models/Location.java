@@ -56,21 +56,21 @@ public class Location extends Model {
         put(PLACE_ID, placeId);
     }
 
-    public void getNearByLocations(FindCallback<Location> findCallback) throws ParseException {
+    public void getNearByLocations(FindCallback<Location> findCallback) {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
         query.whereNear(POINT, getPoint());
         query.setLimit(30);
         query.findInBackground(findCallback);
     }
 
-    public static void getByPlaceId(String placeId, GetCallback<Location> getCallback) throws ParseException {
+    public static void getByPlaceId(String placeId, GetCallback<Location> getCallback) {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);
         query.whereEqualTo(PLACE_ID, placeId);
         query.getFirstInBackground(getCallback);
     }
 
     @Override
-    public void saveModel() throws ModelException, ParseException {
+    public void saveModel() throws ModelException{
         if (this.getPlaceId() == null) {
             throw new LocationMissingPlaceId();
         }

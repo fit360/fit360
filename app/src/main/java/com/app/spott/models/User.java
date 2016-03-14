@@ -1,10 +1,8 @@
 package com.app.spott.models;
 
-import com.app.spott.exceptions.ModelException;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -81,12 +79,6 @@ public class User extends Model {
         query.whereEqualTo(OWNER, owner);
         query.getFirstInBackground(getCallback);
     }
-
-    @Override
-    public void saveModel() throws ModelException, ParseException {
-        super.saveModel();
-    }
-
 
     public void getChosenAcitivities(FindCallback<Activity> findCallback){
         ParseQuery<Activity> parseQuery = ParseQuery.getQuery(Activity.class);
