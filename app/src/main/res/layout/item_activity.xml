@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:padding="8dp">
 
     <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfilePicture"
@@ -78,4 +78,19 @@
         android:layout_marginStart="4dp"
         android:text="frequency"/>
 
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvActivity"
+        android:layout_alignLeft="@id/tvActivity"
+        android:text="Location"/>
+
+    <ImageView
+        android:id="@+id/ivIconActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_fitness_default"/>
 </RelativeLayout>
