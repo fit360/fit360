@@ -256,26 +256,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    public void updateMapAndUserList(final LatLng latLng){
-        try {
-            Activity.getActivitiesAroundLatLng(latLng.latitude, latLng.longitude, new FindCallback<Activity>() {
-                @Override
-                public void done(List<Activity> activities, ParseException e) {
-                    mActivities.clear();
-                    if (activities != null && !activities.isEmpty()) {
-                        mActivities.addAll(activities);
-                        filterActivities();
-                        slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    } else {
-                        slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                    }
-                    moveMapToLocation(latLng);
+    public void updateMapAndUserList(final LatLng latLng) {
+        Activity.getActivitiesAroundLatLng(latLng.latitude, latLng.longitude, new FindCallback<Activity>() {
+            @Override
+            public void done(List<Activity> activities, ParseException e) {
+                mActivities.clear();
+                if (activities != null && !activities.isEmpty()) {
+                    mActivities.addAll(activities);
+                    filterActivities();
+                    slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                } else {
+                    slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                 }
-            });
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        }
+                moveMapToLocation(latLng);
+            }
+        });
     }
 
     public void updateUsingChosenActivitiesFallBackCurrentLoc(final LatLng latLng) {
@@ -380,7 +375,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 User user = activity.getUser();
                 String profilePicUrl = user.getProfileImageUrl();
-                String userName = String.format("%s %s", user.getFirstName(), user.getLastName());;
+                String userName = String.format("%s %s", user.getFirstName(), user.getLastName());
+                ;
                 String age = String.valueOf(user.getAge());
                 String gender = user.getGender().getName();
                 String activityName = activityType.getName();
