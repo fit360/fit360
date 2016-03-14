@@ -70,7 +70,7 @@ public class Location extends Model {
     }
 
     @Override
-    public void saveModel() throws ModelException{
+    public void saveModel() throws ModelException {
         if (this.getPlaceId() == null) {
             throw new LocationMissingPlaceId();
         }
