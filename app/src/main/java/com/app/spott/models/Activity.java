@@ -36,27 +36,27 @@ public class Activity extends Model {
     }
 
     public ActivityType getActivityType() {
-        return ActivityType.getActivityType(getString(ACTIVITY_TYPE));
+        return ActivityType.valueOf(getString(ACTIVITY_TYPE));
     }
 
     public void setActivityType(ActivityType activityType) {
-        put(ACTIVITY_TYPE, activityType.getName());
+        put(ACTIVITY_TYPE, activityType.toString());
     }
 
     public Time getTime() {
-        return Time.getTime(getString(TIME));
+        return Time.valueOf(getString(TIME));
     }
 
     public void setTime(Time time) {
-        put(TIME, time.getName());
+        put(TIME, time.toString());
     }
 
     public Frequency getFrequency() {
-        return Frequency.getFrequency(getString(FREQUENCY));
+        return Frequency.valueOf(getString(FREQUENCY));
     }
 
     public void setFrequency(Frequency f) {
-        put(FREQUENCY, f.getName());
+        put(FREQUENCY, f.toString());
     }
 
     public Location getLocation(){
@@ -98,7 +98,7 @@ public class Activity extends Model {
     }
 
     @Override
-    public void saveModel() throws ModelException, ParseException {
+    public void saveModel() throws ModelException{
         if (this.getActivityType() == null || this.getLocation() == null || this.getUser() == null)
             throw new ActivityModelException();
 
