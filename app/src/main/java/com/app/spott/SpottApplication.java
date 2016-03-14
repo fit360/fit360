@@ -2,6 +2,9 @@ package com.app.spott;
 
 import android.app.Application;
 
+import com.app.spott.models.Activity;
+import com.app.spott.models.Location;
+import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -21,6 +24,9 @@ public class SpottApplication extends Application {
         Parse.enableLocalDatastore(this);
 //        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         ParseObject.registerSubclass(User.class);
+        ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(Activity.class);
+        ParseObject.registerSubclass(Location.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(PARSE_APPLICATION_ID)

@@ -10,11 +10,10 @@ import android.widget.TextView;
 
 import com.app.spott.R;
 import com.app.spott.models.Post;
+import com.app.spott.models.User;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by aparnajain on 3/10/16.
@@ -43,23 +42,36 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(PostsAdapter.ViewHolder holder, int position) {
         Post post = mPosts.get(position);
+        User user = post.getUser();
+        if (user != null){
+            System.out.println(user.getProfileImageUrl());
+            Glide.with(holder.context).load(user.getProfileImageUrl()).centerCrop().into(holder.ivProfilePic);
+        }
         holder.tvCaption.setText(post.getBody());
+        Glide.with(holder.context).load(post.getImageUrl()).centerCrop().into(holder.ivPhoto);
+
     }
 
     @Override
     public int getItemCount() {
+        System.out.println("mPosts size" + String.valueOf(mPosts.size()));
         return mPosts.size();
     }
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @Bind(R.id.tvUserName) TextView tvUserName;
-        @Bind(R.id.tvCaption) TextView tvCaption;
-        @Bind(R.id.ivPhoto) ImageView ivPhoto;
+//        @Bind(R.id.tvUserName) TextView tvUserName;
+        TextView tvCaption;
+        ImageView ivPhoto;
+        ImageView ivProfilePic;
+//        @Bind(R.id.ivPhoto) ImageView ivPhoto;
         private Context context;
 
         public ViewHolder(Context context, View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+//          ButterKnife.bind(this, itemView);
+            tvCaption = (TextView)itemView.findViewById(R.id.tvCaption);
+            ivPhoto = (ImageView)itemView.findViewById(R.id.ivPhoto);
+            ivProfilePic = (ImageView)itemView.findViewById(R.id.ivProfilePic);
             // Store the context
             this.context = context;
             // Attach a click listener to the entire row view
@@ -70,5 +82,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         @Override
         public void onClick(View view) {
         }
+    }
+    public void addAll(ArrayList<Post> posts) {
+        mPosts.addAll(posts);
     }
 }
