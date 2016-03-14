@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.app.spott.R;
 import com.app.spott.models.Activity;
+import com.app.spott.models.ActivityType;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -52,6 +53,12 @@ public class ActivitiesListViewAdapter extends ArrayAdapter<Activity> {
         @Bind(R.id.tvFrequency)
         TextView tvFrequency;
 
+        @Bind(R.id.tvLocation)
+        TextView tvLocation;
+
+        @Bind(R.id.ivIconActivity)
+        ImageView ivIconActivity;
+
         public ViewHolder(View view){
             ButterKnife.bind(this, view);
         }
@@ -75,8 +82,7 @@ public class ActivitiesListViewAdapter extends ArrayAdapter<Activity> {
         try {
 
             viewHolder.ivProfilePicture.setImageResource(0);
-            String url = "https://c2.staticflickr.com/2/1489/25240204189_a8b13f66d5_q_d.jpg";
-            Glide.with(mContext).load(url).error(R.drawable.drawable_placeholder).placeholder(R.drawable.drawable_placeholder).dontAnimate().into(viewHolder.ivProfilePicture);
+            Glide.with(mContext).load(activity.getUser().getProfileImageUrl()).error(R.drawable.drawable_placeholder).placeholder(R.drawable.drawable_placeholder).dontAnimate().into(viewHolder.ivProfilePicture);
             String text = String.format("%s %s", activity.getUser().getFirstName(), activity.getUser().getLastName());
             viewHolder.tvUserName.setText(text);
             viewHolder.tvAge.setText(String.valueOf(activity.getUser().getAge()));
@@ -84,6 +90,9 @@ public class ActivitiesListViewAdapter extends ArrayAdapter<Activity> {
             viewHolder.tvActivity.setText(activity.getActivityType().getName());
             viewHolder.tvTime.setText(activity.getTime().getName());
             viewHolder.tvFrequency.setText(activity.getFrequency().getName());
+            viewHolder.tvLocation.setText(activity.getLocation().getAddress());
+            ActivityType activityType = activity.getActivityType();
+            viewHolder.ivIconActivity.setImageResource(activityType.getIcon());
         } catch(Exception e){
             e.printStackTrace();
         }
