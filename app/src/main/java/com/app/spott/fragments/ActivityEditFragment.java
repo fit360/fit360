@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,10 +66,11 @@ public class ActivityEditFragment extends DialogFragment {
     private OnSaveListener listener;
 
     public interface OnSaveListener {
-        public void onActivitySave(Activity activity);
+        void onActivitySave(Activity activity);
     }
 
-    public ActivityEditFragment() {}
+    public ActivityEditFragment() {
+    }
 
     public static ActivityEditFragment newInstance(String activityId) {
         ActivityEditFragment f = new ActivityEditFragment();
@@ -85,8 +87,9 @@ public class ActivityEditFragment extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnSaveListener){
-            listener = (OnSaveListener) context;
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragProfileActivities);
+        if (fragment instanceof OnSaveListener) {
+            listener = (OnSaveListener) fragment;
         } else {
             throw new ClassCastException(context.toString() + " must implement ActivityEditFragment.OnSaveListener");
         }
@@ -124,7 +127,7 @@ public class ActivityEditFragment extends DialogFragment {
         autoActivity.setAdapter(activityTypeAdapter);
         autoActivity.setThreshold(1);
 
-        if (args.getString(ACTIVITY_ID) != null)
+        if ((args != null) && args.getString(ACTIVITY_ID) != null)
             updateViews(args.getString(ACTIVITY_ID));
         else
             activity = new Activity();
@@ -148,11 +151,12 @@ public class ActivityEditFragment extends DialogFragment {
         activity.setLocation(getRandomLocation());
         activity.setFrequency((Frequency) spinnerFrequency.getSelectedItem());
         activity.setTime((Time) spinnerTime.getSelectedItem());
-        activity.setActivityType(activityTypeAdapter.getItem(autoActivity.getListSelection()));
+        activity.setActivityType(activityTypeAdapter.getItem(0));
         activity.setUser(currentUser);
         try {
             activity.saveModel();
             listener.onActivitySave(activity);
+            onDestroyView();
         } catch (ModelException e) {
             e.printStackTrace();
         }

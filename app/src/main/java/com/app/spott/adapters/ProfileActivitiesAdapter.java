@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileActivitiesAdapter extends RecyclerView.Adapter implements ActivityEditFragment.OnSaveListener {
+public class ProfileActivitiesAdapter extends RecyclerView.Adapter {
 
     private List<Activity> activities;
     private Context mContext;
@@ -80,11 +80,6 @@ public class ProfileActivitiesAdapter extends RecyclerView.Adapter implements Ac
     @Override
     public int getItemCount() {
         return this.activities.size();
-    }
-
-    @Override
-    public void onActivitySave(Activity activity) {
-        //get index of item to be updated
     }
 
     public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
