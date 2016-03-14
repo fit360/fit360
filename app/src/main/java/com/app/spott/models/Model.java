@@ -13,7 +13,7 @@ public abstract class Model extends ParseObject {
 
     public abstract String getLogTag();
 
-    private static String objectId = "_id";
+    public static String objectId = "_id";
 
     public void saveModel() throws ModelException {
         this.saveInBackground(new SaveCallback() {
