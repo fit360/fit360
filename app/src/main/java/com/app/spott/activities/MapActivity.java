@@ -272,7 +272,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     moveMapToLocation(latLng);
                 }
             });
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             slidingPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
