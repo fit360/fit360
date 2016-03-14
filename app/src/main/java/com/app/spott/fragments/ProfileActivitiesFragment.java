@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileActivitiesFragment extends Fragment {
+public class ProfileActivitiesFragment extends Fragment implements ActivityEditFragment.OnSaveListener {
 
     private ProfileActivitiesAdapter activitiesAdapter;
 
@@ -34,10 +34,18 @@ public class ProfileActivitiesFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        activitiesAdapter = new ProfileActivitiesAdapter(new ArrayList<Activity>());
+        activitiesAdapter = new ProfileActivitiesAdapter(getContext(), new ArrayList<Activity>());
         rvProfileActivities.setAdapter(activitiesAdapter);
         rvProfileActivities.addItemDecoration(
                 new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         rvProfileActivities.setLayoutManager(layoutManager);
+
+
+    }
+
+    @Override
+    public void onActivitySave(Activity activity) {
+        //add/update this activity in adapter
+        activitiesAdapter.updateActivity(activity);
     }
 }
