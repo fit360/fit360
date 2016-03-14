@@ -16,4 +16,5 @@
         app:theme="@style/ThemeOverlay.AppCompat.Light" />
 
     <include layout="@layout/content_profile" />
+
 </android.support.design.widget.CoordinatorLayout>
