@@ -12,9 +12,6 @@ import com.app.spott.models.User;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-/**
- * Created by aparna on 3/6/16.
- */
 public class ProfileActivity extends AppCompatActivity implements ProfileFragment {
 
     private User user;
