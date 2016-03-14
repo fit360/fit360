@@ -25,7 +25,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
 
         Intent intent = getIntent();
         if (intent.hasExtra(MapActivity.INTENT_USER_ID)) {
-            setUser(intent.getStringExtra(MapActivity.INTENT_USER_ID));
+//            setUser(intent.getStringExtra(MapActivity.INTENT_USER_ID));
+            setUserOnUIThread(intent.getStringExtra(MapActivity.INTENT_USER_ID));
             isLoggedInUser = false;
         } else {
             user = app.getCurrentUser();
@@ -58,5 +59,13 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
                     e.printStackTrace();
             }
         });
+    }
+
+    public void setUserOnUIThread(String user_id){
+        try {
+            user = User.findUserOnUIThread(user_id);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }
