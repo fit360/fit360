@@ -379,13 +379,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         BitmapDescriptorFactory.fromResource(icon);
 
                 User user = activity.getUser();
-                //TODO user profilepic url
-                String profilePicUrl =  "https://c2.staticflickr.com/2/1489/25240204189_a8b13f66d5_q_d.jpg";
-                String text = String.format("%s %s", user.getFirstName(), user.getLastName());
-                String userName = text;
+                String profilePicUrl = user.getProfileImageUrl();
+                String userName = String.format("%s %s", user.getFirstName(), user.getLastName());;
                 String age = String.valueOf(user.getAge());
+                String gender = user.getGender().getName();
+                String activityName = activityType.getName();
+                String time = activity.getTime().getName();
+                String frequency = activity.getFrequency().getName();
 
-                String snippet = String.format("%s;%s;%s", profilePicUrl, userName, age);
+                String snippet = String.format("%s;%s;%s;%s;%s;%s;%s", profilePicUrl, userName, age, gender, activityName, time, frequency);
                 LatLng latLng = new LatLng(activity.getLocation().getPoint().getLatitude(), activity.getLocation().getPoint().getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng)
                         .snippet(snippet)
