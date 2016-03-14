@@ -4,7 +4,6 @@ import com.app.spott.exceptions.ModelException;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -83,7 +82,7 @@ public class User extends Model {
     }
 
     @Override
-    public void saveModel() throws ModelException, ParseException {
+    public void saveModel() throws ModelException {
         super.saveModel();
     }
 

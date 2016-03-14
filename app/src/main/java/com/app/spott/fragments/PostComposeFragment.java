@@ -99,9 +99,8 @@ public class PostComposeFragment extends Fragment {
                                 post.saveModel();
                             } catch (ModelException e1) {
                                 e1.printStackTrace();
-                            } catch (ParseException e1) {
-                                e1.printStackTrace();
                             }
+
                             Intent intent = new Intent(mContext, CommunityFeedActivity.class);
                             mContext.startActivity(intent);
                         }
