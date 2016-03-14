@@ -58,6 +58,10 @@ public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
             Glide.with(mContext).load(contentArray[0]).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivProfilePicture);
             tvUserName.setText(contentArray[1]);
             tvAge.setText(contentArray[2]);
+            tvGender.setText(contentArray[3]);
+            tvActivity.setText(contentArray[4]);
+            tvTime.setText(contentArray[5]);
+            tvFrequency.setText(contentArray[6]);
         }
 
         return view;
