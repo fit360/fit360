@@ -51,7 +51,7 @@ public class ProfileActivitiesAdapter extends RecyclerView.Adapter {
 
     public void updateActivity(Activity activity){
         if (currentEditPosition >= 0){
-            this.activities.add(currentEditPosition, activity);
+            this.activities.set(currentEditPosition, activity);
             notifyItemChanged(currentEditPosition);
             resetCurrentEditPosition();
         } else {
