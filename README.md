@@ -2,14 +2,12 @@
 Workout buddy finder
 
 ####Required user stories-
-###Home Page
-- [x] The user can enter daily tracking items like water, activity etc.
-- [x] They can use the camera button to upload pictures to the community/personal feed
 
 ###Profile Page
 - [x] User create a profile and enter basic information like stats and bio.
 - [x] User can view a list of their friends connected through this app
 - [x] User can view their own feed.
+
 
 ###Map Page
 - [x] The user can see nearby friends or other people working on similar activities
@@ -17,6 +15,7 @@ Workout buddy finder
 
 ###Community Page
 - [x] The user can browse through the community feed to get inspiration(before and after pictures) and ideas about meal prep etc.
+- [x] User can easily create before/after pics and upload it to the community page.
 
 ####Optionals
 * [ ] The user can connect with their friends and exchange messages on this page.
