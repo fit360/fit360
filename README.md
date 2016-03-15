@@ -19,11 +19,11 @@ Workout buddy finder
 - [x] The user can browse through the community feed to get inspiration(before and after pictures) and ideas about meal prep etc.
 
 ####Optionals
-- [] The user can connect with their friends and exchange messages on this page.
-- [] Onboarding screen to enter personalized data.
-- [] Show different types of feeds for different users(using a/b testing)
+* [ ] The user can connect with their friends and exchange messages on this page.
+* [ ] Onboarding screen to enter personalized data.
+* [ ] Show different types of feeds for different users(using a/b testing)
 
-####Gif- Milestone 1
+####Gif- Milestone 2
 ![Alt text](https://github.com/fit360/spott/blob/master/milestone2.gif)
 
 ####Preview-
