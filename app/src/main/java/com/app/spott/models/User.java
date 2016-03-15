@@ -35,6 +35,7 @@ public class User extends Model {
     }
 
     public String getLastName(){
+
         return getString(LAST_NAME);
     }
 
