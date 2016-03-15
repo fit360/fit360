@@ -53,7 +53,8 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainActivity"/>l
         <activity
             android:name=".activities.CommunityFeedActivity"
             android:label="@string/title_activity_community_feed"
