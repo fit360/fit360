@@ -68,17 +68,19 @@ public class MainActivity extends AppCompatActivity {
         }
         return user;
     }
-    private Post randomPost(){
+
+    private Post randomPost() {
         Post post = new Post();
         post.setBody("We're having so much fun!");
         post.setImageUrl("http://www.imagesource.com/Doc/IS0/Media/TR16/a/5/d/c/38YDP0062RMG.jpg");
         try {
             post.save();
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return post;
     }
+
     private User setupAdil() {
         User user = new User();
         user.setFirstName("Adil");

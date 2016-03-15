@@ -2,8 +2,6 @@ package com.app.spott.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -100,7 +98,6 @@ public class ActivityEditFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return dialog;
     }
 
@@ -163,12 +160,12 @@ public class ActivityEditFragment extends DialogFragment {
     }
 
     private void updateViews(final String activityId) {
-        Activity.findOne(Activity.class, activityId, new GetCallback<Activity>() {
+        Activity.findOne(activityId, new GetCallback<Activity>() {
             @Override
             public void done(Activity object, ParseException e) {
-                if (e != null) {
+                if (e == null) {
                     activity = object;
-                    autoActivity.setSelection(activityTypeAdapter.getPosition(activity.getActivityType()));
+                    autoActivity.setText(activity.getActivityType().toString());
                     spinnerFrequency.setSelection(frequencyAdapter.getPosition(activity.getFrequency()));
                     spinnerTime.setSelection(timeAdapter.getPosition(activity.getTime()));
                     etLocation.setText(activity.getLocation().getNameAddress());
@@ -202,7 +199,7 @@ public class ActivityEditFragment extends DialogFragment {
         Location l3 = new Location();
         l3.setName("Tom Bates Regional Sports Complex");
         l3.setAddress("400-408 Gilman St, Berkeley, CA 94710");
-        l3.setPlaceId("ChIJz0vjqdd-hYARhwTxtueu-LA\n");
+        l3.setPlaceId("ChIJz0vjqdd-hYARhwTxtueu-LA");
         l3.setPoint(new ParseGeoPoint(37.8730837, -122.3103494));
 
         try {
