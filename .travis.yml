@@ -12,6 +12,4 @@ android:
     - extra-android-m2repository
     
     - sys-img-armeabi-v7a-android-19
-    
-script:
-   - ./gradlew build connectedCheck
+    - sys-img-x86-android-17
