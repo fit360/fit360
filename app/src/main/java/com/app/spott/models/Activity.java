@@ -3,6 +3,7 @@ package com.app.spott.models;
 import com.app.spott.exceptions.ActivityModelException;
 import com.app.spott.exceptions.ModelException;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -67,12 +68,15 @@ public class Activity extends Model {
         put(LOCATION, loc);
     }
 
+
+
     private static ParseQuery<Activity> getQuery(){
         ParseQuery<Activity> q = ParseQuery.getQuery(Activity.class);
         q.include(LOCATION);
         q.include(USER);
         return q;
     }
+
     public void getMatchedActivities(final FindCallback<Activity> findCallback) {
 //        maybe use innerquery for optimization
         getLocation().getNearByLocations(new FindCallback<Location>() {
@@ -95,6 +99,12 @@ public class Activity extends Model {
     public static void getAll(FindCallback<Activity> findCallback) {
         query = getQuery();
         query.findInBackground(findCallback);
+    }
+
+    public static void findOne(String id, GetCallback getCallback){
+        query = getQuery();
+        query.whereEqualTo(objectId, id);
+        query.getFirstInBackground(getCallback);
     }
 
     @Override

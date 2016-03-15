@@ -3,6 +3,7 @@ package com.app.spott.models;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -87,6 +88,12 @@ public class User extends Model {
         parseQuery.include(Activity.USER);
         parseQuery.include(Activity.LOCATION);
         parseQuery.findInBackground(findCallback);
+    }
+
+    public static User findUserOnUIThread(String id) throws ParseException {
+        query = ParseQuery.getQuery(User.class);
+        query.whereEqualTo(objectId, id);
+        return query.getFirst();
     }
 
 }
