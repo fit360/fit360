@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fit360/spott.svg?branch=master)](https://travis-ci.org/fit360/spott)
+
 # spott
 Workout buddy finder
 
