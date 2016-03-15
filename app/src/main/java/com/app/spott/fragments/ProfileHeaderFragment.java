@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
 import com.app.spott.interfaces.ProfileFragment;
 import com.app.spott.models.User;
+import com.bumptech.glide.Glide;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +24,8 @@ public class ProfileHeaderFragment extends Fragment {
     @Bind(R.id.tvGenderAge)
     TextView tvGenderAge;
 
+    @Bind(R.id.ivProfilePicture)
+    ImageView ivProfilePicture;
     private User user;
     private boolean isLoggedInUser;
 
@@ -38,6 +42,8 @@ public class ProfileHeaderFragment extends Fragment {
 
         tvUserName.setText(user.getFirstName() + " " + user.getLastName());
         tvGenderAge.setText(user.getGender().getName() + ", " + user.getAge());
+        Glide.with(this.getActivity()).load(user.getProfileImageUrl()).centerCrop().into(ivProfilePicture);
+
     }
 
     @Override
