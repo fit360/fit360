@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 if (e == null) {
                     app.setCurrentUser(user);
                 } else {
-                    app.setCurrentUser(setupNewUser());
+                    app.setCurrentUser(setupAdil());
                 }
             }
         });
