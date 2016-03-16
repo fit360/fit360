@@ -20,7 +20,6 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -64,23 +63,21 @@ public class PostImageCaptureFragment extends Fragment {
     @Bind(R.id.ivCaptureImage2)
     ImageView ivCapturedImage2;
 
-    @Bind(R.id.btnFull)
-    Button btnFull;
+    @Bind(R.id.ivCameraFullMode)
+    ImageView ivCameraFullMode;
 
-    @Bind(R.id.btnSplit)
-    Button btnSplit;
+    @Bind(R.id.ivCameraSplitMode)
+    ImageView ivCameraSpit;
 
-    @Bind(R.id.btnGallery)
-    Button btnGallery;
+    @Bind(R.id.ivCameraGallery)
+    ImageView ivCameraGallery;
 
-    @Bind(R.id.btnTakePicture)
-    Button btnTakePicture;
+    @Bind(R.id.ivCameraClick)
+    ImageView ivCameraClick;
 
-    @Bind(R.id.btnClear)
-    Button btnClear;
+    @Bind(R.id.ivCameraClear)
+    ImageView ivCameraClear;
 
-    @Bind(R.id.ivTest)
-    ImageView ivTest;
 
     private ImageSurfaceView mImageSurfaceView1;
     private ImageSurfaceView mImageSurfaceView2;
@@ -132,14 +129,14 @@ public class PostImageCaptureFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        btnTakePicture.setOnClickListener(new View.OnClickListener() {
+        ivCameraClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 camera.takePicture(null, null, pictureCallback);
             }
         });
 
-        btnFull.setOnClickListener(new View.OnClickListener() {
+        ivCameraFullMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PercentRelativeLayout.LayoutParams layoutParams = (PercentRelativeLayout.LayoutParams) cameraPreviewLayout1.getLayoutParams();
@@ -151,7 +148,7 @@ public class PostImageCaptureFragment extends Fragment {
             }
         });
 
-        btnSplit.setOnClickListener(new View.OnClickListener() {
+        ivCameraSpit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PercentRelativeLayout.LayoutParams layoutParams = (PercentRelativeLayout.LayoutParams) cameraPreviewLayout1.getLayoutParams();
@@ -193,14 +190,14 @@ public class PostImageCaptureFragment extends Fragment {
             }
         });
 
-        btnGallery.setOnClickListener(new View.OnClickListener() {
+        ivCameraGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onPickPhoto();
             }
         });
 
-        btnClear.setOnClickListener(new View.OnClickListener() {
+        ivCameraClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clear();
@@ -309,8 +306,8 @@ public class PostImageCaptureFragment extends Fragment {
         if (mMode == MODE_FULL) {
             if (ivCapturedImage1.getDrawable() != null) {
                 mFinalBitmap = mCapturedBitmap1;
-                btnTakePicture.setText("Next");
-                btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                //ivCameraClick.setText("Next");
+                ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         saveImage(mFinalBitmap, FINAL_IMAGE_NAME);
@@ -318,8 +315,8 @@ public class PostImageCaptureFragment extends Fragment {
                     }
                 });
             } else {
-                btnTakePicture.setText("Click");
-                btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                //ivCameraClick.setText("Click");
+                ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         camera.takePicture(null, null, pictureCallback);
@@ -329,8 +326,8 @@ public class PostImageCaptureFragment extends Fragment {
         } else {
             if (ivCapturedImage1.getDrawable() != null && ivCapturedImage2.getDrawable() != null) {
                 mFinalBitmap = combineImages(mCapturedBitmap1, mCapturedBitmap2);
-                btnTakePicture.setText("Next");
-                btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                //ivCameraClick.setText("Next");
+                ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         saveImage(mFinalBitmap, FINAL_IMAGE_NAME);
@@ -338,8 +335,8 @@ public class PostImageCaptureFragment extends Fragment {
                     }
                 });
             } else {
-                btnTakePicture.setText("Click");
-                btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                //ivCameraClick.setText("Click");
+                ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         camera.takePicture(null, null, pictureCallback);
@@ -374,8 +371,8 @@ public class PostImageCaptureFragment extends Fragment {
         cameraPreviewLayout1.requestLayout();
         cameraPreviewLayout2.setVisibility(View.GONE);
         ivCapturedImage1.setVisibility(View.GONE);
-        btnTakePicture.setText("Click");
-        btnTakePicture.setOnClickListener(new View.OnClickListener() {
+        //ivCameraClick.setText("Click");
+        ivCameraClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 camera.takePicture(null, null, pictureCallback);
