@@ -21,7 +21,7 @@ public enum Time {
     static {
         for(Time t: EnumSet.allOf(Time.class)){
             lookup.put(t.toString(), t);
-            readableNames.add(t.toString());
+            readableNames.add(t.getName());
         }
     }
 
