@@ -27,6 +27,10 @@ import com.app.spott.models.Frequency;
 import com.app.spott.models.Location;
 import com.app.spott.models.Time;
 import com.app.spott.models.User;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -123,6 +127,20 @@ public class ActivityEditFragment extends DialogFragment {
         activityTypeAdapter = new ArrayAdapter<ActivityType>(getActivity(), android.R.layout.select_dialog_item, ActivityType.values());
         autoActivity.setAdapter(activityTypeAdapter);
         autoActivity.setThreshold(1);
+
+//        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) ((FragmentActivity) getContext()).getSupportFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
+        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
+        f.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                etLocation.setText(place.getAddress());
+            }
+
+            @Override
+            public void onError(Status status) {
+                etLocation.setText(status.toString());
+            }
+        });
 
         if ((args != null) && args.getString(ACTIVITY_ID) != null)
             updateViews(args.getString(ACTIVITY_ID));
