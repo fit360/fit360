@@ -13,10 +13,10 @@
             android:id="@+id/tvTypeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activity Type" />
+            android:text="Workout Type" />
 
         <AutoCompleteTextView
-            android:id="@+id/autoActivity"
+            android:id="@+id/autoWorkout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -37,6 +37,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragmentLocationAutoComplete"
+        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="wrap_content"
