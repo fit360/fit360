@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.app.spott.R;
-import com.app.spott.adapters.ProfileActivitiesAdapter;
+import com.app.spott.adapters.ProfileWorkoutsAdapter;
 import com.app.spott.extensions.DividerItemDecoration;
 import com.app.spott.interfaces.ProfileFragment;
-import com.app.spott.models.Activity;
+import com.app.spott.models.Workout;
 import com.app.spott.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -27,9 +27,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileActivitiesFragment extends Fragment implements ActivityEditFragment.OnSaveListener {
+public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFragment.OnSaveListener {
 
-    private ProfileActivitiesAdapter activitiesAdapter;
+    private ProfileWorkoutsAdapter activitiesAdapter;
     private User user;
     private boolean isLoggedInUser;
 
@@ -41,22 +41,22 @@ public class ProfileActivitiesFragment extends Fragment implements ActivityEditF
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile_activities, parent, false);
+        return inflater.inflate(R.layout.fragment_profile_workouts, parent, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        activitiesAdapter = new ProfileActivitiesAdapter(getContext(), new ArrayList<Activity>());
+        activitiesAdapter = new ProfileWorkoutsAdapter(getContext(), new ArrayList<Workout>());
         rvProfileActivities.setAdapter(activitiesAdapter);
         rvProfileActivities.addItemDecoration(
                 new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         rvProfileActivities.setLayoutManager(layoutManager);
 
-        Activity.getForUser(user, new FindCallback<Activity>() {
+        Workout.getForUser(user, new FindCallback<Workout>() {
             @Override
-            public void done(List<Activity> objects, ParseException e) {
+            public void done(List<Workout> objects, ParseException e) {
                 activitiesAdapter.addActivities(objects);
             }
         });
@@ -82,14 +82,14 @@ public class ProfileActivitiesFragment extends Fragment implements ActivityEditF
     }
 
     @Override
-    public void onActivitySave(Activity activity) {
-        //add/update this activity in adapter
-        activitiesAdapter.updateActivity(activity);
+    public void onActivitySave(Workout workout) {
+        //add/update this workout in adapter
+        activitiesAdapter.updateActivity(workout);
     }
 
     public void addActivity() {
         FragmentManager fm = ((FragmentActivity) getContext()).getSupportFragmentManager();
-        ActivityEditFragment activityEditFragment = ActivityEditFragment.newInstance();
-        activityEditFragment.show(fm, "tag");
+        WorkoutEditFragment workoutEditFragment = WorkoutEditFragment.newInstance();
+        workoutEditFragment.show(fm, "tag");
     }
 }

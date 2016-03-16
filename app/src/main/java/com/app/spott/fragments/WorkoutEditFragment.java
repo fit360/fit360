@@ -21,8 +21,8 @@ import android.widget.Spinner;
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.exceptions.ModelException;
-import com.app.spott.models.Activity;
-import com.app.spott.models.ActivityType;
+import com.app.spott.models.Workout;
+import com.app.spott.models.WorkoutType;
 import com.app.spott.models.Frequency;
 import com.app.spott.models.Location;
 import com.app.spott.models.Time;
@@ -38,9 +38,9 @@ import com.parse.ParseGeoPoint;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ActivityEditFragment extends DialogFragment {
-    @Bind(R.id.autoActivity)
-    AutoCompleteTextView autoActivity;
+public class WorkoutEditFragment extends DialogFragment {
+    @Bind(R.id.autoWorkout)
+    AutoCompleteTextView autoWorkout;
 
     @Bind(R.id.etLocation)
     EditText etLocation;
@@ -57,43 +57,43 @@ public class ActivityEditFragment extends DialogFragment {
     @Bind(R.id.btnCancel)
     Button btnCancel;
 
-    private static final String ACTIVITY_ID = "activity_id";
-    private static final String TAG = ActivityEditFragment.class.getSimpleName();
+    private static final String WORKOUT_ID = "workout_id";
+    private static final String TAG = WorkoutEditFragment.class.getSimpleName();
 
-    private Activity activity;
+    private Workout workout;
     private ArrayAdapter<Time> timeAdapter;
     private ArrayAdapter<Frequency> frequencyAdapter;
-    private ArrayAdapter<ActivityType> activityTypeAdapter;
+    private ArrayAdapter<WorkoutType> workoutTypeAdapter;
     private User currentUser;
     private OnSaveListener listener;
 
     public interface OnSaveListener {
-        void onActivitySave(Activity activity);
+        void onActivitySave(Workout workout);
     }
 
-    public ActivityEditFragment() {
+    public WorkoutEditFragment() {
     }
 
-    public static ActivityEditFragment newInstance(String activityId) {
-        ActivityEditFragment f = new ActivityEditFragment();
+    public static WorkoutEditFragment newInstance(String workoutId) {
+        WorkoutEditFragment f = new WorkoutEditFragment();
         Bundle args = new Bundle();
-        args.putString(ACTIVITY_ID, activityId);
+        args.putString(WORKOUT_ID, workoutId);
         f.setArguments(args);
         return f;
     }
 
-    public static ActivityEditFragment newInstance() {
-        return new ActivityEditFragment();
+    public static WorkoutEditFragment newInstance() {
+        return new WorkoutEditFragment();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragProfileActivities);
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.fragProfileWorkouts);
         if (fragment instanceof OnSaveListener) {
             listener = (OnSaveListener) fragment;
         } else {
-            throw new ClassCastException(context.toString() + " must implement ActivityEditFragment.OnSaveListener");
+            throw new ClassCastException(context.toString() + " must implement WorkoutEditFragment.OnSaveListener");
         }
     }
 
@@ -108,7 +108,7 @@ public class ActivityEditFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_activity, container);
+        View view = inflater.inflate(R.layout.dialog_workout, container);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -124,9 +124,9 @@ public class ActivityEditFragment extends DialogFragment {
         spinnerTime.setAdapter(timeAdapter);
         frequencyAdapter = new ArrayAdapter<Frequency>(getActivity(), android.R.layout.simple_list_item_1, Frequency.values());
         spinnerFrequency.setAdapter(frequencyAdapter);
-        activityTypeAdapter = new ArrayAdapter<ActivityType>(getActivity(), android.R.layout.select_dialog_item, ActivityType.values());
-        autoActivity.setAdapter(activityTypeAdapter);
-        autoActivity.setThreshold(1);
+        workoutTypeAdapter = new ArrayAdapter<WorkoutType>(getActivity(), android.R.layout.select_dialog_item, WorkoutType.values());
+        autoWorkout.setAdapter(workoutTypeAdapter);
+        autoWorkout.setThreshold(1);
 
 //        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) ((FragmentActivity) getContext()).getSupportFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
         SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
@@ -142,15 +142,15 @@ public class ActivityEditFragment extends DialogFragment {
             }
         });
 
-        if ((args != null) && args.getString(ACTIVITY_ID) != null)
-            updateViews(args.getString(ACTIVITY_ID));
+        if ((args != null) && args.getString(WORKOUT_ID) != null)
+            updateViews(args.getString(WORKOUT_ID));
         else
-            activity = new Activity();
+            workout = new Workout();
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveActivity();
+                saveWorkout();
             }
         });
 
@@ -162,33 +162,33 @@ public class ActivityEditFragment extends DialogFragment {
         });
     }
 
-    private void saveActivity() {
-        activity.setLocation(getRandomLocation());
-        activity.setFrequency((Frequency) spinnerFrequency.getSelectedItem());
-        activity.setTime((Time) spinnerTime.getSelectedItem());
-        activity.setActivityType(activityTypeAdapter.getItem(0));
-        activity.setUser(currentUser);
+    private void saveWorkout() {
+        workout.setLocation(getRandomLocation());
+        workout.setFrequency((Frequency) spinnerFrequency.getSelectedItem());
+        workout.setTime((Time) spinnerTime.getSelectedItem());
+        workout.setWorkoutType(workoutTypeAdapter.getItem(0));
+        workout.setUser(currentUser);
         try {
-            activity.saveModel();
-            listener.onActivitySave(activity);
+            workout.saveModel();
+            listener.onActivitySave(workout);
             onDestroyView();
         } catch (ModelException e) {
             e.printStackTrace();
         }
     }
 
-    private void updateViews(final String activityId) {
-        Activity.findOne(activityId, new GetCallback<Activity>() {
+    private void updateViews(final String workoutId) {
+        Workout.findOne(workoutId, new GetCallback<Workout>() {
             @Override
-            public void done(Activity object, ParseException e) {
+            public void done(Workout object, ParseException e) {
                 if (e == null) {
-                    activity = object;
-                    autoActivity.setText(activity.getActivityType().toString());
-                    spinnerFrequency.setSelection(frequencyAdapter.getPosition(activity.getFrequency()));
-                    spinnerTime.setSelection(timeAdapter.getPosition(activity.getTime()));
-                    etLocation.setText(activity.getLocation().getNameAddress());
+                    workout = object;
+                    autoWorkout.setText(workout.getWorkoutType().toString());
+                    spinnerFrequency.setSelection(frequencyAdapter.getPosition(workout.getFrequency()));
+                    spinnerTime.setSelection(timeAdapter.getPosition(workout.getTime()));
+                    etLocation.setText(workout.getLocation().getNameAddress());
                 } else {
-                    Log.e(TAG, "Cannot retrieve activity: " + e.getMessage());
+                    Log.e(TAG, "Cannot retrieve workout: " + e.getMessage());
                 }
             }
         });
@@ -230,9 +230,9 @@ public class ActivityEditFragment extends DialogFragment {
 
         int r = ((int) Math.random()) % 3;
         switch (r) {
-            case 1:
+            case 0:
                 return l1;
-            case 2:
+            case 1:
                 return l2;
             default:
                 return l3;

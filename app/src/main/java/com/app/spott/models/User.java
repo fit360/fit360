@@ -82,12 +82,12 @@ public class User extends Model {
         query.getFirstInBackground(getCallback);
     }
 
-    public void getChosenAcitivities(FindCallback<Activity> findCallback){
-        ParseQuery<Activity> parseQuery = ParseQuery.getQuery(Activity.class);
-        parseQuery.whereEqualTo(Activity.USER, this);
+    public void getChosenAcitivities(FindCallback<Workout> findCallback){
+        ParseQuery<Workout> parseQuery = ParseQuery.getQuery(Workout.class);
+        parseQuery.whereEqualTo(Workout.USER, this);
         parseQuery.orderByAscending("createdAt");
-        parseQuery.include(Activity.USER);
-        parseQuery.include(Activity.LOCATION);
+        parseQuery.include(Workout.USER);
+        parseQuery.include(Workout.LOCATION);
         parseQuery.findInBackground(findCallback);
     }
 
