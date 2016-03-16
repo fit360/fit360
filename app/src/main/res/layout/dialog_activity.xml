@@ -38,6 +38,12 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <fragment
+        android:id="@+id/fragmentLocationAutoComplete"
+        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
