@@ -16,8 +16,8 @@
         android:layout_height="wrap_content"
         />
     <fragment
-        android:name="com.app.spott.fragments.ProfileActivitiesFragment"
-        android:id="@+id/fragProfileActivities"
+        android:name="com.app.spott.fragments.ProfileWorkoutsFragment"
+        android:id="@+id/fragProfileWorkouts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/fragProfileHeader"
