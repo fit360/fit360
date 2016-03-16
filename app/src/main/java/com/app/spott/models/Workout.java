@@ -1,6 +1,6 @@
 package com.app.spott.models;
 
-import com.app.spott.exceptions.ActivityModelException;
+import com.app.spott.exceptions.WorkoutModelException;
 import com.app.spott.exceptions.ModelException;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -11,17 +11,17 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
-@ParseClassName("Activity")
-public class Activity extends Model {
+@ParseClassName("Workout")
+public class Workout extends Model {
 
-    private static final String TAG = Activity.class.getSimpleName();
+    private static final String TAG = Workout.class.getSimpleName();
     public static final String USER = "user";
-    private static final String ACTIVITY_TYPE = "activity_type";
+    private static final String ACTIVITY_TYPE = "workout_type";
     private static final String TIME = "time";
     private static final String FREQUENCY = "frequency";
     public static final String LOCATION = "location";
 
-    private static ParseQuery<Activity> query;
+    private static ParseQuery<Workout> query;
 
     @Override
     public String getLogTag() {
@@ -36,12 +36,12 @@ public class Activity extends Model {
         put(USER, user);
     }
 
-    public ActivityType getActivityType() {
-        return ActivityType.valueOf(getString(ACTIVITY_TYPE));
+    public WorkoutType getWorkoutType() {
+        return WorkoutType.valueOf(getString(ACTIVITY_TYPE));
     }
 
-    public void setActivityType(ActivityType activityType) {
-        put(ACTIVITY_TYPE, activityType.toString());
+    public void setWorkoutType(WorkoutType workoutType) {
+        put(ACTIVITY_TYPE, workoutType.toString());
     }
 
     public Time getTime() {
@@ -70,14 +70,14 @@ public class Activity extends Model {
 
 
 
-    private static ParseQuery<Activity> getQuery(){
-        ParseQuery<Activity> q = ParseQuery.getQuery(Activity.class);
+    private static ParseQuery<Workout> getQuery(){
+        ParseQuery<Workout> q = ParseQuery.getQuery(Workout.class);
         q.include(LOCATION);
         q.include(USER);
         return q;
     }
 
-    public void getMatchedActivities(final FindCallback<Activity> findCallback) {
+    public void getMatchedWorkouts(final FindCallback<Workout> findCallback) {
 //        maybe use innerquery for optimization
         getLocation().getNearByLocations(new FindCallback<Location>() {
             @Override
@@ -90,13 +90,13 @@ public class Activity extends Model {
         });
     }
 
-    public static void getForUser(User user, FindCallback<Activity> findCallback) {
+    public static void getForUser(User user, FindCallback<Workout> findCallback) {
         query = getQuery();
         query.whereEqualTo(USER, user);
         query.findInBackground(findCallback);
     }
 
-    public static void getAll(FindCallback<Activity> findCallback) {
+    public static void getAll(FindCallback<Workout> findCallback) {
         query = getQuery();
         query.findInBackground(findCallback);
     }
@@ -109,18 +109,18 @@ public class Activity extends Model {
 
     @Override
     public void saveModel() throws ModelException {
-        if (this.getActivityType() == null || this.getLocation() == null || this.getUser() == null)
-            throw new ActivityModelException();
+        if (this.getWorkoutType() == null || this.getLocation() == null || this.getUser() == null)
+            throw new WorkoutModelException();
 
         this.getLocation().saveModel();
         super.saveModel();
     }
 
-    public static void getActivitiesAroundLatLng(double lat, double lng, FindCallback<Activity> findCallback) {
+    public static void getWorkoutsAroundLatLng(double lat, double lng, FindCallback<Workout> findCallback) {
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(lat, lng);
         ParseQuery<Location> locationParseQuery = ParseQuery.getQuery(Location.class);
         locationParseQuery.whereWithinKilometers(Location.POINT, parseGeoPoint, 1);
-        ParseQuery<Activity> activityParseQuery = getQuery();
+        ParseQuery<Workout> activityParseQuery = getQuery();
         activityParseQuery.whereMatchesQuery(LOCATION, locationParseQuery);
         activityParseQuery.findInBackground(findCallback);
     }

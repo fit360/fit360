@@ -2,7 +2,7 @@ package com.app.spott;
 
 import android.app.Application;
 
-import com.app.spott.models.Activity;
+import com.app.spott.models.Workout;
 import com.app.spott.models.Location;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
@@ -25,7 +25,7 @@ public class SpottApplication extends Application {
 //        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Post.class);
-        ParseObject.registerSubclass(Activity.class);
+        ParseObject.registerSubclass(Workout.class);
         ParseObject.registerSubclass(Location.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum ActivityType {
+public enum WorkoutType {
     ARM_WRESTLING("Arm wrestling", R.drawable.ic_arm_wrestling),
     BALLET("Ballet", R.drawable.ic_ballet),
     BASEBALL("Baseball", R.drawable.ic_baseball),
@@ -52,17 +52,17 @@ public enum ActivityType {
     private String value;
     private int icon;
 
-    private static final Map<String, ActivityType> lookup = new HashMap<>();
+    private static final Map<String, WorkoutType> lookup = new HashMap<>();
     private static final ArrayList<String> readableStrings = new ArrayList<>();
 
     static {
-        for(ActivityType activityType: EnumSet.allOf(ActivityType.class)) {
-            lookup.put(activityType.getName(), activityType);
-            readableStrings.add(activityType.getName());
+        for(WorkoutType workoutType : EnumSet.allOf(WorkoutType.class)) {
+            lookup.put(workoutType.getName(), workoutType);
+            readableStrings.add(workoutType.getName());
         }
     }
 
-    ActivityType(String value, int icon) {
+    WorkoutType(String value, int icon) {
         this.value = value;
         this.icon = icon;
     }
@@ -77,7 +77,7 @@ public enum ActivityType {
         return readableStrings;
     }
 
-    public static ActivityType getActivityType(String activityString){
+    public static WorkoutType getActivityType(String activityString){
         return lookup.get(activityString);
     }
 

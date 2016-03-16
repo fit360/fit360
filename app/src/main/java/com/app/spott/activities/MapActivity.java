@@ -16,10 +16,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.app.spott.R;
-import com.app.spott.adapters.ActivitiesListViewAdapter;
+import com.app.spott.adapters.WorkoutsListViewAdapter;
 import com.app.spott.adapters.CustomWindowAdapter;
-import com.app.spott.models.Activity;
-import com.app.spott.models.ActivityType;
+import com.app.spott.models.Workout;
+import com.app.spott.models.WorkoutType;
 import com.app.spott.models.Frequency;
 import com.app.spott.models.Time;
 import com.app.spott.models.User;
@@ -85,9 +85,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-    private ArrayList<com.app.spott.models.Activity> mActivities;
-    private ArrayList<com.app.spott.models.Activity> mFilteredActivities;
-    private ActivitiesListViewAdapter mActivitiesListViewAdapter;
+    private ArrayList<Workout> mActivities;
+    private ArrayList<Workout> mFilteredActivities;
+    private WorkoutsListViewAdapter mWorkoutsListViewAdapter;
     private LatLng mRefLatLng;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -109,7 +109,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Toast.makeText(this, "Sorry, could not load the map. Please try again later", Toast.LENGTH_LONG).show();
         }
 
-        List<String> activityTypes = ActivityType.getReadableStrings();
+        List<String> activityTypes = WorkoutType.getReadableStrings();
         activityTypes.add(0, "Activities");
         ArrayAdapter<String> activitiesAdapter = new ArrayAdapter<String>(this, R.layout.item_spinner, activityTypes);
         activitiesAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -146,14 +146,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mActivities = new ArrayList<>();
         mFilteredActivities = new ArrayList<>();
-        mActivitiesListViewAdapter = new ActivitiesListViewAdapter(this, mFilteredActivities);
-        lvActivities.setAdapter(mActivitiesListViewAdapter);
+        mWorkoutsListViewAdapter = new WorkoutsListViewAdapter(this, mFilteredActivities);
+        lvActivities.setAdapter(mWorkoutsListViewAdapter);
         slidingPanelLayout.setAnchorPoint(0.7f);
         lvActivities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Activity activity = mFilteredActivities.get(position);
-                User user = activity.getUser();
+                Workout workout = mFilteredActivities.get(position);
+                User user = workout.getUser();
                 Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
                 intent.putExtra(INTENT_USER_ID, user.getObjectId());
                 startActivity(intent);
@@ -257,9 +257,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void updateMapAndUserList(final LatLng latLng) {
-        Activity.getActivitiesAroundLatLng(latLng.latitude, latLng.longitude, new FindCallback<Activity>() {
+        Workout.getWorkoutsAroundLatLng(latLng.latitude, latLng.longitude, new FindCallback<Workout>() {
             @Override
-            public void done(List<Activity> activities, ParseException e) {
+            public void done(List<Workout> activities, ParseException e) {
                 mActivities.clear();
                 if (activities != null && !activities.isEmpty()) {
                     mActivities.addAll(activities);
@@ -278,14 +278,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void done(User user, ParseException e) {
                 if (user != null) {
-                    user.getChosenAcitivities(new FindCallback<Activity>() {
+                    user.getChosenAcitivities(new FindCallback<Workout>() {
                         @Override
-                        public void done(List<Activity> activities, ParseException e) {
+                        public void done(List<Workout> activities, ParseException e) {
                             LatLng finalLatLng = null;
                             if (activities != null && !activities.isEmpty()) {
-                                Activity activity = activities.get(0);
-                                double lat = activity.getLocation().getPoint().getLatitude();
-                                double lng = activity.getLocation().getPoint().getLongitude();
+                                Workout workout = activities.get(0);
+                                double lat = workout.getLocation().getPoint().getLatitude();
+                                double lng = workout.getLocation().getPoint().getLongitude();
                                 finalLatLng = new LatLng(lat, lng);
                             } else {
                                 finalLatLng = latLng;
@@ -300,7 +300,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void updateMapAndUserList() {
         showActivitesOnMap(mFilteredActivities);
-        mActivitiesListViewAdapter.notifyDataSetChanged();
+        mWorkoutsListViewAdapter.notifyDataSetChanged();
     }
 
 
@@ -340,51 +340,51 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void filterActivities() {
         mFilteredActivities.clear();
-        ActivityType activityType = ActivityType.values()[Math.max(0, spinnerActivities.getSelectedItemPosition() - 1)];
+        WorkoutType workoutType = WorkoutType.values()[Math.max(0, spinnerActivities.getSelectedItemPosition() - 1)];
         Time time = Time.values()[Math.max(0, spinnerTime.getSelectedItemPosition() - 1)];
         Frequency frequency = Frequency.values()[Math.max(0, spinnerFrequency.getSelectedItemPosition() - 1)];
 
-        for (Activity activity : mActivities) {
-            if (spinnerActivities.getSelectedItemPosition() != 0 && activity.getActivityType() != activityType)
+        for (Workout workout : mActivities) {
+            if (spinnerActivities.getSelectedItemPosition() != 0 && workout.getWorkoutType() != workoutType)
                 continue;
-            if (spinnerTime.getSelectedItemPosition() != 0 && activity.getTime() != time)
+            if (spinnerTime.getSelectedItemPosition() != 0 && workout.getTime() != time)
                 continue;
-            if (spinnerFrequency.getSelectedItemPosition() != 0 && activity.getFrequency() != frequency)
+            if (spinnerFrequency.getSelectedItemPosition() != 0 && workout.getFrequency() != frequency)
                 continue;
 
-            mFilteredActivities.add(activity);
+            mFilteredActivities.add(workout);
         }
         updateMapAndUserList();
     }
 
-    private void showActivitesOnMap(List<com.app.spott.models.Activity> activities) {
+    private void showActivitesOnMap(List<Workout> activities) {
         mMap.clear();
 
         if (activities != null) {
-            for (Activity activity : activities) {
-                ActivityType activityType = activity.getActivityType();
+            for (Workout workout : activities) {
+                WorkoutType workoutType = workout.getWorkoutType();
 
 
                 int icon = R.drawable.ic_fitness_default;
-                if (activityType != null) {
-                    icon = activityType.getIcon();
+                if (workoutType != null) {
+                    icon = workoutType.getIcon();
                 }
 
                 BitmapDescriptor marker =
                         BitmapDescriptorFactory.fromResource(icon);
 
-                User user = activity.getUser();
+                User user = workout.getUser();
                 String profilePicUrl = user.getProfileImageUrl();
                 String userName = String.format("%s %s", user.getFirstName(), user.getLastName());
                 ;
                 String age = String.valueOf(user.getAge());
                 String gender = user.getGender().getName();
-                String activityName = activityType.getName();
-                String time = activity.getTime().getName();
-                String frequency = activity.getFrequency().getName();
+                String activityName = workoutType.getName();
+                String time = workout.getTime().getName();
+                String frequency = workout.getFrequency().getName();
 
                 String snippet = String.format("%s;%s;%s;%s;%s;%s;%s", profilePicUrl, userName, age, gender, activityName, time, frequency);
-                LatLng latLng = new LatLng(activity.getLocation().getPoint().getLatitude(), activity.getLocation().getPoint().getLongitude());
+                LatLng latLng = new LatLng(workout.getLocation().getPoint().getLatitude(), workout.getLocation().getPoint().getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng)
                         .snippet(snippet)
                         .icon(marker));
