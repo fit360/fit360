@@ -4,6 +4,7 @@
     <string name="action_profile">Profile</string>
     <string name="action_community">Community</string>
     <string name="action_map">Map</string>
+    <string name="action_place_autocomplete">Search</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
