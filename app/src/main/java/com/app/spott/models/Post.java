@@ -10,6 +10,7 @@ public class Post extends Model {
     private static final String USER = "user";
     private static final String IMAGE_URL = "image_url";
     private static final String BODY = "body";
+    private static final String CREATED_AT = "createdAt";
 
     public Post() {
         super();
