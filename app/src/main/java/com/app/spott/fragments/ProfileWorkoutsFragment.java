@@ -15,7 +15,7 @@ import android.widget.Button;
 import com.app.spott.R;
 import com.app.spott.adapters.ProfileWorkoutsAdapter;
 import com.app.spott.extensions.DividerItemDecoration;
-import com.app.spott.interfaces.ProfileFragment;
+import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.Workout;
 import com.app.spott.models.User;
 import com.parse.FindCallback;
@@ -73,11 +73,11 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            ProfileFragment listener = (ProfileFragment) context;
+            ProfileFragmentListener listener = (ProfileFragmentListener) context;
             user = listener.getUser();
             isLoggedInUser = listener.isLoggedInUser();
         } catch (ClassCastException e){
-            throw new ClassCastException(context.toString() + " must implement ProfileFragment");
+            throw new ClassCastException(context.toString() + " must implement ProfileFragmentListener");
         }
     }
 

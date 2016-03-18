@@ -9,18 +9,17 @@ import android.support.v7.widget.Toolbar;
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.adapters.ProfileWorkoutsAdapter;
+import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.app.spott.models.Workout;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-import org.parceler.Parcels;
-
-public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener {
+public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener, ProfileFragmentListener {
 
     private User user;
     private boolean isLoggedInUser;
-    public static final String WORKOUT = "workout";
+    public static final String WORKOUT_ID_INTENT_KEY = "workout_id";
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
 
     @Override
@@ -47,10 +46,12 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
 
     }
 
+    @Override
     public User getUser() {
         return user;
     }
 
+    @Override
     public boolean isLoggedInUser() {
         return isLoggedInUser;
     }
@@ -79,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     public void editWorkout(Workout workout) {
 //        start activity for result
         Intent intent = new Intent(this, WorkoutEditActivity.class);
-        intent.putExtra(WORKOUT, Parcels.wrap(workout));
+        intent.putExtra(WORKOUT_ID_INTENT_KEY, workout.getObjectId());
         startActivityForResult(intent, WORKOUT_EDIT_REQUEST_CODE);
     }
 
@@ -87,6 +88,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == WORKOUT_EDIT_REQUEST_CODE){
             if (resultCode == Activity.RESULT_OK){
+                String workoutId = data.getStringExtra(WORKOUT_ID_INTENT_KEY);
 //                call update on profile workouts fragment list view
             }
         }
