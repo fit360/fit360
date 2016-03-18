@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.app.spott.models.Workout;
 import com.app.spott.models.Location;
+import com.app.spott.models.Message;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.parse.Parse;
@@ -27,6 +28,8 @@ public class SpottApplication extends Application {
         ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(Workout.class);
         ParseObject.registerSubclass(Location.class);
+        ParseObject.registerSubclass(Message.class);
+
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(PARSE_APPLICATION_ID)
