@@ -95,6 +95,20 @@ public class MainActivity extends AppCompatActivity {
         }
         return user;
     }
+    private User setupAJ() {
+        User user = new User();
+        user.setFirstName("A");
+        user.setAge(20);
+        user.setLastName("J");
+        user.setGender(Gender.FEMALE);
+        user.setOwner(ParseUser.getCurrentUser());
+        try {
+            user.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
     void login() {
@@ -133,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         } else if (id == R.id.action_community) {
             Intent i = new Intent(this, CommunityFeedActivity.class);
+            startActivity(i);
+        } else if (id == R.id.action_chat) {
+            Intent i = new Intent(this, ChatActivity.class);
             startActivity(i);
         }
 

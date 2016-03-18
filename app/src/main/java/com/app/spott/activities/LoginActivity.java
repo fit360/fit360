@@ -1,5 +1,6 @@
 package com.app.spott.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,9 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.app.spott.R;
+import com.app.spott.SpottApplication;
 import com.app.spott.models.User;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     @Bind(R.id.btnSignUp)
     Button btnSignUp;
+    private SpottApplication app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setupNewUser();
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -47,9 +52,11 @@ public class LoginActivity extends AppCompatActivity {
 //        user.setAge(25);
 //        user.setLastName("BAR");
 //        user.setGender(Gender.MALE);
-        user.setOwner(ParseUser.getCurrentUser());
+//        user.setOwner(ParseUser.getCurrentUser());
         try {
             user.save();
+            app = (SpottApplication) getApplicationContext();
+            app.setCurrentUser(user);
         } catch (ParseException e) {
             e.printStackTrace();
         }
