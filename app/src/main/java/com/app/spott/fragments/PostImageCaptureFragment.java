@@ -16,6 +16,7 @@ import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,9 @@ public class PostImageCaptureFragment extends Fragment {
 
     @Bind(R.id.ivCameraClear)
     ImageView ivCameraClear;
+
+    @Bind(R.id.ivIconDone)
+    ImageView ivIconDone;
 
 
     private ImageSurfaceView mImageSurfaceView1;
@@ -306,7 +310,7 @@ public class PostImageCaptureFragment extends Fragment {
         if (mMode == MODE_FULL) {
             if (ivCapturedImage1.getDrawable() != null) {
                 mFinalBitmap = mCapturedBitmap1;
-                //ivCameraClick.setText("Next");
+                ivIconDone.setVisibility(View.VISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -315,7 +319,7 @@ public class PostImageCaptureFragment extends Fragment {
                     }
                 });
             } else {
-                //ivCameraClick.setText("Click");
+                ivIconDone.setVisibility(View.INVISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -326,7 +330,7 @@ public class PostImageCaptureFragment extends Fragment {
         } else {
             if (ivCapturedImage1.getDrawable() != null && ivCapturedImage2.getDrawable() != null) {
                 mFinalBitmap = combineImages(mCapturedBitmap1, mCapturedBitmap2);
-                //ivCameraClick.setText("Next");
+                ivIconDone.setVisibility(View.VISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -335,7 +339,7 @@ public class PostImageCaptureFragment extends Fragment {
                     }
                 });
             } else {
-                //ivCameraClick.setText("Click");
+                ivIconDone.setVisibility(View.INVISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -371,7 +375,7 @@ public class PostImageCaptureFragment extends Fragment {
         cameraPreviewLayout1.requestLayout();
         cameraPreviewLayout2.setVisibility(View.GONE);
         ivCapturedImage1.setVisibility(View.GONE);
-        //ivCameraClick.setText("Click");
+        ivIconDone.setVisibility(View.INVISIBLE);
         ivCameraClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -470,19 +474,10 @@ public class PostImageCaptureFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void startComposeFragment();
     }
+
 
 }
