@@ -9,8 +9,11 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
+import org.parceler.Parcel;
+
 import java.util.List;
 
+@Parcel
 @ParseClassName("Workout")
 public class Workout extends Model {
 

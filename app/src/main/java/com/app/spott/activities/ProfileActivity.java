@@ -1,5 +1,6 @@
 package com.app.spott.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,15 +8,20 @@ import android.support.v7.widget.Toolbar;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
-import com.app.spott.interfaces.ProfileFragment;
+import com.app.spott.adapters.ProfileWorkoutsAdapter;
 import com.app.spott.models.User;
+import com.app.spott.models.Workout;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment {
+import org.parceler.Parcels;
+
+public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener {
 
     private User user;
     private boolean isLoggedInUser;
+    public static final String WORKOUT = "workout";
+    public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,23 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
             user = User.findUserOnUIThread(user_id);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void editWorkout(Workout workout) {
+//        start activity for result
+        Intent intent = new Intent(this, WorkoutEditActivity.class);
+        intent.putExtra(WORKOUT, Parcels.wrap(workout));
+        startActivityForResult(intent, WORKOUT_EDIT_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == WORKOUT_EDIT_REQUEST_CODE){
+            if (resultCode == Activity.RESULT_OK){
+//                call update on profile workouts fragment list view
+            }
         }
     }
 }
