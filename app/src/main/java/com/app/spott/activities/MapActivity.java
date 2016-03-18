@@ -142,23 +142,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         frequencyAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerFrequency.setAdapter(frequencyAdapter);
 
-//        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-//                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//
-//
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//                moveMapToLocation(place.getLatLng());
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                // TODO: Handle the error.
-//                Log.i(this.toString(), "An error occurred: " + status);
-//            }
-//        });
-
         mWorkouts = new ArrayList<>();
         mFilteredWorkouts = new ArrayList<>();
         mWorkoutsListViewAdapter = new WorkoutsListViewAdapter(this, mFilteredWorkouts);
@@ -190,8 +173,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                //TODO
                 Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+                intent.putExtra(INTENT_USER_ID, marker.getTitle());
                 startActivity(intent);
             }
         });
@@ -200,8 +183,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCameraChange(CameraPosition cameraPosition) {
                 LatLng latLng = mMap.getCameraPosition().target;
                 if (latLng != null && mRefLatLng != null &&
-                        Math.abs(mRefLatLng.latitude - latLng.latitude) > 0.01 &&
-                        Math.abs(mRefLatLng.longitude - latLng.longitude) > 0.01) {
+                        Math.abs(mRefLatLng.latitude - latLng.latitude) > 0.002 &&
+                        Math.abs(mRefLatLng.longitude - latLng.longitude) > 0.002) {
                     mRefLatLng = latLng;
                     updateMapAndUserList(latLng);
                 }
@@ -370,7 +353,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void moveMapToLocation(LatLng latLng) {
-        int distanceFromOriginInMeters = 700;
+        int distanceFromOriginInMeters = 800;
         LatLngBounds latLngBounds = new LatLngBounds.Builder()
                 .include(SphericalUtil.computeOffset(latLng, distanceFromOriginInMeters, 0))
                 .include(SphericalUtil.computeOffset(latLng, distanceFromOriginInMeters, 90))
@@ -430,6 +413,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 String snippet = String.format("%s;%s;%s;%s;%s;%s;%s", profilePicUrl, userName, age, gender, activityName, time, frequency);
                 LatLng latLng = new LatLng(workout.getLocation().getPoint().getLatitude(), workout.getLocation().getPoint().getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng)
+                        .title(user.getObjectId())
                         .snippet(snippet)
                         .icon(marker));
 

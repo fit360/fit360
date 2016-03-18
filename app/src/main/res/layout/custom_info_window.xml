@@ -10,7 +10,7 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher"
         app:riv_oval="true" />
@@ -19,7 +19,7 @@
         android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/ivProfilePicture"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:layout_toEndOf="@id/ivProfilePicture"
@@ -31,51 +31,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/tvUserName"
-        android:layout_toRightOf="@id/tvUserName"
-        android:layout_toEndOf="@id/tvUserName"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:text="age"/>
+        android:layout_toEndOf="@id/tvUserName"
+        android:layout_toRightOf="@id/tvUserName"
+        android:text="age" />
 
     <TextView
         android:id="@+id/tvGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/tvUserName"
-        android:layout_toRightOf="@id/tvUserName"
-        android:layout_toEndOf="@id/tvAge"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:text="gender"/>
+        android:layout_toEndOf="@id/tvAge"
+        android:layout_toRightOf="@id/tvUserName"
+        android:text="gender" />
 
-    <TextView
-        android:id="@+id/tvActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivIconClock"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:layout_alignLeft="@id/tvUserName"
         android:layout_below="@id/tvUserName"
-        android:text="workout"/>
+        android:layout_marginTop="2dp"
+        android:src="@drawable/ic_clock_24dp" />
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUserName"
-        android:layout_toRightOf="@id/tvActivity"
-        android:layout_toEndOf="@id/tvActivity"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:text="time"/>
+        android:layout_toRightOf="@id/ivIconClock"
+        android:text="time" />
+
+
+    <ImageView
+        android:id="@+id/ivIconCalendar"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_below="@id/tvUserName"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@+id/tvTime"
+        android:src="@drawable/ic_calendar_24dp" />
 
     <TextView
         android:id="@+id/tvFrequency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUserName"
-        android:layout_toRightOf="@id/tvTime"
-        android:layout_toEndOf="@id/tvTime"
         android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:text="frequency"/>
+        android:layout_marginTop="1dp"
+        android:layout_toRightOf="@+id/ivIconCalendar"
+        android:text="frequency" />
+
 
 </RelativeLayout>

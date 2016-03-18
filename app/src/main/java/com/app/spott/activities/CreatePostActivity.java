@@ -1,9 +1,12 @@
 package com.app.spott.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.app.spott.R;
@@ -36,6 +39,7 @@ public class CreatePostActivity extends AppCompatActivity
     public void startComposeFragment(){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentPlaceholder, new PostComposeFragment(), "FRAGMENT_POST_COMPOSE");
+        ft.addToBackStack("FRAGMENT_POST_IMAGE");
         ft.commit();
     }
 
@@ -45,6 +49,26 @@ public class CreatePostActivity extends AppCompatActivity
         ft.replace(R.id.fragmentPlaceholder, new PostImageCaptureFragment(), "FRAGMENT_POST_IMAGE");
         ft.commit();
     }
+
+    private void popImageCaptureFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                popImageCaptureFragment();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 
 }
