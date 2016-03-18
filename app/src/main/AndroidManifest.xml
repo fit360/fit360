@@ -47,11 +47,11 @@
         <activity
             android:name=".activities.MapActivity"
             android:label="@string/title_activity_map"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName=".activities.CommunityFeedActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.app.spott.activities.MainActivity" />
+                android:value="com.app.spott.activities.CommunityFeedActivity" />
         </activity>
         <activity
             android:name=".activities.ProfileActivity"
@@ -65,11 +65,11 @@
         <activity
             android:name=".activities.CreatePostActivity"
             android:label="@string/title_activity_create_post"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName=".activities.CommunityFeedActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.app.spott.activities.MainActivity" />
+                android:value="com.app.spott.activities.CommunityFeedActivity" />
         </activity>
         <activity
             android:name=".activities.ChatActivity"
