@@ -93,12 +93,14 @@ public class CommunityFeedActivity extends AppCompatActivity {
     void fetchFeeds(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(USER);
+        query.orderByDescending("updatedAt");
         //TODO: get posts for this user
         query.findInBackground(new FindCallback<Post>() {
             public void done(List<Post> posts, ParseException e) {
                 if (e == null) {
                     // Access data using the `getGender` methods for the object
-                    mPosts.addAll((ArrayList)posts);
+                    ArrayList dePosts = getDedupedPosts(posts);
+                    mPosts.addAll(dePosts);
                     aPosts.notifyDataSetChanged();
                     swipeContainer.setRefreshing(false);
                 } else {
@@ -107,6 +109,35 @@ public class CommunityFeedActivity extends AppCompatActivity {
             }
         });
     }
+
+    private ArrayList getDedupedPosts(List<Post> posts) {//compare all new posts against existing ones
+        if (mPosts.size() == 0){
+           return (ArrayList)posts;
+        }
+        boolean dupe = false;
+
+        ArrayList freshPosts = new ArrayList();
+        for (int i = 0; i < posts.size(); i++){
+            Post fetchedPost = posts.get(i);
+            //new post date is after the array date
+            //if(post.getUpdatedAt().after(mPosts.get(0).getUpdatedAt())){
+            for (int j = 0; j < mPosts.size(); j++){
+                Post arrayPost = mPosts.get(j);
+                if(fetchedPost.getObjectId().equals(arrayPost.getObjectId())){
+                    //it's a duplicate post
+                    dupe = true;
+                    break;
+                }
+            }
+            if (!dupe){
+                freshPosts.add(fetchedPost);
+            }else{
+                dupe = false;
+            }
+        }
+        return freshPosts;
+    }
+
     // Get the userId from the cached currentUser object
     void startWithCurrentUser() {
         ParseUser loggedInUser = ParseUser.getCurrentUser();
