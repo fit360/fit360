@@ -59,6 +59,10 @@ public class Location extends Model {
     public String getNameAddress() {
         return getName() + ", " + getAddress();
     }
+
+    public boolean isSet(){
+        return (getPoint() != null);
+    }
     
     public void getNearByLocations(FindCallback<Location> findCallback) {
         ParseQuery<Location> query = ParseQuery.getQuery(Location.class);

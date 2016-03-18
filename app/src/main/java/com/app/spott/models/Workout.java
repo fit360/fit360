@@ -1,7 +1,7 @@
 package com.app.spott.models;
 
-import com.app.spott.exceptions.WorkoutModelException;
 import com.app.spott.exceptions.ModelException;
+import com.app.spott.exceptions.WorkoutModelException;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -9,11 +9,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
-import org.parceler.Parcel;
-
 import java.util.List;
 
-@Parcel
 @ParseClassName("Workout")
 public class Workout extends Model {
 
