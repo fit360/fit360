@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
-import com.app.spott.interfaces.ProfileFragment;
+import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
 
@@ -49,11 +49,11 @@ public class ProfileHeaderFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            ProfileFragment listener = (ProfileFragment) context;
+            ProfileFragmentListener listener = (ProfileFragmentListener) context;
             user = listener.getUser();
             isLoggedInUser = listener.isLoggedInUser();
         } catch (ClassCastException e){
-            throw new ClassCastException(context.toString() + " must implement ProfileFragment");
+            throw new ClassCastException(context.toString() + " must implement ProfileFragmentListener");
         }
     }
 }

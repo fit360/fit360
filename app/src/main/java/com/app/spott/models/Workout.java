@@ -1,7 +1,7 @@
 package com.app.spott.models;
 
-import com.app.spott.exceptions.WorkoutModelException;
 import com.app.spott.exceptions.ModelException;
+import com.app.spott.exceptions.WorkoutModelException;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -101,8 +101,10 @@ public class Workout extends Model {
         query.findInBackground(findCallback);
     }
 
-    public static void findOne(String id, GetCallback getCallback){
+    public static void findOne(String id, boolean cached, GetCallback getCallback){
         query = getQuery();
+//        if (cached)
+//            query.fromLocalDatastore();
         query.whereEqualTo(objectId, id);
         query.getFirstInBackground(getCallback);
     }

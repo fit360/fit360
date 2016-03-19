@@ -1,5 +1,6 @@
 package com.app.spott.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,15 +8,22 @@ import android.support.v7.widget.Toolbar;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
-import com.app.spott.interfaces.ProfileFragment;
+import com.app.spott.adapters.ProfileWorkoutsAdapter;
+import com.app.spott.fragments.ProfileWorkoutsFragment;
+import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
+import com.app.spott.models.Workout;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment {
+public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener,
+        ProfileFragmentListener,
+        ProfileWorkoutsFragment.AddWorkoutListener {
 
     private User user;
     private boolean isLoggedInUser;
+    public static final String WORKOUT_ID_INTENT_KEY = "workout_id";
+    public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +49,12 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
 
     }
 
+    @Override
     public User getUser() {
         return user;
     }
 
+    @Override
     public boolean isLoggedInUser() {
         return isLoggedInUser;
     }
@@ -67,5 +77,36 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void editWorkout(Workout workout) {
+//        start activity for result
+        Intent intent = new Intent(this, WorkoutEditActivity.class);
+        intent.putExtra(WORKOUT_ID_INTENT_KEY, workout.getObjectId());
+        startActivityForResult(intent, WORKOUT_EDIT_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == WORKOUT_EDIT_REQUEST_CODE){
+            if (resultCode == Activity.RESULT_OK){
+                String workoutId = data.getStringExtra(WORKOUT_ID_INTENT_KEY);
+                final ProfileWorkoutsFragment frag = (ProfileWorkoutsFragment) getSupportFragmentManager().findFragmentById(R.id.fragProfileWorkouts);
+                Workout.findOne(workoutId, true, new GetCallback<Workout>() {
+                    @Override
+                    public void done(Workout object, ParseException e) {
+                        if (e == null)
+                            frag.onWorkoutSave(object);
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void addWorkout() {
+        Intent intent = new Intent(this, WorkoutEditActivity.class);
+        startActivity(intent);
     }
 }
