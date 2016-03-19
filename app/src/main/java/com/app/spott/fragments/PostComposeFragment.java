@@ -28,9 +28,6 @@ import butterknife.ButterKnife;
 
 public class PostComposeFragment extends Fragment {
 
-    @Bind(R.id.ivIconPhoto)
-    ImageView ivIconPhoto;
-
     @Bind(R.id.ivPostImage)
     ImageView ivPostImage;
 
@@ -75,13 +72,6 @@ public class PostComposeFragment extends Fragment {
         final Uri imageUri = Utils.getPhotoFileUri(mContext, PostImageCaptureFragment.FINAL_IMAGE_NAME);
         ivPostImage.setImageURI(imageUri);
         etPostMessage.requestFocus();
-
-        ivIconPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.startImageCaptureFragment();
-            }
-        });
 
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
