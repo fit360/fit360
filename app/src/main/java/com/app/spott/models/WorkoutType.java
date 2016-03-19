@@ -13,7 +13,7 @@ public enum WorkoutType {
     BALLET("Ballet", R.drawable.ic_ballet),
     BASEBALL("Baseball", R.drawable.ic_baseball),
     BASKETBALL("Basketball", R.drawable.ic_basketball),
-    BICYCLING("Bicycling", R.drawable.ic_bicycling),
+    BICYCLING("Bicycling", R.drawable.biking),
     BOXING("Boxing", R.drawable.ic_boxing),
     CALISTHENICS("Calisthenics", R.drawable.ic_calisthenics),
     CANOEING("Canoeing", R.drawable.ic_canoeing),

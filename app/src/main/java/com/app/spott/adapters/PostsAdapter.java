@@ -1,6 +1,7 @@
 package com.app.spott.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
+import com.app.spott.activities.ChatActivity;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
@@ -40,15 +42,23 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(PostsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final PostsAdapter.ViewHolder holder, int position) {
         Post post = mPosts.get(position);
-        User user = post.getUser();
+        final User user = post.getUser();
         if (user != null){
+            holder.tvUserName.setText(user.getFirstName());
             Glide.with(holder.context).load(user.getProfileImageUrl()).centerCrop().into(holder.ivProfilePic);
+            holder.ivchatButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(mContext, ChatActivity.class);
+                    i.putExtra("userId", user.getObjectId());
+                    mContext.startActivity(i);
+                }
+            });
         }
         holder.tvCaption.setText(post.getBody());
         Glide.with(holder.context).load(post.getImageUrl()).centerCrop().into(holder.ivPhoto);
-
     }
 
     @Override
@@ -58,10 +68,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     }
     // Used to cache the views within the item layout for fast access
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        @Bind(R.id.tvUserName) TextView tvUserName;
+        TextView tvUserName;
         TextView tvCaption;
         ImageView ivPhoto;
         ImageView ivProfilePic;
+        ImageView ivchatButton;
 //        @Bind(R.id.ivPhoto) ImageView ivPhoto;
         private Context context;
 
@@ -69,8 +80,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             super(itemView);
 //          ButterKnife.bind(this, itemView);
             tvCaption = (TextView)itemView.findViewById(R.id.tvCaption);
+            tvUserName = (TextView)itemView.findViewById(R.id.tvUsername);
             ivPhoto = (ImageView)itemView.findViewById(R.id.ivPhoto);
             ivProfilePic = (ImageView)itemView.findViewById(R.id.ivProfilePic);
+            ivchatButton = (ImageView)itemView.findViewById(R.id.ivChat);
             // Store the context
             this.context = context;
             // Attach a click listener to the entire row view

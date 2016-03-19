@@ -29,7 +29,8 @@ public class ChatActivity extends AppCompatActivity {
     static final String USER_ID_KEY = "userId";
     static final String BODY_KEY = "body";
     static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
-    final String userId = ParseUser.getCurrentUser().getObjectId();;
+    final String userId = ParseUser.getCurrentUser().getObjectId();
+    String theirUserId = "";
     Handler handler = new Handler();
 
     EditText etMessage;
@@ -49,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        theirUserId = getIntent().getStringExtra("userId");
 
         setupMessagePosting();
         handler.post(runnableCode);
@@ -95,7 +97,7 @@ public class ChatActivity extends AppCompatActivity {
         query.whereEqualTo("userId", userId);
 
         ParseQuery<Message> theirMessagesQuery = ParseQuery.getQuery(Message.class);
-        theirMessagesQuery.whereEqualTo("userId", "J90tjqnxYc");
+        theirMessagesQuery.whereEqualTo("userId", theirUserId);
 
         List<ParseQuery<Message>> queries = new ArrayList<ParseQuery<Message>>();
         queries.add(query);
