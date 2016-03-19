@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <fragment
-        android:id="@+id/fragmentLocationAutoComplete"
+        android:id="@+id/fragmentGplaces"
         android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

@@ -57,7 +57,7 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
         Workout.getForUser(user, new FindCallback<Workout>() {
             @Override
             public void done(List<Workout> objects, ParseException e) {
-                activitiesAdapter.addActivities(objects);
+                activitiesAdapter.addWorkouts(objects);
             }
         });
 
@@ -84,7 +84,7 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
     @Override
     public void onActivitySave(Workout workout) {
         //add/update this workout in adapter
-        activitiesAdapter.updateActivity(workout);
+        activitiesAdapter.updateWorkout(workout);
     }
 
     public void addActivity() {
