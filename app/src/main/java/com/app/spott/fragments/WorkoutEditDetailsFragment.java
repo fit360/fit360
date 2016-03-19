@@ -145,7 +145,7 @@ public class WorkoutEditDetailsFragment extends Fragment {
         workout.setUser(currentUser);
         try {
             workout.saveModel();
-            parentListener.saveWorkout(workout);
+            parentListener.notifyListenerActivity(workout);
         } catch (ModelException e) {
             e.printStackTrace();
         }

@@ -9,5 +9,5 @@ public interface WorkoutEditFragmentListener {
     boolean isLoggedInUser();
     boolean isNewWorkout();
     void setLatLng();
-    void saveWorkout(Workout w);
+    void notifyListenerActivity(Workout w);
 }

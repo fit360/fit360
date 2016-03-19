@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
 
-    private List<Workout> activities;
+    private List<Workout> workouts;
     private Context mContext;
     private int currentEditPosition = -1;
     private AdapterOnClickListener listener;
@@ -28,20 +28,20 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         void editWorkout(Workout workout);
     }
 
-    public ProfileWorkoutsAdapter(Context context, List<Workout> activities) {
-        this.activities = activities;
+    public ProfileWorkoutsAdapter(Context context, List<Workout> workouts) {
+        this.workouts = workouts;
         this.mContext = context;
         this.listener = (AdapterOnClickListener)((ProfileActivity) context);
     }
 
-    public void addActivities(List<Workout> activities) {
+    public void addWorkouts(List<Workout> workouts) {
         int curSize = this.getItemCount();
-        this.activities.addAll(activities);
+        this.workouts.addAll(workouts);
         notifyItemRangeInserted(curSize, this.getItemCount() - 1);
     }
 
-    public void addActivity(Workout workout) {
-        this.activities.add(workout);
+    public void addWorkout(Workout workout) {
+        this.workouts.add(workout);
         notifyItemInserted(this.getItemCount() - 1);
     }
 
@@ -53,13 +53,13 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         this.currentEditPosition = -1;
     }
 
-    public void updateActivity(Workout workout){
+    public void updateWorkout(Workout workout){
         if (currentEditPosition >= 0){
-            this.activities.set(currentEditPosition, workout);
+            this.workouts.set(currentEditPosition, workout);
             notifyItemChanged(currentEditPosition);
             resetCurrentEditPosition();
         } else {
-            addActivity(workout);
+            addWorkout(workout);
         }
     }
 
@@ -73,7 +73,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Workout workout = activities.get(position);
+        Workout workout = workouts.get(position);
         ActivityViewHolder vh = (ActivityViewHolder) holder;
         vh.ivActivityIcon.setImageResource(workout.getWorkoutType().getIcon());
         vh.tvActivityLocation.setText(workout.getLocation().getName());
@@ -83,7 +83,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return this.activities.size();
+        return this.workouts.size();
     }
 
     public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -109,7 +109,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             setCurrentEditPosition(getLayoutPosition());
-            Workout workout = activities.get(currentEditPosition);
+            Workout workout = workouts.get(currentEditPosition);
 //            FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
 //            WorkoutEditFragment workoutEditFragment = WorkoutEditFragment.newInstance(workout.getObjectId());
 //            workoutEditFragment.show(fm, "tag");
