@@ -8,81 +8,9 @@
     tools:context="com.app.spott.activities.LoginActivity"
     tools:showIn="@layout/activity_login">
 
-    <VideoView
-        android:id="@+id/vvLoginVideo"
+    <FrameLayout
+        android:id="@+id/fragmentPlaceholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"/>
-
-    <Button
-        android:layout_width="0dp"
-        app:layout_widthPercent="50%"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:text="Login"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"/>
-
-    <Button
-        android:layout_width="0dp"
-        app:layout_widthPercent="50%"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Sign up"
-        android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"/>
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Username"-->
-        <!--android:layout_above="@+id/etPwd"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_marginLeft="35dp"-->
-        <!--android:layout_marginStart="35dp"-->
-        <!--android:id="@+id/textView" />-->
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Password"-->
-        <!--android:layout_alignBottom="@+id/etPwd"-->
-        <!--android:layout_alignRight="@+id/textView"-->
-        <!--android:layout_alignEnd="@+id/textView" />-->
-    <!--<EditText-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/etUserName"-->
-        <!--android:layout_marginTop="77dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true" />-->
-
-    <!--<EditText-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/etPwd"-->
-        <!--android:layout_below="@+id/etUserName"-->
-        <!--android:layout_alignLeft="@+id/etUserName"-->
-        <!--android:layout_alignStart="@+id/etUserName"-->
-        <!--android:layout_marginTop="48dp" />-->
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Login"-->
-        <!--android:id="@+id/btnLogin"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_alignLeft="@+id/textView"-->
-        <!--android:layout_alignStart="@+id/textView" />-->
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="SignUp"-->
-        <!--android:id="@+id/btnSignUp"-->
-        <!--android:layout_alignTop="@+id/btnLogin"-->
-        <!--android:layout_toRightOf="@+id/etPwd"-->
-        <!--android:layout_toEndOf="@+id/etPwd" />-->
+        android:layout_height="match_parent">
+    </FrameLayout>
 </android.support.percent.PercentRelativeLayout>
