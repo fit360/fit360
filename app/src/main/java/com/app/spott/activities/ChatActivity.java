@@ -1,6 +1,7 @@
 package com.app.spott.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -22,11 +23,14 @@ import com.parse.SaveCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ChatActivity extends AppCompatActivity {
 
     static final String USER_ID_KEY = "userId";
     static final String BODY_KEY = "body";
     static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
+    final String userId = ParseUser.getCurrentUser().getObjectId();;
+    Handler handler = new Handler();
 
     EditText etMessage;
     Button btSend;
@@ -47,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         setupMessagePosting();
+        handler.post(runnableCode);
     }
     // Setup button event handler which posts the entered message to Parse
     void setupMessagePosting() {
@@ -58,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
         // Automatically scroll to the bottom when a data set change notification is received and only if the last item is already visible on screen. Don't scroll to the bottom otherwise.
 //        lvChat.setTranscriptMode(1);
         mFirstLoad = true;
-        final String userId = ParseUser.getCurrentUser().getObjectId();
+//        final String userId = ParseUser.getCurrentUser().getObjectId();
         mAdapter = new ChatListAdapter(ChatActivity.this, userId, mMessages);
         lvChat.setAdapter(mAdapter);
         // When send button is clicked, create message object on Parse
@@ -87,12 +92,20 @@ public class ChatActivity extends AppCompatActivity {
     void refreshMessages() {
         // Construct query to execute
         ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
-        // Configure limit and sort order
-        query.setLimit(MAX_CHAT_MESSAGES_TO_SHOW);
-        query.orderByAscending("createdAt");
+        query.whereEqualTo("userId", userId);
+
+        ParseQuery<Message> theirMessagesQuery = ParseQuery.getQuery(Message.class);
+        theirMessagesQuery.whereEqualTo("userId", "J90tjqnxYc");
+
+        List<ParseQuery<Message>> queries = new ArrayList<ParseQuery<Message>>();
+        queries.add(query);
+        queries.add(theirMessagesQuery);
+
+        ParseQuery<Message> mainQuery = ParseQuery.or(queries);
+
         // Execute query to fetch all messages from Parse asynchronously
         // This is equivalent to a SELECT query with SQL
-        query.findInBackground(new FindCallback<Message>() {
+        mainQuery.findInBackground(new FindCallback<Message>() {
             public void done(List<Message> messages, ParseException e) {
                 if (e == null) {
                     mMessages.clear();
@@ -110,5 +123,20 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    private Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            // Do something here on the main thread
+            refreshMessages();
+            Log.d("Handlers", "Called on main thread");
+            // Repeat this the same runnable code block again another 2 seconds
+            handler.postDelayed(runnableCode, 2000);
+        }
+    };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnableCode);
+    }
 }

@@ -3,21 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivPhoto"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
+        app:riv_corner_radius="10dp"
+        android:layout_margin="10dp"
         android:adjustViewBounds="true"
-        android:background="@color/colorPrimary"
         android:scaleType="fitXY"
         android:minHeight="50dp" />
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfilePic"
         android:maxHeight="35dp"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="115dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="170dp"
         android:layout_marginRight="30dp"
         android:layout_alignParentRight="true"
         app:riv_corner_radius="30dp"
@@ -34,7 +36,6 @@
         android:text="beansandBananas"
         android:layout_gravity="center_vertical"
         android:layout_below="@id/ivPhoto"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"
         android:textColor="#90000000"
@@ -45,9 +46,7 @@
         android:layout_height="wrap_content"
         android:text="Test"
         android:layout_below="@id/ivProfilePic"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_margin="10dp"
         android:maxLines="3"
         android:textColor="#78000000"
         android:ellipsize="end" />
