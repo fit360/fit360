@@ -244,7 +244,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mRefLatLng = latLng;
             updateUsingChosenActivitiesFallBackCurrentLoc(latLng);
         } else {
-            Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            Log.e(this.toString(), "Current location was null, enable GPS on emulator!");
             updateUsingChosenActivitiesFallBackCurrentLoc(null);
         }
     }
