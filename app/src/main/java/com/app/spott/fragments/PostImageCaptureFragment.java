@@ -16,7 +16,6 @@ import android.support.percent.PercentRelativeLayout;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +80,12 @@ public class PostImageCaptureFragment extends Fragment {
 
     @Bind(R.id.ivIconDone)
     ImageView ivIconDone;
+
+    @Bind(R.id.ivCameraTarget1)
+    ImageView ivCameraTarget1;
+
+    @Bind(R.id.ivCameraTarget2)
+    ImageView ivCameraTarget2;
 
 
     private ImageSurfaceView mImageSurfaceView1;
@@ -147,6 +152,8 @@ public class PostImageCaptureFragment extends Fragment {
                 PercentLayoutHelper.PercentLayoutInfo layoutInfo = layoutParams.getPercentLayoutInfo();
                 layoutInfo.widthPercent = 1f;
                 cameraPreviewLayout1.requestLayout();
+                ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_tbg));
+                ivCameraTarget1.setVisibility(View.VISIBLE);
                 cameraPreviewLayout2.setVisibility(View.GONE);
                 mMode = MODE_FULL;
             }
@@ -159,7 +166,9 @@ public class PostImageCaptureFragment extends Fragment {
                 PercentLayoutHelper.PercentLayoutInfo percentLayoutInfo = layoutParams.getPercentLayoutInfo();
                 percentLayoutInfo.widthPercent = 0.5f;
                 cameraPreviewLayout1.requestLayout();
+                ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_half_tbg));
                 cameraPreviewLayout2.setVisibility(View.VISIBLE);
+                ivCameraTarget2.setVisibility(View.GONE);
                 mMode = MODE_SPLIT;
                 verifyReadyToSubmit();
 
@@ -173,10 +182,10 @@ public class PostImageCaptureFragment extends Fragment {
                 cameraPreviewLayout2.removeView(mImageSurfaceView2);
                 camera = checkDeviceCamera();
                 mImageSurfaceView1 = new ImageSurfaceView(mContext, camera);
-                cameraPreviewLayout1.addView(mImageSurfaceView1);
+                cameraPreviewLayout1.addView(mImageSurfaceView1, 1);
                 mCameraSelect = CAMERA_SELECT_1;
-                cameraPreviewLayout1.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview_selected));
-                cameraPreviewLayout2.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview));
+                ivCameraTarget1.setVisibility(View.VISIBLE);
+                ivCameraTarget2.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -187,10 +196,10 @@ public class PostImageCaptureFragment extends Fragment {
                 cameraPreviewLayout2.removeView(mImageSurfaceView2);
                 camera = checkDeviceCamera();
                 mImageSurfaceView2 = new ImageSurfaceView(mContext, camera);
-                cameraPreviewLayout2.addView(mImageSurfaceView2);
+                cameraPreviewLayout2.addView(mImageSurfaceView2, 1);
                 mCameraSelect = CAMERA_SELECT_2;
-                cameraPreviewLayout1.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview));
-                cameraPreviewLayout2.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview_selected));
+                ivCameraTarget1.setVisibility(View.INVISIBLE);
+                ivCameraTarget2.setVisibility(View.VISIBLE);
             }
         });
 
@@ -382,6 +391,8 @@ public class PostImageCaptureFragment extends Fragment {
                 camera.takePicture(null, null, pictureCallback);
             }
         });
+        ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_tbg));
+        ivCameraTarget1.setVisibility(View.VISIBLE);
     }
 
     private Bitmap combineImages(Bitmap a, Bitmap b) {
