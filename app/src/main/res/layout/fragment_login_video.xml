@@ -1,0 +1,48 @@
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.app.spott.fragments.LoginVideoFragment">
+
+
+    <VideoView
+        android:id="@+id/vvLoginVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LiveFit"
+        android:layout_centerHorizontal="true"
+        android:textSize="58dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif-black"/>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        app:layout_widthPercent="49.5%"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/btnSignup"
+        android:layout_width="0dp"
+        app:layout_widthPercent="49.5%"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Sign up"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
+</android.support.percent.PercentRelativeLayout>
