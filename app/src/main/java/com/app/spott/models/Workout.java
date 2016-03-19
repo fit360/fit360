@@ -101,8 +101,10 @@ public class Workout extends Model {
         query.findInBackground(findCallback);
     }
 
-    public static void findOne(String id, GetCallback getCallback){
+    public static void findOne(String id, boolean cached, GetCallback getCallback){
         query = getQuery();
+        if (cached)
+            query.fromLocalDatastore();
         query.whereEqualTo(objectId, id);
         query.getFirstInBackground(getCallback);
     }

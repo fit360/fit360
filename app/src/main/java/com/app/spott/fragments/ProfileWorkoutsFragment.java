@@ -3,8 +3,6 @@ package com.app.spott.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,8 +14,8 @@ import com.app.spott.R;
 import com.app.spott.adapters.ProfileWorkoutsAdapter;
 import com.app.spott.extensions.DividerItemDecoration;
 import com.app.spott.interfaces.ProfileFragmentListener;
-import com.app.spott.models.Workout;
 import com.app.spott.models.User;
+import com.app.spott.models.Workout;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 
@@ -32,6 +30,7 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
     private ProfileWorkoutsAdapter activitiesAdapter;
     private User user;
     private boolean isLoggedInUser;
+    private AddWorkoutListener addWorkoutListener;
 
     @Bind(R.id.rvProfileActivities)
     RecyclerView rvProfileActivities;
@@ -39,6 +38,9 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
     @Bind(R.id.btnAddActivity)
     Button btnAddActivity;
 
+    public interface AddWorkoutListener {
+        void addWorkout();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile_workouts, parent, false);
@@ -64,7 +66,7 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
         btnAddActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addActivity();
+                addWorkoutListener.addWorkout();
             }
         });
     }
@@ -79,17 +81,17 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
         } catch (ClassCastException e){
             throw new ClassCastException(context.toString() + " must implement ProfileFragmentListener");
         }
+
+        if (context instanceof AddWorkoutListener){
+            addWorkoutListener = (AddWorkoutListener) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement AddWorkoutListener");
+        }
     }
 
     @Override
-    public void onActivitySave(Workout workout) {
+    public void onWorkoutSave(Workout workout) {
         //add/update this workout in adapter
         activitiesAdapter.updateWorkout(workout);
-    }
-
-    public void addActivity() {
-        FragmentManager fm = ((FragmentActivity) getContext()).getSupportFragmentManager();
-        WorkoutEditFragment workoutEditFragment = WorkoutEditFragment.newInstance();
-        workoutEditFragment.show(fm, "tag");
     }
 }
