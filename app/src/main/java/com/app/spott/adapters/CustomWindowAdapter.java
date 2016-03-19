@@ -30,9 +30,6 @@ public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
     @Bind(R.id.tvGender)
     TextView tvGender;
 
-    @Bind(R.id.tvActivity)
-    TextView tvActivity;
-
     @Bind(R.id.tvTime)
     TextView tvTime;
 
@@ -56,10 +53,9 @@ public class CustomWindowAdapter implements GoogleMap.InfoWindowAdapter {
         String[] contentArray = contents.split(";");
         if(contentArray.length > 0){
             Glide.with(mContext).load(contentArray[0]).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivProfilePicture);
-            tvUserName.setText(contentArray[1]);
+            tvUserName.setText(contentArray[1] + ",");
             tvAge.setText(contentArray[2]);
             tvGender.setText(contentArray[3]);
-            tvActivity.setText(contentArray[4]);
             tvTime.setText(contentArray[5]);
             tvFrequency.setText(contentArray[6]);
         }

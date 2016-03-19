@@ -5,6 +5,7 @@
     <string name="action_community">Community</string>
     <string name="action_map">Map</string>
     <string name="action_place_autocomplete">Search</string>
+    <string name="action_chat">Chat</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -20,10 +21,15 @@
         <item>9:00am</item>
         <item>12:00pm</item>
     </string-array>
-    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_map">Find your Partner!</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_community_feed">CommunityFeedActivity</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_create_post">CreatePostActivity</string>
     <string name="title_activity_workout_edit">WorkoutEditActivity</string>
+    <string name="title_activity_chat">ChatActivity</string>
+    <string name="message_hint">Say anything</string>
+    <string name="send">Send</string>
+    <string name="profile_me">My Profile Pic</string>
+    <string name="profile_other">Other profile pic</string>
+    <string name="title_activity_create_post">Create Community Post</string>
 </resources>

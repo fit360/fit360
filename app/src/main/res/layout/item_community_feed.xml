@@ -1,99 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/viewHeader"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingRight="5dp"
-        android:background="#CCFFFFFF"
-        >
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:maxHeight="40dp"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/ivProfilePic"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_margin="10dp"
-            app:riv_corner_radius="30dp"
-            app:riv_border_width="1dp"
-            app:riv_border_color="#E0E0E0"
-            app:riv_mutate_background="true"
-            app:riv_tile_mode="repeat"
-            app:riv_oval="true"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="beansandBananas"
-            android:id="@+id/tvUsername"
-            android:layout_gravity="center_vertical"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
-            android:textColor="#315E82"
-            android:layout_toRightOf="@id/ivProfilePic"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4h"
-            android:layout_gravity="center_vertical"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="10dp"
-            android:id="@+id/tvTime"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:id="@+id/ivPhoto"
-        android:layout_below="@id/viewHeader"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:minHeight="50dp"
-        android:background="#fadede" />
-    <ImageView
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:id="@+id/ivHeart"
-        android:layout_below="@id/ivPhoto"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_heart"
-        android:background="#090465" />
-
+    <include layout="@layout/layout_common_profile_pic_post_photo" />
 
     <TextView
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="411 Likes"
-        android:layout_below="@id/ivPhoto"
-        android:id="@+id/tvLikes"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        />
+        android:layout_below="@+id/ivPhoto"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:text="beansandBananas"
+        android:textColor="#90000000"
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:layout_below="@id/tvLikes"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
         android:id="@+id/tvCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivProfilePic"
+        android:layout_margin="10dp"
+        android:ellipsize="end"
         android:maxLines="3"
-        android:ellipsize="end" />
-
+        android:text="Test"
+        android:textColor="#78000000" />
 </RelativeLayout>
