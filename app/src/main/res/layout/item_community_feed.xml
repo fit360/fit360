@@ -1,52 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <ImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ivPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:minHeight="50dp" />
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ivProfilePic"
-        android:maxHeight="35dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="170dp"
-        android:layout_marginRight="30dp"
-        android:layout_alignParentRight="true"
-        app:riv_corner_radius="30dp"
-        app:riv_border_width="2dp"
-        app:riv_border_color="#E0E0E0"
-        app:riv_mutate_background="true"
-        app:riv_tile_mode="repeat"
-        app:riv_oval="true"
-        />
+    <include layout="@layout/layout_common_profile_pic_post_photo" />
+
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="beansandBananas"
+        android:layout_below="@+id/ivPhoto"
         android:layout_gravity="center_vertical"
-        android:layout_below="@id/ivPhoto"
         android:layout_marginLeft="10dp"
-        android:textStyle="bold"
+        android:text="beansandBananas"
         android:textColor="#90000000"
-        />
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/tvCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test"
-        android:layout_below="@id/ivProfilePic"
+        android:layout_below="@+id/ivProfilePic"
         android:layout_margin="10dp"
+        android:ellipsize="end"
         android:maxLines="3"
-        android:textColor="#78000000"
-        android:ellipsize="end" />
+        android:text="Test"
+        android:textColor="#78000000" />
 </RelativeLayout>
