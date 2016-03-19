@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.app.spott.models.Time;
 import com.app.spott.models.User;
 import com.app.spott.models.Workout;
 import com.app.spott.models.WorkoutType;
+import com.github.aakira.expandablelayout.ExpandableWeightLayout;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -46,8 +48,8 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private static final String TAG = WorkoutEditActivity.class.getSimpleName();
 
 
-    @Bind(R.id.autoWorkout)
-    AutoCompleteTextView autoWorkout;
+    @Bind(R.id.btnWorkout)
+    Button btnWorkout;
 
     @Bind(R.id.etLocation)
     EditText etLocation;
@@ -58,9 +60,21 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     @Bind(R.id.spnFrequency)
     Spinner spinnerFrequency;
 
-    @OnClick(R.id.btnSave) void onSaveClick() {saveWorkout();}
+    @Bind(R.id.expandableLayout)
+    ExpandableWeightLayout expandableWorkouts;
 
-    @OnClick(R.id.btnCancel) void onCancelClick() { finish();}
+    @OnClick(R.id.btnSave)
+    void onSaveClick() {
+        saveWorkout();
+    }
+
+    @OnClick(R.id.btnCancel)
+    void onCancelClick() {
+        finish();
+    }
+
+    @Bind(R.id.sampleButton)
+    Button btn;
 
 
     @Override
@@ -82,8 +96,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         initPlaceFragment();
     }
 
-    private void initializeViews(){
-        location = new Location();
+    private void initializeViews() {
         geoPoint = new ParseGeoPoint();
 
         timeAdapter = new ArrayAdapter<Time>(this, android.R.layout.simple_list_item_1, Time.values());
@@ -91,9 +104,12 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         frequencyAdapter = new ArrayAdapter<Frequency>(this, android.R.layout.simple_list_item_1, Frequency.values());
         spinnerFrequency.setAdapter(frequencyAdapter);
         workoutTypeAdapter = new ArrayAdapter<WorkoutType>(this, android.R.layout.select_dialog_item, WorkoutType.values());
-        autoWorkout.setAdapter(workoutTypeAdapter);
-        autoWorkout.setThreshold(1);
+
+    public void selectWorkout(View view) {
+        Toast.makeText(WorkoutEditActivity.this, "expanding...", Toast.LENGTH_SHORT).show();
+        expandableWorkouts.toggle();
     }
+
 
     private void setWorkout(Intent i) {
         if (i.hasExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY)) {
@@ -103,6 +119,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
                 public void done(Workout object, ParseException e) {
                     if (e == null) {
                         workout = object;
+                        location = workout.getLocation();
                         populateViews();
                     } else {
                         Log.e(TAG, e.getMessage());
@@ -111,12 +128,13 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
             });
         } else {
             workout = new Workout();
+            location = new Location();
             isNewWorkout = true;
         }
     }
 
-    private void populateViews(){
-        autoWorkout.setText(workout.getWorkoutType().toString());
+    private void populateViews() {
+        btnWorkout.setText(workout.getWorkoutType().toString());
         spinnerFrequency.setSelection(frequencyAdapter.getPosition(workout.getFrequency()));
         spinnerTime.setSelection(timeAdapter.getPosition(workout.getTime()));
         etLocation.setText(workout.getLocation().getNameAddress());
@@ -140,7 +158,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         }
     }
 
-    private void initPlaceFragment(){
+    private void initPlaceFragment() {
         SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
         f.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -178,7 +196,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     @Override
-    public boolean isNewWorkout(){
+    public boolean isNewWorkout() {
         return isNewWorkout;
     }
 
@@ -188,7 +206,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     @Override
-    public void notifyListenerActivity(Workout w){
+    public void notifyListenerActivity(Workout w) {
         Intent i = new Intent();
         i.putExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY, w.getObjectId());
         setResult(RESULT_OK, i);

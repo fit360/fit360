@@ -39,7 +39,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class WorkoutEditFragment extends DialogFragment {
-    @Bind(R.id.autoWorkout)
+    @Bind(R.id.btnWorkout)
     AutoCompleteTextView autoWorkout;
 
     @Bind(R.id.etLocation)

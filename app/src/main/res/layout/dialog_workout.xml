@@ -16,7 +16,7 @@
             android:text="Workout Type" />
 
         <AutoCompleteTextView
-            android:id="@+id/autoWorkout"
+            android:id="@+id/btnWorkout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
