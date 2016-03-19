@@ -44,7 +44,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         Post post = mPosts.get(position);
         User user = post.getUser();
         if (user != null){
-            System.out.println(user.getProfileImageUrl());
             Glide.with(holder.context).load(user.getProfileImageUrl()).centerCrop().into(holder.ivProfilePic);
         }
         holder.tvCaption.setText(post.getBody());
