@@ -24,8 +24,7 @@
         <activity
             android:name=".activities.CommunityFeedActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -52,8 +51,8 @@
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.CommunityFeedActivity"/>l
+            android:parentActivityName=".activities.CommunityFeedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
@@ -63,6 +62,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.WorkoutEditActivity"
+            android:label="@string/title_activity_workout_edit"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CreatePostActivity"
             android:label="@string/title_activity_create_post"
@@ -75,7 +78,7 @@
         <activity
             android:name=".activities.ChatActivity"
             android:label="@string/title_activity_chat"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
