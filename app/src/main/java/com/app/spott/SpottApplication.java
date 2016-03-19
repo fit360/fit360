@@ -2,11 +2,11 @@ package com.app.spott;
 
 import android.app.Application;
 
-import com.app.spott.models.Workout;
 import com.app.spott.models.Location;
 import com.app.spott.models.Message;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
+import com.app.spott.models.Workout;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.interceptors.ParseLogInterceptor;
@@ -22,8 +22,6 @@ public class SpottApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Parse.enableLocalDatastore(this);
-//        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(Workout.class);
@@ -31,6 +29,8 @@ public class SpottApplication extends Application {
         ParseObject.registerSubclass(Message.class);
 
 
+        Parse.enableLocalDatastore(this);
+//        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(PARSE_APPLICATION_ID)
                 .addNetworkInterceptor(new ParseLogInterceptor())
