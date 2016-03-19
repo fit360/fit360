@@ -82,7 +82,7 @@ public class PostComposeFragment extends Fragment {
             @Override
             public void done(User user, ParseException e) {
                 mUser = user;
-                Glide.with(PostComposeFragment.this).load(user.getProfileImageUrl()).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivProfilePic);
+                Glide.with(PostComposeFragment.this).load(user.getProfileImageUrl()).dontAnimate().into(ivProfilePic);
             }
 
         });
