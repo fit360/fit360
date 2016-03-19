@@ -18,12 +18,11 @@
         android:padding="1dp"
         app:layout_widthPercent="100%">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Click here to start camera or choose from gallery"
-            android:textAlignment="center" />
+            android:src="@drawable/ic_camera_salmon_24dp" />
 
         <ImageView
             android:id="@+id/ivCaptureImage1"
@@ -48,12 +47,11 @@
         android:visibility="gone"
         app:layout_widthPercent="50%">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Click here to start camera or choose from gallery"
-            android:textAlignment="center" />
+            android:src="@drawable/ic_camera_salmon_24dp" />
 
         <ImageView
             android:id="@+id/ivCaptureImage2"
@@ -73,16 +71,16 @@
 
         <ImageView
             android:id="@+id/ivCameraFullMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="32dp"
             android:src="@drawable/ic_camera_full_mode" />
 
         <ImageView
             android:id="@+id/ivCameraSplitMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="32dp"
             android:src="@drawable/ic_camera_split_mode" />
 
     </LinearLayout>
@@ -92,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llFullSplitMode"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_vertical">
 
 
@@ -103,13 +101,26 @@
             android:layout_weight="1"
             android:src="@drawable/ic_camera_clear" />
 
-        <ImageView
-            android:id="@+id/ivCameraClick"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_camera_click" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/ivCameraClick"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_camera_click"
+                android:layout_gravity="center"/>
+            <ImageView
+                android:id="@+id/ivIconDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_done_24dp"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
+        </FrameLayout>
+
 
         <ImageView
             android:id="@+id/ivCameraGallery"
