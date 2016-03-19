@@ -39,7 +39,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class WorkoutEditFragment extends DialogFragment {
-    @Bind(R.id.autoWorkout)
+    @Bind(R.id.btnWorkout)
     AutoCompleteTextView autoWorkout;
 
     @Bind(R.id.etLocation)
@@ -68,7 +68,7 @@ public class WorkoutEditFragment extends DialogFragment {
     private OnSaveListener listener;
 
     public interface OnSaveListener {
-        void onActivitySave(Workout workout);
+        void onWorkoutSave(Workout workout);
     }
 
     public WorkoutEditFragment() {
@@ -129,7 +129,7 @@ public class WorkoutEditFragment extends DialogFragment {
         autoWorkout.setThreshold(1);
 
 //        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) ((FragmentActivity) getContext()).getSupportFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
-        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
+        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.fragmentGplaces);
         f.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -170,7 +170,7 @@ public class WorkoutEditFragment extends DialogFragment {
         workout.setUser(currentUser);
         try {
             workout.saveModel();
-            listener.onActivitySave(workout);
+            listener.onWorkoutSave(workout);
             onDestroyView();
         } catch (ModelException e) {
             e.printStackTrace();
@@ -178,7 +178,7 @@ public class WorkoutEditFragment extends DialogFragment {
     }
 
     private void updateViews(final String workoutId) {
-        Workout.findOne(workoutId, new GetCallback<Workout>() {
+        Workout.findOne(workoutId, true, new GetCallback<Workout>() {
             @Override
             public void done(Workout object, ParseException e) {
                 if (e == null) {

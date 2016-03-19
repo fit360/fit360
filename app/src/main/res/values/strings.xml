@@ -25,11 +25,11 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_community_feed">CommunityFeedActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_workout_edit">WorkoutEditActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="message_hint">Say anything</string>
     <string name="send">Send</string>
     <string name="profile_me">My Profile Pic</string>
     <string name="profile_other">Other profile pic</string>
     <string name="title_activity_create_post">Create Community Post</string>
-    >>>>>>> Enhancements
 </resources>
