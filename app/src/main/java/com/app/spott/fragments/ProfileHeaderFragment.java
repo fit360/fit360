@@ -39,7 +39,6 @@ public class ProfileHeaderFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
-
         tvUserName.setText(user.getFirstName() + " " + user.getLastName());
         tvGenderAge.setText(user.getGender().getName() + ", " + user.getAge());
         Glide.with(this.getActivity()).load(user.getProfileImageUrl()).centerCrop().into(ivProfilePicture);

@@ -19,6 +19,7 @@ import com.app.spott.exceptions.ModelException;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.app.spott.utils.Utils;
+import com.bumptech.glide.Glide;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -28,11 +29,11 @@ import butterknife.ButterKnife;
 
 public class PostComposeFragment extends Fragment {
 
-    @Bind(R.id.ivIconPhoto)
-    ImageView ivIconPhoto;
+    @Bind(R.id.ivPhoto)
+    ImageView ivPhoto;
 
-    @Bind(R.id.ivPostImage)
-    ImageView ivPostImage;
+    @Bind(R.id.ivProfilePic)
+    ImageView ivProfilePic;
 
     @Bind(R.id.etPostMessage)
     EditText etPostMessage;
@@ -42,6 +43,7 @@ public class PostComposeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
+    private User mUser;
 
     public PostComposeFragment() {
         // Required empty public constructor
@@ -73,44 +75,45 @@ public class PostComposeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         final Uri imageUri = Utils.getPhotoFileUri(mContext, PostImageCaptureFragment.FINAL_IMAGE_NAME);
-        ivPostImage.setImageURI(imageUri);
+        ivPhoto.setImageURI(imageUri);
         etPostMessage.requestFocus();
 
-        ivIconPhoto.setOnClickListener(new View.OnClickListener() {
+        User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
             @Override
-            public void onClick(View v) {
-                mListener.startImageCaptureFragment();
+            public void done(User user, ParseException e) {
+                mUser = user;
+                Glide.with(PostComposeFragment.this).load(user.getProfileImageUrl()).dontAnimate().into(ivProfilePic);
             }
+
         });
 
-        btnPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    final String imageUrl = Utils.saveImageToCloud(imageUri.getPath());
-                    User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
-                        @Override
-                        public void done(User user, ParseException e) {
-                            Post post = new Post();
-                            post.setUser(user);
-                            post.setImageUrl(imageUrl);
-                            post.setBody(etPostMessage.getText().toString());
-                            try {
-                                post.saveModel();
-                            } catch (ModelException e1) {
-                                e1.printStackTrace();
-                            }
+        btnPost.setOnClickListener(new View.OnClickListener()
 
-                            Intent intent = new Intent(mContext, CommunityFeedActivity.class);
-                            mContext.startActivity(intent);
-                        }
-                    });
+           {
+               @Override
+               public void onClick(View v) {
+                   final String imageUrl;
+                   try {
+                       imageUrl = Utils.saveImageToCloud(imageUri.getPath());
+                       Post post = new Post();
+                       post.setUser(mUser);
+                       post.setImageUrl(imageUrl);
+                       post.setBody(etPostMessage.getText().toString());
+                       try {
+                           post.saveModel();
+                       } catch (ModelException e1) {
+                           e1.printStackTrace();
+                       }
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+                       Intent intent = new Intent(mContext, CommunityFeedActivity.class);
+                       mContext.startActivity(intent);
+                   } catch (ParseException e) {
+                       e.printStackTrace();
+                   }
+               }
+           }
+
+        );
     }
 
     @Override

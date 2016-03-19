@@ -73,10 +73,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         finish();
     }
 
-    @Bind(R.id.sampleButton)
-    Button btn;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +100,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         frequencyAdapter = new ArrayAdapter<Frequency>(this, android.R.layout.simple_list_item_1, Frequency.values());
         spinnerFrequency.setAdapter(frequencyAdapter);
         workoutTypeAdapter = new ArrayAdapter<WorkoutType>(this, android.R.layout.select_dialog_item, WorkoutType.values());
+    }
 
     public void selectWorkout(View view) {
         Toast.makeText(WorkoutEditActivity.this, "expanding...", Toast.LENGTH_SHORT).show();

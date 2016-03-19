@@ -78,6 +78,15 @@ public class PostImageCaptureFragment extends Fragment {
     @Bind(R.id.ivCameraClear)
     ImageView ivCameraClear;
 
+    @Bind(R.id.ivIconDone)
+    ImageView ivIconDone;
+
+    @Bind(R.id.ivCameraTarget1)
+    ImageView ivCameraTarget1;
+
+    @Bind(R.id.ivCameraTarget2)
+    ImageView ivCameraTarget2;
+
 
     private ImageSurfaceView mImageSurfaceView1;
     private ImageSurfaceView mImageSurfaceView2;
@@ -143,6 +152,8 @@ public class PostImageCaptureFragment extends Fragment {
                 PercentLayoutHelper.PercentLayoutInfo layoutInfo = layoutParams.getPercentLayoutInfo();
                 layoutInfo.widthPercent = 1f;
                 cameraPreviewLayout1.requestLayout();
+                ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_tbg));
+                ivCameraTarget1.setVisibility(View.VISIBLE);
                 cameraPreviewLayout2.setVisibility(View.GONE);
                 mMode = MODE_FULL;
             }
@@ -155,7 +166,9 @@ public class PostImageCaptureFragment extends Fragment {
                 PercentLayoutHelper.PercentLayoutInfo percentLayoutInfo = layoutParams.getPercentLayoutInfo();
                 percentLayoutInfo.widthPercent = 0.5f;
                 cameraPreviewLayout1.requestLayout();
+                ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_half_tbg));
                 cameraPreviewLayout2.setVisibility(View.VISIBLE);
+                ivCameraTarget2.setVisibility(View.GONE);
                 mMode = MODE_SPLIT;
                 verifyReadyToSubmit();
 
@@ -169,10 +182,10 @@ public class PostImageCaptureFragment extends Fragment {
                 cameraPreviewLayout2.removeView(mImageSurfaceView2);
                 camera = checkDeviceCamera();
                 mImageSurfaceView1 = new ImageSurfaceView(mContext, camera);
-                cameraPreviewLayout1.addView(mImageSurfaceView1);
+                cameraPreviewLayout1.addView(mImageSurfaceView1, 1);
                 mCameraSelect = CAMERA_SELECT_1;
-                cameraPreviewLayout1.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview_selected));
-                cameraPreviewLayout2.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview));
+                ivCameraTarget1.setVisibility(View.VISIBLE);
+                ivCameraTarget2.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -183,10 +196,10 @@ public class PostImageCaptureFragment extends Fragment {
                 cameraPreviewLayout2.removeView(mImageSurfaceView2);
                 camera = checkDeviceCamera();
                 mImageSurfaceView2 = new ImageSurfaceView(mContext, camera);
-                cameraPreviewLayout2.addView(mImageSurfaceView2);
+                cameraPreviewLayout2.addView(mImageSurfaceView2, 1);
                 mCameraSelect = CAMERA_SELECT_2;
-                cameraPreviewLayout1.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview));
-                cameraPreviewLayout2.setBackground(getResources().getDrawable(R.drawable.drawable_placeholder_cam_preview_selected));
+                ivCameraTarget1.setVisibility(View.INVISIBLE);
+                ivCameraTarget2.setVisibility(View.VISIBLE);
             }
         });
 
@@ -306,7 +319,7 @@ public class PostImageCaptureFragment extends Fragment {
         if (mMode == MODE_FULL) {
             if (ivCapturedImage1.getDrawable() != null) {
                 mFinalBitmap = mCapturedBitmap1;
-                //ivCameraClick.setText("Next");
+                ivIconDone.setVisibility(View.VISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -315,7 +328,7 @@ public class PostImageCaptureFragment extends Fragment {
                     }
                 });
             } else {
-                //ivCameraClick.setText("Click");
+                ivIconDone.setVisibility(View.INVISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -326,7 +339,7 @@ public class PostImageCaptureFragment extends Fragment {
         } else {
             if (ivCapturedImage1.getDrawable() != null && ivCapturedImage2.getDrawable() != null) {
                 mFinalBitmap = combineImages(mCapturedBitmap1, mCapturedBitmap2);
-                //ivCameraClick.setText("Next");
+                ivIconDone.setVisibility(View.VISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -335,7 +348,7 @@ public class PostImageCaptureFragment extends Fragment {
                     }
                 });
             } else {
-                //ivCameraClick.setText("Click");
+                ivIconDone.setVisibility(View.INVISIBLE);
                 ivCameraClick.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -371,13 +384,15 @@ public class PostImageCaptureFragment extends Fragment {
         cameraPreviewLayout1.requestLayout();
         cameraPreviewLayout2.setVisibility(View.GONE);
         ivCapturedImage1.setVisibility(View.GONE);
-        //ivCameraClick.setText("Click");
+        ivIconDone.setVisibility(View.INVISIBLE);
         ivCameraClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 camera.takePicture(null, null, pictureCallback);
             }
         });
+        ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_tbg));
+        ivCameraTarget1.setVisibility(View.VISIBLE);
     }
 
     private Bitmap combineImages(Bitmap a, Bitmap b) {
@@ -470,19 +485,10 @@ public class PostImageCaptureFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void startComposeFragment();
     }
+
 
 }

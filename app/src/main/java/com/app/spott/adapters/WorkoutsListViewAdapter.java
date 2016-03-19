@@ -44,9 +44,6 @@ public class WorkoutsListViewAdapter extends ArrayAdapter<Workout> {
         @Bind(R.id.tvGender)
         TextView tvGender;
 
-        @Bind(R.id.tvActivity)
-        TextView tvActivity;
-
         @Bind(R.id.tvTime)
         TextView tvTime;
 
@@ -83,11 +80,10 @@ public class WorkoutsListViewAdapter extends ArrayAdapter<Workout> {
 
             viewHolder.ivProfilePicture.setImageResource(0);
             Glide.with(mContext).load(workout.getUser().getProfileImageUrl()).error(R.drawable.drawable_placeholder).placeholder(R.drawable.drawable_placeholder).dontAnimate().into(viewHolder.ivProfilePicture);
-            String text = String.format("%s %s", workout.getUser().getFirstName(), workout.getUser().getLastName());
+            String text = String.format("%s %s,", workout.getUser().getFirstName(), workout.getUser().getLastName());
             viewHolder.tvUserName.setText(text);
             viewHolder.tvAge.setText(String.valueOf(workout.getUser().getAge()));
             viewHolder.tvGender.setText(workout.getUser().getGender().getName());
-            viewHolder.tvActivity.setText(workout.getWorkoutType().getName());
             viewHolder.tvTime.setText(workout.getTime().getName());
             viewHolder.tvFrequency.setText(workout.getFrequency().getName());
             viewHolder.tvLocation.setText(workout.getLocation().getAddress());
