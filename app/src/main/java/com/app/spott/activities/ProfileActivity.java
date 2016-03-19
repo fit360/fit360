@@ -9,13 +9,16 @@ import android.support.v7.widget.Toolbar;
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.adapters.ProfileWorkoutsAdapter;
+import com.app.spott.fragments.ProfileWorkoutsFragment;
 import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.app.spott.models.Workout;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener, ProfileFragmentListener {
+public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener,
+        ProfileFragmentListener,
+        ProfileWorkoutsFragment.AddWorkoutListener {
 
     private User user;
     private boolean isLoggedInUser;
@@ -89,8 +92,21 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         if (requestCode == WORKOUT_EDIT_REQUEST_CODE){
             if (resultCode == Activity.RESULT_OK){
                 String workoutId = data.getStringExtra(WORKOUT_ID_INTENT_KEY);
-//                call update on profile workouts fragment list view
+                final ProfileWorkoutsFragment frag = (ProfileWorkoutsFragment) getSupportFragmentManager().findFragmentById(R.id.fragProfileWorkouts);
+                Workout.findOne(workoutId, true, new GetCallback<Workout>() {
+                    @Override
+                    public void done(Workout object, ParseException e) {
+                        if (e == null)
+                            frag.onWorkoutSave(object);
+                    }
+                });
             }
         }
+    }
+
+    @Override
+    public void addWorkout() {
+        Intent intent = new Intent(this, WorkoutEditActivity.class);
+        startActivity(intent);
     }
 }

@@ -98,7 +98,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private void setWorkout(Intent i) {
         if (i.hasExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY)) {
             String w_id = i.getStringExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY);
-            Workout.findOne(w_id, new GetCallback<Workout>() {
+            Workout.findOne(w_id, true, new GetCallback<Workout>() {
                 @Override
                 public void done(Workout object, ParseException e) {
                     if (e == null) {
