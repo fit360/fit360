@@ -1,5 +1,5 @@
 package com.app.spott.models;
 
-public interface EnumModel {
+public interface Illustrable {
     int getIcon();
 }
