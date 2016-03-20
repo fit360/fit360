@@ -3,6 +3,8 @@ package com.app.spott.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
+import com.app.spott.adapters.WorkoutsTileAdapter;
 import com.app.spott.exceptions.ModelException;
 import com.app.spott.interfaces.WorkoutEditFragmentListener;
 import com.app.spott.models.Frequency;
@@ -35,7 +38,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEditFragmentListener {
+public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEditFragmentListener,
+WorkoutsTileAdapter.TileTouchInterceptor{
 
     private User currentUser;
     private Workout workout;
@@ -44,7 +48,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private ParseGeoPoint geoPoint;
     private ArrayAdapter<Time> timeAdapter;
     private ArrayAdapter<Frequency> frequencyAdapter;
-    private ArrayAdapter<WorkoutType> workoutTypeAdapter;
+    private WorkoutsTileAdapter workoutTypeAdapter;
     private static final String TAG = WorkoutEditActivity.class.getSimpleName();
 
 
@@ -60,8 +64,11 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     @Bind(R.id.spnFrequency)
     Spinner spinnerFrequency;
 
-    @Bind(R.id.expandableLayout)
+    @Bind(R.id.expWorkoutSelector)
     ExpandableWeightLayout expandableWorkouts;
+
+    @Bind(R.id.rvWorkoutSelector)
+    RecyclerView rvSelector;
 
     @OnClick(R.id.btnSave)
     void onSaveClick() {
@@ -99,7 +106,12 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         spinnerTime.setAdapter(timeAdapter);
         frequencyAdapter = new ArrayAdapter<Frequency>(this, android.R.layout.simple_list_item_1, Frequency.values());
         spinnerFrequency.setAdapter(frequencyAdapter);
-        workoutTypeAdapter = new ArrayAdapter<WorkoutType>(this, android.R.layout.select_dialog_item, WorkoutType.values());
+        workoutTypeAdapter = new WorkoutsTileAdapter(this);
+
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        rvSelector.setAdapter(workoutTypeAdapter);
+        rvSelector.setLayoutManager(layoutManager);
+        rvSelector.setHasFixedSize(true);
     }
 
     public void selectWorkout(View view) {
@@ -145,7 +157,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         workout.setLocation(location);
         workout.setFrequency((Frequency) spinnerFrequency.getSelectedItem());
         workout.setTime((Time) spinnerTime.getSelectedItem());
-        workout.setWorkoutType(workoutTypeAdapter.getItem(0));
         workout.setUser(currentUser);
         try {
             workout.saveModel();
@@ -208,5 +219,12 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         i.putExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY, w.getObjectId());
         setResult(RESULT_OK, i);
         finish();
+    }
+
+    @Override
+    public void onTileSelect(WorkoutType wt) {
+        btnWorkout.setText(wt.toString());
+        workout.setWorkoutType(wt);
+        expandableWorkouts.collapse();
     }
 }
