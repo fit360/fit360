@@ -6,8 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +14,7 @@ import android.view.View;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
-import com.app.spott.adapters.PostsAdapter;
+import com.app.spott.fragments.PostsListFragment;
 import com.app.spott.models.Gender;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
@@ -33,11 +31,8 @@ import java.util.List;
 
 public class CommunityFeedActivity extends AppCompatActivity {
     private SpottApplication app;
+    private PostsListFragment fragmentPostsList;
 
-    PostsAdapter aPosts;
-    ArrayList<Post> mPosts;
-    RecyclerView rvPosts;
-    LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout swipeContainer;
     private static final String USER = "user";
 
@@ -80,13 +75,10 @@ public class CommunityFeedActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        if (savedInstanceState == null){
+            fragmentPostsList = (PostsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_community_feed);
+        }
 
-        mPosts = new ArrayList<>();
-        aPosts = new PostsAdapter(this, mPosts);
-        rvPosts = (RecyclerView)findViewById(R.id.rvFeed);
-        rvPosts.setAdapter(aPosts);
-        linearLayoutManager = new LinearLayoutManager(this);
-        rvPosts.setLayoutManager(linearLayoutManager);
         fetchFeeds();
     }
 
@@ -99,9 +91,7 @@ public class CommunityFeedActivity extends AppCompatActivity {
             public void done(List<Post> posts, ParseException e) {
                 if (e == null) {
                     // Access data using the `getGender` methods for the object
-                    ArrayList dePosts = getDedupedPosts(posts);
-                    mPosts.addAll(dePosts);
-                    aPosts.notifyDataSetChanged();
+                    fragmentPostsList.addAll((ArrayList)posts);
                     swipeContainer.setRefreshing(false);
                 } else {
                     // something went wrong
@@ -109,35 +99,6 @@ public class CommunityFeedActivity extends AppCompatActivity {
             }
         });
     }
-
-    private ArrayList getDedupedPosts(List<Post> posts) {//compare all new posts against existing ones
-        if (mPosts.size() == 0){
-           return (ArrayList)posts;
-        }
-        boolean dupe = false;
-
-        ArrayList freshPosts = new ArrayList();
-        for (int i = 0; i < posts.size(); i++){
-            Post fetchedPost = posts.get(i);
-            //new post date is after the array date
-            //if(post.getUpdatedAt().after(mPosts.get(0).getUpdatedAt())){
-            for (int j = 0; j < mPosts.size(); j++){
-                Post arrayPost = mPosts.get(j);
-                if(fetchedPost.getObjectId().equals(arrayPost.getObjectId())){
-                    //it's a duplicate post
-                    dupe = true;
-                    break;
-                }
-            }
-            if (!dupe){
-                freshPosts.add(fetchedPost);
-            }else{
-                dupe = false;
-            }
-        }
-        return freshPosts;
-    }
-
     // Get the userId from the cached currentUser object
     void startWithCurrentUser() {
         ParseUser loggedInUser = ParseUser.getCurrentUser();

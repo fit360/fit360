@@ -13,6 +13,9 @@ import com.app.spott.R;
 import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +29,11 @@ public class ProfileHeaderFragment extends Fragment {
 
     @Bind(R.id.ivProfilePicture)
     ImageView ivProfilePicture;
-    private User user;
+
+    @Bind(R.id.ivCoverPhoto)
+    ImageView ivCoverPhoto;
+
+    private User mUser;
     private boolean isLoggedInUser;
 
     @Override
@@ -39,10 +46,26 @@ public class ProfileHeaderFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
-        tvUserName.setText(user.getFirstName() + " " + user.getLastName());
-        tvGenderAge.setText(user.getGender().getName() + ", " + user.getAge());
-        Glide.with(this.getActivity()).load(user.getProfileImageUrl()).centerCrop().into(ivProfilePicture);
+        if(mUser == null){
+            User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
+                @Override
+                public void done(User user, ParseException e) {
+                    mUser = user;
+                    render();
+                }
+            });
+        } else {
+            render();
+        }
 
+
+    }
+
+    private void render(){
+        tvUserName.setText(mUser.getFirstName() + " " + mUser.getLastName() + ",");
+        tvGenderAge.setText(mUser.getGender().getName() + " " + mUser.getAge());
+        Glide.with(this).load(mUser.getCoverImageUrl()).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivCoverPhoto);
+        Glide.with(this).load(mUser.getProfileImageUrl()).centerCrop().into(ivProfilePicture);
     }
 
     @Override
@@ -50,7 +73,7 @@ public class ProfileHeaderFragment extends Fragment {
         super.onAttach(context);
         try {
             ProfileFragmentListener listener = (ProfileFragmentListener) context;
-            user = listener.getUser();
+            mUser = listener.getUser();
             isLoggedInUser = listener.isLoggedInUser();
         } catch (ClassCastException e){
             throw new ClassCastException(context.toString() + " must implement ProfileFragmentListener");
