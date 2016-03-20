@@ -110,11 +110,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         saveWorkout();
     }
 
-    @OnClick(R.id.btnCancel)
-    void onCancelClick() {
-        finish();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
