@@ -16,6 +16,7 @@ public class User extends Model {
     private static final String GENDER = "gender";
     private static final String OWNER = "owner";
     private static final String PROFILE_IMAGE_URL = "profile_image_url";
+    private static final String COVER_IMAGE_URL = "cover_image_url";
 
     private static final String TAG = User.class.getSimpleName();
 
@@ -28,6 +29,10 @@ public class User extends Model {
     }
     public String getProfileImageUrl(){
         return getString(PROFILE_IMAGE_URL);
+    }
+
+    public String getCoverImageUrl() {
+        return getString(COVER_IMAGE_URL);
     }
 
     public void setFirstName(String firstName){
