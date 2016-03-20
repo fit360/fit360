@@ -10,10 +10,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <permission
         android:name="com.example.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.example.permission.MAPS_RECEIVE"/>
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -56,7 +57,11 @@
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
             android:parentActivityName=".activities.CommunityFeedActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.spott.activities.CommunityFeedActivity" />
+        </activity>
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/title_activity_login"
@@ -69,7 +74,12 @@
         <activity
             android:name=".activities.WorkoutEditActivity"
             android:label="@string/title_activity_workout_edit"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".activities.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.app.spott.activities.ProfileActivity" />
+        </activity>
         <activity
             android:name=".activities.CreatePostActivity"
             android:label="@string/title_activity_create_post"
