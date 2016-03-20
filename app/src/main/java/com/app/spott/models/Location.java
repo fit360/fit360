@@ -56,10 +56,6 @@ public class Location extends Model {
         put(PLACE_ID, placeId);
     }
 
-    public String getNameAddress() {
-        return getName() + ", " + getAddress();
-    }
-
     public boolean isSet(){
         return (getPoint() != null);
     }

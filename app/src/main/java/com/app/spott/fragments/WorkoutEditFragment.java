@@ -42,7 +42,7 @@ public class WorkoutEditFragment extends DialogFragment {
     @Bind(R.id.btnWorkout)
     AutoCompleteTextView autoWorkout;
 
-    @Bind(R.id.etLocation)
+    @Bind(R.id.btnLocation)
     EditText etLocation;
 
     @Bind(R.id.spnTime)
@@ -130,6 +130,7 @@ public class WorkoutEditFragment extends DialogFragment {
 
 //        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) ((FragmentActivity) getContext()).getSupportFragmentManager().findFragmentById(R.id.fragmentLocationAutoComplete);
         SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.fragmentGplaces);
+        f.setText("Select Location here");
         f.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -186,7 +187,7 @@ public class WorkoutEditFragment extends DialogFragment {
                     autoWorkout.setText(workout.getWorkoutType().toString());
                     spinnerFrequency.setSelection(frequencyAdapter.getPosition(workout.getFrequency()));
                     spinnerTime.setSelection(timeAdapter.getPosition(workout.getTime()));
-                    etLocation.setText(workout.getLocation().getNameAddress());
+                    etLocation.setText(workout.getLocation().getName());
                 } else {
                     Log.e(TAG, "Cannot retrieve workout: " + e.getMessage());
                 }

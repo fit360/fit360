@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -30,6 +29,14 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -39,13 +46,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEditFragmentListener,
-WorkoutsTileAdapter.TileTouchInterceptor{
+        WorkoutsTileAdapter.TileTouchInterceptor {
 
     private User currentUser;
     private Workout workout;
     private boolean isNewWorkout;
     private Location location;
     private ParseGeoPoint geoPoint;
+    private GoogleMap map;
     private ArrayAdapter<Time> timeAdapter;
     private ArrayAdapter<Frequency> frequencyAdapter;
     private WorkoutsTileAdapter workoutTypeAdapter;
@@ -55,8 +63,8 @@ WorkoutsTileAdapter.TileTouchInterceptor{
     @Bind(R.id.btnWorkout)
     Button btnWorkout;
 
-    @Bind(R.id.etLocation)
-    EditText etLocation;
+    @Bind(R.id.btnLocation)
+    Button btnLocation;
 
     @Bind(R.id.spnTime)
     Spinner spinnerTime;
@@ -66,6 +74,12 @@ WorkoutsTileAdapter.TileTouchInterceptor{
 
     @Bind(R.id.expWorkoutSelector)
     ExpandableWeightLayout expandableWorkouts;
+
+    @Bind(R.id.expMap)
+    ExpandableWeightLayout expandableMap;
+
+    @Bind(R.id.mapView)
+    MapView mapView;
 
     @Bind(R.id.rvWorkoutSelector)
     RecyclerView rvSelector;
@@ -94,13 +108,12 @@ WorkoutsTileAdapter.TileTouchInterceptor{
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ButterKnife.bind(this);
 
-        initializeViews();
-        setWorkout(getIntent());
+        initializeViews(savedInstanceState);
+        initializeData(getIntent());
         initPlaceFragment();
     }
 
-    private void initializeViews() {
-        geoPoint = new ParseGeoPoint();
+    private void initializeViews(Bundle savedInstanceState) {
 
         timeAdapter = new ArrayAdapter<Time>(this, android.R.layout.simple_list_item_1, Time.values());
         spinnerTime.setAdapter(timeAdapter);
@@ -112,15 +125,42 @@ WorkoutsTileAdapter.TileTouchInterceptor{
         rvSelector.setAdapter(workoutTypeAdapter);
         rvSelector.setLayoutManager(layoutManager);
         rvSelector.setHasFixedSize(true);
+
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+                map.getUiSettings().setAllGesturesEnabled(true);
+                map.setMyLocationEnabled(true);
+                MapsInitializer.initialize(WorkoutEditActivity.this);
+            }
+        });
+    }
+
+    private void animateMap(ParseGeoPoint point) {
+        animateMap(new LatLng(point.getLatitude(), point.getLongitude()));
+    }
+
+    private void animateMap(LatLng latLng) {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+        map.animateCamera(cameraUpdate);
+        map.addMarker(new MarkerOptions().position(latLng));
     }
 
     public void selectWorkout(View view) {
-        Toast.makeText(WorkoutEditActivity.this, "expanding...", Toast.LENGTH_SHORT).show();
         expandableWorkouts.toggle();
     }
 
+    public void selectLocation(View v) {
+        expandableMap.toggle();
 
-    private void setWorkout(Intent i) {
+        if (location.isSet())
+            animateMap(location.getPoint());
+    }
+
+    private void initializeData(Intent i) {
         if (i.hasExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY)) {
             String w_id = i.getStringExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY);
             Workout.findOne(w_id, true, new GetCallback<Workout>() {
@@ -129,7 +169,8 @@ WorkoutsTileAdapter.TileTouchInterceptor{
                     if (e == null) {
                         workout = object;
                         location = workout.getLocation();
-                        populateViews();
+                        geoPoint = location.getPoint();
+                        populateViews(workout);
                     } else {
                         Log.e(TAG, e.getMessage());
                     }
@@ -138,15 +179,16 @@ WorkoutsTileAdapter.TileTouchInterceptor{
         } else {
             workout = new Workout();
             location = new Location();
+            geoPoint = new ParseGeoPoint();
             isNewWorkout = true;
         }
     }
 
-    private void populateViews() {
-        btnWorkout.setText(workout.getWorkoutType().toString());
-        spinnerFrequency.setSelection(frequencyAdapter.getPosition(workout.getFrequency()));
-        spinnerTime.setSelection(timeAdapter.getPosition(workout.getTime()));
-        etLocation.setText(workout.getLocation().getNameAddress());
+    private void populateViews(Workout w) {
+        btnWorkout.setText(w.getWorkoutType().toString());
+        spinnerFrequency.setSelection(frequencyAdapter.getPosition(w.getFrequency()));
+        spinnerTime.setSelection(timeAdapter.getPosition(w.getTime()));
+        btnLocation.setText(location.getName());
     }
 
     private void saveWorkout() {
@@ -162,16 +204,19 @@ WorkoutsTileAdapter.TileTouchInterceptor{
             workout.saveModel();
             notifyListenerActivity(workout);
         } catch (ModelException e) {
+            Toast.makeText(this, "Select all fields", Toast.LENGTH_SHORT);
             e.printStackTrace();
         }
     }
 
     private void initPlaceFragment() {
-        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
+        final SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
+        f.setText("Sleect location here");
         f.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                etLocation.setText(place.getAddress());
+                btnLocation.setText(place.getName());
+                f.setText(place.getName());
                 location.setName(place.getName().toString());
                 location.setAddress(place.getAddress().toString());
                 location.setPlaceId(place.getId());
@@ -179,11 +224,12 @@ WorkoutsTileAdapter.TileTouchInterceptor{
                 geoPoint.setLatitude(place.getLatLng().latitude);
                 geoPoint.setLongitude(place.getLatLng().longitude);
                 location.setPoint(geoPoint);
+                animateMap(geoPoint);
             }
 
             @Override
             public void onError(Status status) {
-                etLocation.setText(status.toString());
+                btnLocation.setText(status.toString());
             }
         });
     }
@@ -211,6 +257,30 @@ WorkoutsTileAdapter.TileTouchInterceptor{
     @Override
     public void setLatLng() {
 //        set LatLng in Map fragment
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     @Override
