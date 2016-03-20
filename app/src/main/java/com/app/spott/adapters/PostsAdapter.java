@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
-import com.app.spott.activities.ChatActivity;
+import com.app.spott.activities.ProfileActivity;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
@@ -54,10 +54,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }else {
                 Glide.with(holder.context).load(getProfileUrl(post.getObjectId())).centerCrop().into(holder.ivProfilePic);
             }
-            holder.ivchatButton.setOnClickListener(new View.OnClickListener() {
+            holder.ivProfilePic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(mContext, ChatActivity.class);
+                    Intent i = new Intent(mContext, ProfileActivity.class);
                     i.putExtra("userId", user.getObjectId());
                     mContext.startActivity(i);
                 }
@@ -92,8 +92,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvCaption;
         ImageView ivPhoto;
         ImageView ivProfilePic;
-        ImageView ivchatButton;
-//        @Bind(R.id.ivPhoto) ImageView ivPhoto;
         private Context context;
 
         public ViewHolder(Context context, View itemView) {
@@ -103,7 +101,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvUserName = (TextView)itemView.findViewById(R.id.tvUsername);
             ivPhoto = (ImageView)itemView.findViewById(R.id.ivPhoto);
             ivProfilePic = (ImageView)itemView.findViewById(R.id.ivProfilePic);
-            ivchatButton = (ImageView)itemView.findViewById(R.id.ivChat);
             // Store the context
             this.context = context;
             // Attach a click listener to the entire row view
