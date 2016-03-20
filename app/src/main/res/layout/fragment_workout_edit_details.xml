@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingTop="16dp">
 
     <Button
         android:id="@+id/btnWorkout"
@@ -15,19 +16,20 @@
         android:text="Workout Type" />
 
     <com.github.aakira.expandablelayout.ExpandableWeightLayout
-        android:id="@+id/expandableLayout"
+        android:id="@+id/expWorkoutSelector"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         app:ael_duration="1000"
-        app:ael_expanded="true"
+        app:ael_expanded="false"
         app:ael_interpolator="anticipateOvershoot">
 
-        <ImageView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvWorkoutSelector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_basketball" />
+            android:layout_centerInParent="true" />
+
     </com.github.aakira.expandablelayout.ExpandableWeightLayout>
 
     <LinearLayout
