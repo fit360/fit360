@@ -45,4 +45,12 @@
             android:layout_alignTop="@id/tvUserName"
             android:layout_alignBottom="@id/tvUserName"
             android:layout_marginLeft="8dp"/>
+    <ImageView
+            android:id="@+id/ivChat"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_action_chat_dark"
+            android:layout_below="@id/ivCoverPhoto"/>
     </RelativeLayout>
