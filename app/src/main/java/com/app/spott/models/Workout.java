@@ -41,7 +41,7 @@ public class Workout extends Model {
     }
 
     public void setWorkoutType(WorkoutType workoutType) {
-        put(ACTIVITY_TYPE, workoutType.toString());
+        put(ACTIVITY_TYPE, workoutType.name());
     }
 
     public Time getTime() {
@@ -69,6 +69,20 @@ public class Workout extends Model {
     }
 
 
+    public boolean isSet(){
+        if (getLocation() == null)
+            return false;
+        if (getWorkoutType() == null)
+            return false;
+        if (getFrequency() == null)
+            return false;
+        if (getTime() == null )
+            return false;
+        if (getUser() == null)
+            return false;
+
+        return true;
+    }
 
     private static ParseQuery<Workout> getQuery(){
         ParseQuery<Workout> q = ParseQuery.getQuery(Workout.class);
@@ -111,7 +125,7 @@ public class Workout extends Model {
 
     @Override
     public void saveModel() throws ModelException {
-        if (this.getWorkoutType() == null || this.getLocation() == null || this.getUser() == null)
+        if (!this.isSet())
             throw new WorkoutModelException();
 
         this.getLocation().saveModel();

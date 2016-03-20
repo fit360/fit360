@@ -406,7 +406,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 ;
                 String age = String.valueOf(user.getAge());
                 String gender = user.getGender().getName();
-                String activityName = activityType.getName();
+                String activityName = activityType.toString();
                 String time = workout.getTime().getName();
                 String frequency = workout.getFrequency().getName();
 
