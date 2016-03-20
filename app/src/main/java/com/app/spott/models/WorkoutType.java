@@ -54,12 +54,14 @@ public enum WorkoutType {
 
     private static final Map<String, WorkoutType> lookup = new HashMap<>();
     private static final ArrayList<String> readableStrings = new ArrayList<>();
+    private static ArrayList<WorkoutType> all;
 
     static {
         for(WorkoutType workoutType : EnumSet.allOf(WorkoutType.class)) {
-            lookup.put(workoutType.getName(), workoutType);
-            readableStrings.add(workoutType.getName());
+            lookup.put(workoutType.name(), workoutType);
+            readableStrings.add(workoutType.toString());
         }
+        all = new ArrayList<>(lookup.values());
     }
 
     WorkoutType(String value, int icon) {
@@ -67,8 +69,9 @@ public enum WorkoutType {
         this.icon = icon;
     }
 
-    public String getName() {
-        return value;
+    @Override
+    public String toString() {
+        return this.value;
     }
 
     public int getIcon(){return icon;}
@@ -81,4 +84,7 @@ public enum WorkoutType {
         return lookup.get(activityString);
     }
 
+    public static List<WorkoutType> getAll(){
+        return all;
+    }
 }
