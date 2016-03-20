@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.spott.R;
@@ -64,13 +64,13 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
 
     @Bind(R.id.ivWorkoutIcon)
-    ImageButton ivWorkoutIcon;
+    ImageView ivWorkoutIcon;
 
     @Bind(R.id.ibTimeIcon)
-    ImageButton ibTimeIcon;
+    ImageView ibTimeIcon;
 
     @Bind(R.id.ibFrequencyIcon)
-    ImageButton ibFreqIcon;
+    ImageView ibFreqIcon;
 
     @Bind(R.id.btnWorkout)
     Button btnWorkout;

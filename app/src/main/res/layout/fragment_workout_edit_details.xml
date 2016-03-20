@@ -16,9 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ivWorkoutIcon"
                 style="@style/WorkoutEditIcons"
+                android:onClick="toggleWorkout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/action_bar_ic_search" />
@@ -66,9 +67,8 @@
                 style="@style/WorkoutEditIcons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_light"
                 android:onClick="toggleMap"
-                android:src="@drawable/ic_actionbar_map" />
+                android:src="@drawable/ic_map_black_36dp" />
 
             <fragment
                 android:id="@+id/fragmentGplaces"
@@ -114,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibTimeIcon"
                 style="@style/WorkoutEditIcons"
                 android:layout_width="wrap_content"
@@ -160,7 +160,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibFrequencyIcon"
                 style="@style/WorkoutEditIcons"
                 android:layout_width="wrap_content"
