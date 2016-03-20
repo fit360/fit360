@@ -67,14 +67,14 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
         View activityView = li.inflate(R.layout.item_profile_workout, parent, false);
-        RecyclerView.ViewHolder viewHolder = new ActivityViewHolder(activityView);
+        RecyclerView.ViewHolder viewHolder = new WorkoutViewHolder(activityView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Workout workout = workouts.get(position);
-        ActivityViewHolder vh = (ActivityViewHolder) holder;
+        WorkoutViewHolder vh = (WorkoutViewHolder) holder;
         vh.ivActivityIcon.setImageResource(workout.getWorkoutType().getIcon());
         vh.tvActivityLocation.setText(workout.getLocation().getName());
         vh.tvActivityFrequency.setText(workout.getFrequency().getName());
@@ -86,7 +86,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         return this.workouts.size();
     }
 
-    public class ActivityViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class WorkoutViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.ivActivityIcon)
         ImageView ivActivityIcon;
@@ -100,7 +100,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         @Bind(R.id.tvActivityTime)
         TextView tvActivityTime;
 
-        public ActivityViewHolder(View itemView) {
+        public WorkoutViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
@@ -110,9 +110,6 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         public void onClick(View v) {
             setCurrentEditPosition(getLayoutPosition());
             Workout workout = workouts.get(currentEditPosition);
-//            FragmentManager fm = ((FragmentActivity) mContext).getSupportFragmentManager();
-//            WorkoutEditFragment workoutEditFragment = WorkoutEditFragment.newInstance(workout.getObjectId());
-//            workoutEditFragment.show(fm, "tag");
             listener.editWorkout(workout);
         }
     }
