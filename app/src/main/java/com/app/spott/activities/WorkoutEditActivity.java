@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,6 +19,7 @@ import com.app.spott.SpottApplication;
 import com.app.spott.adapters.WorkoutsTileAdapter;
 import com.app.spott.exceptions.ModelException;
 import com.app.spott.interfaces.WorkoutEditFragmentListener;
+import com.app.spott.models.EnumModel;
 import com.app.spott.models.Frequency;
 import com.app.spott.models.Location;
 import com.app.spott.models.Time;
@@ -30,6 +31,14 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -39,27 +48,32 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEditFragmentListener,
-WorkoutsTileAdapter.TileTouchInterceptor{
+        WorkoutsTileAdapter.TileTouchInterceptor {
 
     private User currentUser;
     private Workout workout;
     private boolean isNewWorkout;
     private Location location;
     private ParseGeoPoint geoPoint;
-    private ArrayAdapter<Time> timeAdapter;
+    private GoogleMap map;
+    private WorkoutsTileAdapter timeAdapter;
     private ArrayAdapter<Frequency> frequencyAdapter;
     private WorkoutsTileAdapter workoutTypeAdapter;
     private static final String TAG = WorkoutEditActivity.class.getSimpleName();
+    private SupportPlaceAutocompleteFragment placeFragment;
 
 
     @Bind(R.id.btnWorkout)
     Button btnWorkout;
 
-    @Bind(R.id.etLocation)
-    EditText etLocation;
+    @Bind(R.id.ivWorkoutIcon)
+    ImageButton ivWorkoutIcon;
 
-    @Bind(R.id.spnTime)
-    Spinner spinnerTime;
+    @Bind(R.id.btnTime)
+    Button btnTime;
+
+    @Bind(R.id.ibTimeIcon)
+    ImageButton ibTimeIcon;
 
     @Bind(R.id.spnFrequency)
     Spinner spinnerFrequency;
@@ -67,8 +81,20 @@ WorkoutsTileAdapter.TileTouchInterceptor{
     @Bind(R.id.expWorkoutSelector)
     ExpandableWeightLayout expandableWorkouts;
 
+    @Bind(R.id.expTimeSelector)
+    ExpandableWeightLayout expandableTime;
+
+    @Bind(R.id.expMap)
+    ExpandableWeightLayout expandableMap;
+
+    @Bind(R.id.mapView)
+    MapView mapView;
+
     @Bind(R.id.rvWorkoutSelector)
-    RecyclerView rvSelector;
+    RecyclerView rvWorkoutSelector;
+
+    @Bind(R.id.rvTimeSelector)
+    RecyclerView rvTimeSelector;
 
     @OnClick(R.id.btnSave)
     void onSaveClick() {
@@ -94,33 +120,70 @@ WorkoutsTileAdapter.TileTouchInterceptor{
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ButterKnife.bind(this);
 
-        initializeViews();
-        setWorkout(getIntent());
-        initPlaceFragment();
+        initializeViews(savedInstanceState);
+        initializeData(getIntent());
     }
 
-    private void initializeViews() {
-        geoPoint = new ParseGeoPoint();
+    private void initializeViews(Bundle savedInstanceState) {
 
-        timeAdapter = new ArrayAdapter<Time>(this, android.R.layout.simple_list_item_1, Time.values());
-        spinnerTime.setAdapter(timeAdapter);
         frequencyAdapter = new ArrayAdapter<Frequency>(this, android.R.layout.simple_list_item_1, Frequency.values());
         spinnerFrequency.setAdapter(frequencyAdapter);
-        workoutTypeAdapter = new WorkoutsTileAdapter(this);
+        timeAdapter = new WorkoutsTileAdapter(this, Time.getAll());
+        workoutTypeAdapter = new WorkoutsTileAdapter(this, WorkoutType.getAll());
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
-        rvSelector.setAdapter(workoutTypeAdapter);
-        rvSelector.setLayoutManager(layoutManager);
-        rvSelector.setHasFixedSize(true);
+        StaggeredGridLayoutManager lmWorkout = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        rvWorkoutSelector.setAdapter(workoutTypeAdapter);
+        rvWorkoutSelector.setLayoutManager(lmWorkout);
+        rvWorkoutSelector.setHasFixedSize(true);
+
+        StaggeredGridLayoutManager lmTime = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        rvTimeSelector.setAdapter(timeAdapter);
+        rvTimeSelector.setLayoutManager(lmTime);
+        rvTimeSelector.setHasFixedSize(true);
+
+        placeFragment = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
+        initPlaceFragment(placeFragment);
+
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                map = googleMap;
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+                map.getUiSettings().setAllGesturesEnabled(true);
+                map.setMyLocationEnabled(true);
+                MapsInitializer.initialize(WorkoutEditActivity.this);
+            }
+        });
+    }
+
+    private void animateMap(ParseGeoPoint point) {
+        animateMap(new LatLng(point.getLatitude(), point.getLongitude()));
+    }
+
+    private void animateMap(LatLng latLng) {
+        map.clear();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+        map.animateCamera(cameraUpdate);
+        map.addMarker(new MarkerOptions().position(latLng));
     }
 
     public void selectWorkout(View view) {
-        Toast.makeText(WorkoutEditActivity.this, "expanding...", Toast.LENGTH_SHORT).show();
         expandableWorkouts.toggle();
     }
 
+    public void selectTime(View view){
+        expandableTime.toggle();
+    }
 
-    private void setWorkout(Intent i) {
+    public void toggleMap(View v) {
+        expandableMap.toggle();
+
+        if (location != null && location.isSet())
+            animateMap(location.getPoint());
+    }
+
+    private void initializeData(Intent i) {
         if (i.hasExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY)) {
             String w_id = i.getStringExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY);
             Workout.findOne(w_id, true, new GetCallback<Workout>() {
@@ -129,7 +192,8 @@ WorkoutsTileAdapter.TileTouchInterceptor{
                     if (e == null) {
                         workout = object;
                         location = workout.getLocation();
-                        populateViews();
+                        geoPoint = location.getPoint();
+                        populateViews(workout);
                     } else {
                         Log.e(TAG, e.getMessage());
                     }
@@ -138,15 +202,21 @@ WorkoutsTileAdapter.TileTouchInterceptor{
         } else {
             workout = new Workout();
             location = new Location();
+            geoPoint = new ParseGeoPoint();
             isNewWorkout = true;
         }
     }
 
-    private void populateViews() {
-        btnWorkout.setText(workout.getWorkoutType().toString());
-        spinnerFrequency.setSelection(frequencyAdapter.getPosition(workout.getFrequency()));
-        spinnerTime.setSelection(timeAdapter.getPosition(workout.getTime()));
-        etLocation.setText(workout.getLocation().getNameAddress());
+    private void populateViews(Workout w) {
+        btnWorkout.setText(w.getWorkoutType().toString());
+        ivWorkoutIcon.setImageResource(w.getWorkoutType().getIcon());
+
+        spinnerFrequency.setSelection(frequencyAdapter.getPosition(w.getFrequency()));
+
+        btnTime.setText(w.getTime().toString());
+        ibTimeIcon.setImageResource(w.getTime().getIcon());
+        
+        placeFragment.setText(location.getName());
     }
 
     private void saveWorkout() {
@@ -156,22 +226,21 @@ WorkoutsTileAdapter.TileTouchInterceptor{
         }
         workout.setLocation(location);
         workout.setFrequency((Frequency) spinnerFrequency.getSelectedItem());
-        workout.setTime((Time) spinnerTime.getSelectedItem());
         workout.setUser(currentUser);
         try {
             workout.saveModel();
             notifyListenerActivity(workout);
         } catch (ModelException e) {
+            Toast.makeText(this, "Select all fields", Toast.LENGTH_SHORT);
             e.printStackTrace();
         }
     }
 
-    private void initPlaceFragment() {
-        SupportPlaceAutocompleteFragment f = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
-        f.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+    private void initPlaceFragment(final SupportPlaceAutocompleteFragment frag) {
+        frag.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                etLocation.setText(place.getAddress());
+                frag.setText(place.getName());
                 location.setName(place.getName().toString());
                 location.setAddress(place.getAddress().toString());
                 location.setPlaceId(place.getId());
@@ -179,11 +248,13 @@ WorkoutsTileAdapter.TileTouchInterceptor{
                 geoPoint.setLatitude(place.getLatLng().latitude);
                 geoPoint.setLongitude(place.getLatLng().longitude);
                 location.setPoint(geoPoint);
+                expandableMap.expand();
+                animateMap(geoPoint);
             }
 
             @Override
             public void onError(Status status) {
-                etLocation.setText(status.toString());
+                frag.setText(status.toString());
             }
         });
     }
@@ -214,6 +285,30 @@ WorkoutsTileAdapter.TileTouchInterceptor{
     }
 
     @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
     public void notifyListenerActivity(Workout w) {
         Intent i = new Intent();
         i.putExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY, w.getObjectId());
@@ -222,9 +317,24 @@ WorkoutsTileAdapter.TileTouchInterceptor{
     }
 
     @Override
-    public void onTileSelect(WorkoutType wt) {
+    public void onTileSelect(EnumModel obj) {
+        if (obj instanceof WorkoutType)
+            setWorkoutType((WorkoutType) obj);
+        else if (obj instanceof Time)
+            setWorkoutTime((Time) obj);
+    }
+
+    private void setWorkoutType(WorkoutType wt){
         btnWorkout.setText(wt.toString());
+        ivWorkoutIcon.setImageResource(wt.getIcon());
         workout.setWorkoutType(wt);
         expandableWorkouts.collapse();
+    }
+
+    private void setWorkoutTime(Time t){
+        btnTime.setText(t.toString());
+        ibTimeIcon.setImageResource(t.getIcon());
+        workout.setTime(t);
+        expandableTime.collapse();
     }
 }

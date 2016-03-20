@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public enum WorkoutType {
+public enum WorkoutType implements EnumModel {
     ARM_WRESTLING("Arm wrestling", R.drawable.ic_arm_wrestling),
     BALLET("Ballet", R.drawable.ic_ballet),
     BASEBALL("Baseball", R.drawable.ic_baseball),
