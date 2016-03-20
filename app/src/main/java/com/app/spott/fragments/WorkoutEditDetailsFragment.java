@@ -35,7 +35,7 @@ public class WorkoutEditDetailsFragment extends Fragment {
     @Bind(R.id.btnWorkout)
     AutoCompleteTextView autoWorkout;
 
-    @Bind(R.id.etLocation)
+    @Bind(R.id.btnLocation)
     EditText etLocation;
 
     @Bind(R.id.spnTime)
@@ -130,7 +130,7 @@ public class WorkoutEditDetailsFragment extends Fragment {
         autoWorkout.setText(workout.getWorkoutType().toString());
         spinnerFrequency.setSelection(frequencyAdapter.getPosition(workout.getFrequency()));
         spinnerTime.setSelection(timeAdapter.getPosition(workout.getTime()));
-        etLocation.setText(workout.getLocation().getNameAddress());
+        etLocation.setText(workout.getLocation().getName());
     }
 
     private void saveWorkout() {
