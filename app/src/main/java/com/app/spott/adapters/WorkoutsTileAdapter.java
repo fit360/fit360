@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
-import com.app.spott.models.WorkoutType;
+import com.app.spott.models.EnumModel;
 
 import java.util.List;
 
@@ -18,22 +18,27 @@ import butterknife.ButterKnife;
 
 public class WorkoutsTileAdapter extends RecyclerView.Adapter{
 
-    private static List<WorkoutType> workoutTypes = WorkoutType.getAll();
-    private WorkoutType type;
+    private List workoutTypes;
+    private EnumModel selection;
     private TileTouchInterceptor interceptor;
     private int selectedPosition;
 
 
     public interface TileTouchInterceptor {
-        void onTileSelect(WorkoutType wt);
+        void onTileSelect(EnumModel obj);
     }
 
-    public WorkoutsTileAdapter(Context mContext) {
+    private WorkoutsTileAdapter(Context mContext) {
         if (mContext instanceof TileTouchInterceptor){
             this.interceptor = (TileTouchInterceptor) mContext;
         } else {
             throw new ClassCastException(mContext.toString() + "must implement TileTouchInterceptor");
         }
+    }
+
+    public WorkoutsTileAdapter(Context mContext, List wItems){
+        this(mContext);
+        workoutTypes = wItems;
     }
 
     public void setSelectedPosition(int selectedPosition) {
@@ -43,18 +48,18 @@ public class WorkoutsTileAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater li = LayoutInflater.from(parent.getContext());
-        View tileView = li.inflate(R.layout.item_workout_tile, parent, false);
+        View tileView = li.inflate(R.layout.item_recycler_tile, parent, false);
         RecyclerView.ViewHolder viewHolder = new TileViewHolder(tileView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        type = workoutTypes.get(position);
+        selection = (EnumModel) workoutTypes.get(position);
         TileViewHolder th = (TileViewHolder) holder;
 //        th.itemView.setSelected(this.selectedPosition == position);
-        th.ivTileIcon.setImageResource(type.getIcon());
-        th.tvTileText.setText(type.toString());
+        th.ivTileIcon.setImageResource(selection.getIcon());
+        th.tvTileText.setText(selection.toString());
     }
 
     @Override
@@ -80,7 +85,7 @@ public class WorkoutsTileAdapter extends RecyclerView.Adapter{
         public void onClick(View v) {
             int pos = getLayoutPosition();
             setSelectedPosition(pos);
-            WorkoutType w = workoutTypes.get(pos);
+            EnumModel w = (EnumModel) workoutTypes.get(pos);
             interceptor.onTileSelect(w);
         }
     }

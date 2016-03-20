@@ -45,7 +45,7 @@ public class WorkoutEditFragment extends DialogFragment {
     @Bind(R.id.btnLocation)
     EditText etLocation;
 
-    @Bind(R.id.spnTime)
+    @Bind(R.id.btnTime)
     Spinner spinnerTime;
 
     @Bind(R.id.spnFrequency)
