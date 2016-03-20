@@ -79,6 +79,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         vh.tvActivityLocation.setText(workout.getLocation().getName());
         vh.tvActivityFrequency.setText(workout.getFrequency().getName());
         vh.tvActivityTime.setText(workout.getTime().getName());
+        vh.tvActivity.setText(workout.getWorkoutType().toString());
     }
 
     @Override
@@ -99,6 +100,9 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
 
         @Bind(R.id.tvActivityTime)
         TextView tvActivityTime;
+
+        @Bind(R.id.tvActivity)
+        TextView tvActivity;
 
         public WorkoutViewHolder(View itemView) {
             super(itemView);

@@ -1,24 +1,37 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".fragments.ProfileWorkoutsFragment">
+
+    <TextView
+        android:id="@+id/tvActivityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activities"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/ivAddActivity"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_edit_salmon_24dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/tvActivityLabel"
+        android:layout_marginTop="-8dp"
+        android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvProfileActivities"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/tvActivityLabel"
+        android:layout_alignParentLeft="true">
 
     </android.support.v7.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/btnAddActivity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="ADD ACTIVITY"
-        />
-
-</FrameLayout>
+</RelativeLayout>
