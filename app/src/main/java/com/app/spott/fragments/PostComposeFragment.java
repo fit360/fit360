@@ -87,33 +87,47 @@ public class PostComposeFragment extends Fragment {
 
         });
 
-        btnPost.setOnClickListener(new View.OnClickListener()
-
-           {
+        btnPost.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   final String imageUrl;
-                   try {
-                       imageUrl = Utils.saveImageToCloud(imageUri.getPath());
-                       Post post = new Post();
-                       post.setUser(mUser);
-                       post.setImageUrl(imageUrl);
-                       post.setBody(etPostMessage.getText().toString());
-                       try {
-                           post.saveModel();
-                       } catch (ModelException e1) {
-                           e1.printStackTrace();
-                       }
+                   if(mUser == null){
+                       User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
+                           @Override
+                           public void done(User user, ParseException e) {
+                               mUser = user;
+                               sendPost(imageUri);
+                           }
 
-                       Intent intent = new Intent(mContext, CommunityFeedActivity.class);
-                       mContext.startActivity(intent);
-                   } catch (ParseException e) {
-                       e.printStackTrace();
+                       });
+                   } else {
+                       sendPost(imageUri);
                    }
+
                }
            }
 
         );
+    }
+
+    private void sendPost(Uri imageUri) {
+        try {
+            String imageUrl;
+            imageUrl = Utils.saveImageToCloud(imageUri.getPath());
+            Post post = new Post();
+            post.setUser(mUser);
+            post.setImageUrl(imageUrl);
+            post.setBody(etPostMessage.getText().toString());
+            try {
+                post.saveModel();
+            } catch (ModelException e1) {
+                e1.printStackTrace();
+            }
+
+            Intent intent = new Intent(mContext, CommunityFeedActivity.class);
+            mContext.startActivity(intent);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
