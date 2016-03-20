@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
-import com.app.spott.adapters.WorkoutsTileAdapter;
+import com.app.spott.adapters.GridTileAdapter;
 import com.app.spott.exceptions.ModelException;
 import com.app.spott.interfaces.WorkoutEditFragmentListener;
 import com.app.spott.models.Frequency;
@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEditFragmentListener,
-        WorkoutsTileAdapter.TileTouchInterceptor {
+        GridTileAdapter.TileTouchInterceptor {
 
     private User currentUser;
     private Workout workout;
@@ -56,9 +56,9 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private Location location;
     private ParseGeoPoint geoPoint;
     private GoogleMap map;
-    private WorkoutsTileAdapter timeAdapter;
-    private WorkoutsTileAdapter frequencyAdapter;
-    private WorkoutsTileAdapter workoutTypeAdapter;
+    private GridTileAdapter timeAdapter;
+    private GridTileAdapter frequencyAdapter;
+    private GridTileAdapter workoutTypeAdapter;
     private static final String TAG = WorkoutEditActivity.class.getSimpleName();
     private SupportPlaceAutocompleteFragment placeFragment;
 
@@ -134,19 +134,19 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     private void initializeViews(Bundle savedInstanceState) {
-        workoutTypeAdapter = new WorkoutsTileAdapter(this, WorkoutType.getAll());
+        workoutTypeAdapter = new GridTileAdapter(this, WorkoutType.getAll());
         StaggeredGridLayoutManager lmWorkout = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rvWorkoutSelector.setAdapter(workoutTypeAdapter);
         rvWorkoutSelector.setLayoutManager(lmWorkout);
         rvWorkoutSelector.setHasFixedSize(true);
 
-        timeAdapter = new WorkoutsTileAdapter(this, Time.getAll());
+        timeAdapter = new GridTileAdapter(this, Time.getAll());
         StaggeredGridLayoutManager lmTime = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rvTimeSelector.setAdapter(timeAdapter);
         rvTimeSelector.setLayoutManager(lmTime);
         rvTimeSelector.setHasFixedSize(true);
 
-        frequencyAdapter = new WorkoutsTileAdapter(this, Frequency.getAll());
+        frequencyAdapter = new GridTileAdapter(this, Frequency.getAll());
         StaggeredGridLayoutManager lmFreq = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         rvFreqSelector.setAdapter(frequencyAdapter);
         rvFreqSelector.setLayoutManager(lmFreq);
