@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +18,6 @@ import com.app.spott.models.Gender;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.LogInCallback;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -42,13 +38,6 @@ public class CommunityFeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_feed);
         app = (SpottApplication) getApplicationContext();
-
-        if (ParseUser.getCurrentUser() != null) { // start with existing user
-            startWithCurrentUser();
-        } else { // If not logged in, login as a new anonymous user
-            login();
-        }
-
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -99,21 +88,6 @@ public class CommunityFeedActivity extends AppCompatActivity {
             }
         });
     }
-    // Get the userId from the cached currentUser object
-    void startWithCurrentUser() {
-        ParseUser loggedInUser = ParseUser.getCurrentUser();
-        Log.d("login", loggedInUser.getSessionToken());
-        User.getByOwner(loggedInUser, new GetCallback<User>() {
-            @Override
-            public void done(User user, ParseException e) {
-                if (e == null) {
-                    app.setCurrentUser(user);
-                } else {
-                    app.setCurrentUser(setupAdil());
-                }
-            }
-        });
-    }
 
     private User setupNewUser() {
         User user = new User();
@@ -142,20 +116,7 @@ public class CommunityFeedActivity extends AppCompatActivity {
         return post;
     }
 
-    private User setupAdil() {
-        User user = new User();
-        user.setFirstName("Adil");
-        user.setAge(25);
-        user.setLastName("Ansari");
-        user.setGender(Gender.MALE);
-        user.setOwner(ParseUser.getCurrentUser());
-        try {
-            user.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
+
     private User setupAJ() {
         User user = new User();
         user.setFirstName("A");
@@ -171,20 +132,6 @@ public class CommunityFeedActivity extends AppCompatActivity {
         return user;
     }
 
-    // Create an anonymous user using ParseAnonymousUtils and set sUserId
-    void login() {
-        ParseAnonymousUtils.logIn(new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e != null) {
-                    Log.e("DEBUG", "Anonymous login failed: ", e);
-                } else {
-                    startWithCurrentUser();
-                }
-            }
-        });
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -13,7 +13,9 @@ import android.widget.Toast;
 import com.app.spott.R;
 import com.app.spott.adapters.ChatListAdapter;
 import com.app.spott.models.Message;
+import com.app.spott.models.User;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -29,7 +31,7 @@ public class ChatActivity extends AppCompatActivity {
     static final String USER_ID_KEY = "userId";
     static final String BODY_KEY = "body";
     static final int MAX_CHAT_MESSAGES_TO_SHOW = 50;
-    final String userId = ParseUser.getCurrentUser().getObjectId();
+    final String userId = "";
     String theirUserId = "";
     Handler handler = new Handler();
 
@@ -39,6 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     ListView lvChat;
     ArrayList<Message> mMessages;
     ChatListAdapter mAdapter;
+    private User mUser;
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
 
@@ -50,10 +53,18 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        theirUserId = getIntent().getStringExtra("userId");
-
-        setupMessagePosting();
-        handler.post(runnableCode);
+        theirUserId = getIntent().getStringExtra("theirUserId");
+//        theirUserId = "J90tjqnxYc";
+        if(mUser == null){
+            User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
+                @Override
+                public void done(User user, ParseException e) {
+                    mUser = user;
+                    setupMessagePosting();
+                    handler.post(runnableCode);
+                }
+            });
+        }
     }
     // Setup button event handler which posts the entered message to Parse
     void setupMessagePosting() {
@@ -63,9 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         lvChat = (ListView) findViewById(R.id.lvChat);
         mMessages = new ArrayList<>();
         // Automatically scroll to the bottom when a data set change notification is received and only if the last item is already visible on screen. Don't scroll to the bottom otherwise.
-//        lvChat.setTranscriptMode(1);
         mFirstLoad = true;
-//        final String userId = ParseUser.getCurrentUser().getObjectId();
         mAdapter = new ChatListAdapter(ChatActivity.this, userId, mMessages);
         lvChat.setAdapter(mAdapter);
         // When send button is clicked, create message object on Parse
@@ -74,7 +83,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String data = etMessage.getText().toString();
                 ParseObject message = ParseObject.create("Message");
-                message.put(Message.USER_ID_KEY, userId);
+                message.put(Message.USER_ID_KEY, mUser.getObjectId());
+                message.put(Message.TO_USER_ID_KEY, theirUserId);
                 message.put(Message.BODY_KEY, data);
                 message.saveInBackground(new SaveCallback() {
                     @Override
@@ -94,10 +104,15 @@ public class ChatActivity extends AppCompatActivity {
     void refreshMessages() {
         // Construct query to execute
         ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
-        query.whereEqualTo("userId", userId);
+        query.whereEqualTo("userId", mUser.getObjectId());
+        query.whereEqualTo("toUserId", theirUserId);
+
+        Log.d("DEBUG", "Parse user ids ours: " + userId + " theirs: " + theirUserId);
 
         ParseQuery<Message> theirMessagesQuery = ParseQuery.getQuery(Message.class);
         theirMessagesQuery.whereEqualTo("userId", theirUserId);
+        theirMessagesQuery.whereEqualTo("toUserId", mUser.getObjectId());
+
 
         List<ParseQuery<Message>> queries = new ArrayList<ParseQuery<Message>>();
         queries.add(query);
