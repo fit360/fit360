@@ -49,7 +49,7 @@ public class Workout extends Model {
     }
 
     public void setTime(Time time) {
-        put(TIME, time.toString());
+        put(TIME, time.name());
     }
 
     public Frequency getFrequency() {
@@ -57,7 +57,7 @@ public class Workout extends Model {
     }
 
     public void setFrequency(Frequency f) {
-        put(FREQUENCY, f.toString());
+        put(FREQUENCY, f.name());
     }
 
     public Location getLocation(){

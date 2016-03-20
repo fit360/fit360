@@ -84,8 +84,8 @@ public class WorkoutsListViewAdapter extends ArrayAdapter<Workout> {
             viewHolder.tvUserName.setText(text);
             viewHolder.tvAge.setText(String.valueOf(workout.getUser().getAge()));
             viewHolder.tvGender.setText(workout.getUser().getGender().getName());
-            viewHolder.tvTime.setText(workout.getTime().getName());
-            viewHolder.tvFrequency.setText(workout.getFrequency().getName());
+            viewHolder.tvTime.setText(workout.getTime().toString());
+            viewHolder.tvFrequency.setText(workout.getFrequency().toString());
             viewHolder.tvLocation.setText(workout.getLocation().getAddress());
             WorkoutType workoutType = workout.getWorkoutType();
             viewHolder.ivIconActivity.setImageResource(workoutType.getIcon());

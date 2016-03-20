@@ -13,7 +13,7 @@ public enum Frequency implements Illustrable {
     MONTHLY("Monthly",R.drawable.ic_monthly),
     BLACK_FRIDAY("Black Friday",R.drawable.ic_black_friday);
 
-    private String name;
+    private String value;
     private int icon;
     private static HashMap<String, Frequency> lookup = new HashMap<>();
     private static ArrayList<String> readableNames = new ArrayList<>();
@@ -21,19 +21,20 @@ public enum Frequency implements Illustrable {
 
     static {
         for (Frequency f : EnumSet.allOf(Frequency.class)) {
-            lookup.put(f.getName(), f);
-            readableNames.add(f.getName());
+            lookup.put(f.toString(), f);
+            readableNames.add(f.toString());
         }
         all = new ArrayList<>((lookup.values()));
     }
 
-    Frequency(String name, int icon) {
-        this.name = name;
+    Frequency(String value, int icon) {
+        this.value = value;
         this.icon = icon;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return this.value;
     }
 
     @Override
