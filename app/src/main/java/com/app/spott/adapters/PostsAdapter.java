@@ -15,6 +15,8 @@ import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 
 /**
@@ -47,7 +49,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         final User user = post.getUser();
         if (user != null){
             holder.tvUserName.setText(user.getFirstName());
-            Glide.with(holder.context).load(user.getProfileImageUrl()).centerCrop().into(holder.ivProfilePic);
+            if (user.getProfileImageUrl() != null){
+                Glide.with(holder.context).load(user.getProfileImageUrl()).centerCrop().into(holder.ivProfilePic);
+            }else {
+                Glide.with(holder.context).load(getProfileUrl(post.getObjectId())).centerCrop().into(holder.ivProfilePic);
+            }
             holder.ivchatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,6 +66,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         holder.tvCaption.setText(post.getBody());
         Glide.with(holder.context).load(post.getImageUrl()).centerCrop().into(holder.ivPhoto);
     }
+    // Create a gravatar image based on the hash value obtained from userId
+    private static String getProfileUrl(final String userId) {
+        String hex = "";
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("MD5");
+            final byte[] hash = digest.digest(userId.getBytes());
+            final BigInteger bigInt = new BigInteger(hash);
+            hex = bigInt.abs().toString(16);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "http://www.gravatar.com/avatar/" + hex + "?d=identicon";
+    }
+
 
     @Override
     public int getItemCount() {

@@ -29,7 +29,7 @@ public enum WorkoutType {
     ROCK_CLIMBING("Rock climbing", R.drawable.ic_rock_climbing),
     ROLLERBLADING("Rollerblading", R.drawable.ic_rollerblading),
     ROWING("Rowing", R.drawable.ic_rowing),
-    RUNNING("Running", R.drawable.ic_running),
+    RUNNING("running", R.drawable.running),
     SKATEBOARDING("Skateboarding", R.drawable.ic_skateboarding),
     SKIING("Skiing", R.drawable.ic_skiing),
     SNOWBOARDING("Snowboarding", R.drawable.ic_snowboarding),
