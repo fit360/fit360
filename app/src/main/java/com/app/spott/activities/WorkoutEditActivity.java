@@ -10,10 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.app.spott.R;
@@ -59,26 +57,29 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private ParseGeoPoint geoPoint;
     private GoogleMap map;
     private WorkoutsTileAdapter timeAdapter;
-    private ArrayAdapter<Frequency> frequencyAdapter;
+    private WorkoutsTileAdapter frequencyAdapter;
     private WorkoutsTileAdapter workoutTypeAdapter;
     private static final String TAG = WorkoutEditActivity.class.getSimpleName();
     private SupportPlaceAutocompleteFragment placeFragment;
 
 
-    @Bind(R.id.btnWorkout)
-    Button btnWorkout;
-
     @Bind(R.id.ivWorkoutIcon)
     ImageButton ivWorkoutIcon;
-
-    @Bind(R.id.btnTime)
-    Button btnTime;
 
     @Bind(R.id.ibTimeIcon)
     ImageButton ibTimeIcon;
 
-    @Bind(R.id.spnFrequency)
-    Spinner spinnerFrequency;
+    @Bind(R.id.ibFrequencyIcon)
+    ImageButton ibFreqIcon;
+
+    @Bind(R.id.btnWorkout)
+    Button btnWorkout;
+
+    @Bind(R.id.btnTime)
+    Button btnTime;
+
+    @Bind(R.id.btnFrequency)
+    Button btnFreq;
 
     @Bind(R.id.expWorkoutSelector)
     ExpandableWeightLayout expandableWorkouts;
@@ -89,6 +90,9 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     @Bind(R.id.expMap)
     ExpandableWeightLayout expandableMap;
 
+    @Bind(R.id.expFrequencySelector)
+    ExpandableWeightLayout expandableFreq;
+
     @Bind(R.id.mapView)
     MapView mapView;
 
@@ -97,6 +101,9 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
     @Bind(R.id.rvTimeSelector)
     RecyclerView rvTimeSelector;
+
+    @Bind(R.id.rvFreqSelector)
+    RecyclerView rvFreqSelector;
 
     @OnClick(R.id.btnSave)
     void onSaveClick() {
@@ -127,21 +134,23 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     private void initializeViews(Bundle savedInstanceState) {
-
-        frequencyAdapter = new ArrayAdapter<Frequency>(this, android.R.layout.simple_list_item_1, Frequency.values());
-        spinnerFrequency.setAdapter(frequencyAdapter);
-        timeAdapter = new WorkoutsTileAdapter(this, Time.getAll());
         workoutTypeAdapter = new WorkoutsTileAdapter(this, WorkoutType.getAll());
-
         StaggeredGridLayoutManager lmWorkout = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rvWorkoutSelector.setAdapter(workoutTypeAdapter);
         rvWorkoutSelector.setLayoutManager(lmWorkout);
         rvWorkoutSelector.setHasFixedSize(true);
 
+        timeAdapter = new WorkoutsTileAdapter(this, Time.getAll());
         StaggeredGridLayoutManager lmTime = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rvTimeSelector.setAdapter(timeAdapter);
         rvTimeSelector.setLayoutManager(lmTime);
         rvTimeSelector.setHasFixedSize(true);
+
+        frequencyAdapter = new WorkoutsTileAdapter(this, Frequency.getAll());
+        StaggeredGridLayoutManager lmFreq = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
+        rvFreqSelector.setAdapter(frequencyAdapter);
+        rvFreqSelector.setLayoutManager(lmFreq);
+        rvFreqSelector.setHasFixedSize(true);
 
         placeFragment = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
         initPlaceFragment(placeFragment);
@@ -170,11 +179,11 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         map.addMarker(new MarkerOptions().position(latLng));
     }
 
-    public void selectWorkout(View view) {
+    public void toggleWorkout(View view) {
         expandableWorkouts.toggle();
     }
 
-    public void selectTime(View view){
+    public void toggleTime(View view) {
         expandableTime.toggle();
     }
 
@@ -183,6 +192,10 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
         if (location != null && location.isSet())
             animateMap(location.getPoint());
+    }
+
+    public void toggleFreq(View v){
+        expandableFreq.toggle();
     }
 
     private void initializeData(Intent i) {
@@ -213,11 +226,12 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         btnWorkout.setText(w.getWorkoutType().toString());
         ivWorkoutIcon.setImageResource(w.getWorkoutType().getIcon());
 
-        spinnerFrequency.setSelection(frequencyAdapter.getPosition(w.getFrequency()));
-
         btnTime.setText(w.getTime().toString());
         ibTimeIcon.setImageResource(w.getTime().getIcon());
-        
+
+        btnFreq.setText(w.getFrequency().toString());
+        ibFreqIcon.setImageResource(w.getFrequency().getIcon());
+
         placeFragment.setText(location.getName());
     }
 
@@ -227,7 +241,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
             Log.e(TAG, "Location not set");
         }
         workout.setLocation(location);
-        workout.setFrequency((Frequency) spinnerFrequency.getSelectedItem());
         workout.setUser(currentUser);
         try {
             workout.saveModel();
@@ -330,19 +343,28 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
             setWorkoutType((WorkoutType) obj);
         else if (obj instanceof Time)
             setWorkoutTime((Time) obj);
+        else if (obj instanceof Frequency)
+            setWorkoutFrequency((Frequency) obj);
     }
 
-    private void setWorkoutType(WorkoutType wt){
+    private void setWorkoutType(WorkoutType wt) {
         btnWorkout.setText(wt.toString());
         ivWorkoutIcon.setImageResource(wt.getIcon());
         workout.setWorkoutType(wt);
         expandableWorkouts.collapse();
     }
 
-    private void setWorkoutTime(Time t){
+    private void setWorkoutTime(Time t) {
         btnTime.setText(t.toString());
         ibTimeIcon.setImageResource(t.getIcon());
         workout.setTime(t);
         expandableTime.collapse();
+    }
+
+    private void setWorkoutFrequency(Frequency f){
+        btnFreq.setText(f.toString());
+        ibFreqIcon.setImageResource(f.getIcon());
+        workout.setFrequency(f);
+        expandableFreq.collapse();
     }
 }
