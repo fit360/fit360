@@ -2,11 +2,13 @@ package com.app.spott.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,8 +21,8 @@ import com.app.spott.SpottApplication;
 import com.app.spott.adapters.WorkoutsTileAdapter;
 import com.app.spott.exceptions.ModelException;
 import com.app.spott.interfaces.WorkoutEditFragmentListener;
-import com.app.spott.models.EnumModel;
 import com.app.spott.models.Frequency;
+import com.app.spott.models.Illustrable;
 import com.app.spott.models.Location;
 import com.app.spott.models.Time;
 import com.app.spott.models.User;
@@ -280,8 +282,14 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     @Override
-    public void setLatLng() {
-//        set LatLng in Map fragment
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -317,7 +325,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     @Override
-    public void onTileSelect(EnumModel obj) {
+    public void onTileSelect(Illustrable obj) {
         if (obj instanceof WorkoutType)
             setWorkoutType((WorkoutType) obj);
         else if (obj instanceof Time)

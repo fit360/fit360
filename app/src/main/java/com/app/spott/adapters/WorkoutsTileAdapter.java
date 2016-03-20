@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
-import com.app.spott.models.EnumModel;
+import com.app.spott.models.Illustrable;
 
 import java.util.List;
 
@@ -19,13 +19,13 @@ import butterknife.ButterKnife;
 public class WorkoutsTileAdapter extends RecyclerView.Adapter{
 
     private List workoutTypes;
-    private EnumModel selection;
+    private Illustrable selection;
     private TileTouchInterceptor interceptor;
     private int selectedPosition;
 
 
     public interface TileTouchInterceptor {
-        void onTileSelect(EnumModel obj);
+        void onTileSelect(Illustrable obj);
     }
 
     private WorkoutsTileAdapter(Context mContext) {
@@ -55,7 +55,7 @@ public class WorkoutsTileAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        selection = (EnumModel) workoutTypes.get(position);
+        selection = (Illustrable) workoutTypes.get(position);
         TileViewHolder th = (TileViewHolder) holder;
 //        th.itemView.setSelected(this.selectedPosition == position);
         th.ivTileIcon.setImageResource(selection.getIcon());
@@ -85,7 +85,7 @@ public class WorkoutsTileAdapter extends RecyclerView.Adapter{
         public void onClick(View v) {
             int pos = getLayoutPosition();
             setSelectedPosition(pos);
-            EnumModel w = (EnumModel) workoutTypes.get(pos);
+            Illustrable w = (Illustrable) workoutTypes.get(pos);
             interceptor.onTileSelect(w);
         }
     }

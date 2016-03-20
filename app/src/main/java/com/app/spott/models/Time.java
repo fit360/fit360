@@ -7,7 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-public enum Time implements EnumModel {
+public enum Time implements Illustrable {
     EARLY_MORNING("Early morning", R.drawable.ic_early_morning),
     LATE_MORNING("Late morning", R.drawable.ic_late_morning),
     NOON("Noon", R.drawable.ic_noon),
@@ -17,7 +17,6 @@ public enum Time implements EnumModel {
 
     private String name;
     private int icon;
-
     private static HashMap<String, Time> lookup = new HashMap<>();
     private static ArrayList<String> readableNames = new ArrayList<>();
     private static ArrayList<Time> all;
