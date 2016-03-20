@@ -5,8 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivPhoto"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="300dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:minHeight="50dp" />
@@ -17,7 +16,7 @@
         android:maxHeight="35dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="270dp"
         android:layout_marginRight="30dp"
         android:layout_alignParentRight="true"
         app:riv_corner_radius="30dp"
