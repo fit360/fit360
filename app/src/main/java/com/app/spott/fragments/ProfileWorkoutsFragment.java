@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFragment.OnSaveListener {
+public class ProfileWorkoutsFragment extends Fragment {
 
     private ProfileWorkoutsAdapter activitiesAdapter;
     private User mUser;
@@ -111,7 +111,6 @@ public class ProfileWorkoutsFragment extends Fragment implements WorkoutEditFrag
         }
     }
 
-    @Override
     public void onWorkoutSave(Workout workout) {
         //add/update this workout in adapter
         activitiesAdapter.updateWorkout(workout);

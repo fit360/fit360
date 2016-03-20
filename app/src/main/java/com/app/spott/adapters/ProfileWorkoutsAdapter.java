@@ -77,8 +77,8 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
         WorkoutViewHolder vh = (WorkoutViewHolder) holder;
         vh.ivActivityIcon.setImageResource(workout.getWorkoutType().getIcon());
         vh.tvActivityLocation.setText(workout.getLocation().getName());
-        vh.tvActivityFrequency.setText(workout.getFrequency().getName());
-        vh.tvActivityTime.setText(workout.getTime().getName());
+        vh.tvActivityFrequency.setText(workout.getFrequency().toString());
+        vh.tvActivityTime.setText(workout.getTime().toString());
         vh.tvActivity.setText(workout.getWorkoutType().toString());
     }
 
