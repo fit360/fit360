@@ -117,7 +117,7 @@
             <ImageButton
                 android:id="@+id/ibTimeIcon"
                 style="@style/WorkoutEditIcons"
-                android:onClick="toggleFreq"
+                android:onClick="toggleTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_action_chat" />
@@ -125,7 +125,7 @@
             <Button
                 android:id="@+id/btnTime"
                 style="@style/WorkoutEditFormButtons"
-                android:onClick="toggleFreq"
+                android:onClick="toggleTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/ibTimeIcon"

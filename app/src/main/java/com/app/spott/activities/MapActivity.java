@@ -407,8 +407,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 String age = String.valueOf(user.getAge());
                 String gender = user.getGender().getName();
                 String activityName = activityType.toString();
-                String time = workout.getTime().getName();
-                String frequency = workout.getFrequency().getName();
+                String time = workout.getTime().toString();
+                String frequency = workout.getFrequency().toString();
 
                 String snippet = String.format("%s;%s;%s;%s;%s;%s;%s", profilePicUrl, userName, age, gender, activityName, time, frequency);
                 LatLng latLng = new LatLng(workout.getLocation().getPoint().getLatitude(), workout.getLocation().getPoint().getLongitude());

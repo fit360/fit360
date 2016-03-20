@@ -15,7 +15,7 @@ public enum Time implements Illustrable {
     EVENING("Evening", R.drawable.ic_evening),
     NIGHT("Night", R.drawable.ic_night);
 
-    private String name;
+    private String value;
     private int icon;
     private static HashMap<String, Time> lookup = new HashMap<>();
     private static ArrayList<String> readableNames = new ArrayList<>();
@@ -24,18 +24,19 @@ public enum Time implements Illustrable {
     static {
         for (Time t : EnumSet.allOf(Time.class)) {
             lookup.put(t.toString(), t);
-            readableNames.add(t.getName());
+            readableNames.add(t.toString());
         }
         all = new ArrayList<>(lookup.values());
     }
 
-    Time(String name, int icon) {
-        this.name = name;
+    Time(String value, int icon) {
+        this.value = value;
         this.icon = icon;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return this.value;
     }
 
     public static List<String> getReadableNames() {
