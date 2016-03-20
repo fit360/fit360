@@ -8,6 +8,5 @@ public interface WorkoutEditFragmentListener {
     User getCurrentUser();
     boolean isLoggedInUser();
     boolean isNewWorkout();
-    void setLatLng();
     void notifyListenerActivity(Workout w);
 }

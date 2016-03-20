@@ -7,7 +7,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-public enum Time implements EnumModel {
+public enum Time implements Illustrable {
     EARLY_MORNING("Early morning", R.drawable.ic_early_morning),
     LATE_MORNING("Late morning", R.drawable.ic_late_morning),
     NOON("Noon", R.drawable.ic_noon),
@@ -15,9 +15,8 @@ public enum Time implements EnumModel {
     EVENING("Evening", R.drawable.ic_evening),
     NIGHT("Night", R.drawable.ic_night);
 
-    private String name;
+    private String value;
     private int icon;
-
     private static HashMap<String, Time> lookup = new HashMap<>();
     private static ArrayList<String> readableNames = new ArrayList<>();
     private static ArrayList<Time> all;
@@ -25,18 +24,19 @@ public enum Time implements EnumModel {
     static {
         for (Time t : EnumSet.allOf(Time.class)) {
             lookup.put(t.toString(), t);
-            readableNames.add(t.getName());
+            readableNames.add(t.toString());
         }
         all = new ArrayList<>(lookup.values());
     }
 
-    Time(String name, int icon) {
-        this.name = name;
+    Time(String value, int icon) {
+        this.value = value;
         this.icon = icon;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return this.value;
     }
 
     public static List<String> getReadableNames() {
