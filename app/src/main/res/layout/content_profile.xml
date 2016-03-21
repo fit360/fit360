@@ -19,7 +19,7 @@
         android:name="com.app.spott.fragments.ProfileWorkoutsFragment"
         android:id="@+id/fragProfileWorkouts"
         android:layout_width="match_parent"
-        android:layout_height="202dp"
+        android:layout_height="222dp"
         android:layout_below="@id/fragProfileHeader"
         />
 
