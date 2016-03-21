@@ -132,6 +132,14 @@ public class Workout extends Model {
         super.saveModel();
     }
 
+    public void saveModelLive() throws ModelException, ParseException {
+        if (!this.isSet())
+            throw new WorkoutModelException();
+
+        this.getLocation().save();
+        this.save();
+    }
+
     public static void getWorkoutsAroundLatLng(double lat, double lng, FindCallback<Workout> findCallback) {
         ParseGeoPoint parseGeoPoint = new ParseGeoPoint(lat, lng);
         ParseQuery<Location> locationParseQuery = ParseQuery.getQuery(Location.class);

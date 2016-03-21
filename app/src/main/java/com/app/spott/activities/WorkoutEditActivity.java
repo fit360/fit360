@@ -238,10 +238,13 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         workout.setLocation(location);
         workout.setUser(currentUser);
         try {
-            workout.saveModel();
+            workout.saveModelLive();
             notifyListenerActivity(workout);
         } catch (ModelException e) {
             Toast.makeText(this, "Select all fields", Toast.LENGTH_SHORT);
+            e.printStackTrace();
+        } catch (ParseException e) {
+            Toast.makeText(this, "Some error while saving model", Toast.LENGTH_SHORT);
             e.printStackTrace();
         }
     }
