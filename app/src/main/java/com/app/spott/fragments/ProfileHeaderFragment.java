@@ -1,6 +1,7 @@
 package com.app.spott.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
+import com.app.spott.activities.ChatActivity;
 import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
@@ -32,6 +34,9 @@ public class ProfileHeaderFragment extends Fragment {
 
     @Bind(R.id.ivCoverPhoto)
     ImageView ivCoverPhoto;
+
+    @Bind(R.id.ivChat)
+    ImageView ivChat;
 
     private User mUser;
     private boolean isLoggedInUser;
@@ -57,15 +62,20 @@ public class ProfileHeaderFragment extends Fragment {
         } else {
             render();
         }
-
-
     }
-
     private void render(){
         tvUserName.setText(mUser.getFirstName() + " " + mUser.getLastName() + ",");
         tvGenderAge.setText(mUser.getGender().getName() + " " + mUser.getAge());
         Glide.with(this).load(mUser.getCoverImageUrl()).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivCoverPhoto);
         Glide.with(this).load(mUser.getProfileImageUrl()).centerCrop().into(ivProfilePicture);
+        ivChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ChatActivity.class);
+                i.putExtra("theirUserId", mUser.getObjectId());
+                getActivity().startActivity(i);
+            }
+        });
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.parse.ParseClassName;
 @ParseClassName("Message")
 public class Message extends Model{
     public static final String USER_ID_KEY = "userId";
+    public static final String TO_USER_ID_KEY = "toUserId";
     public static final String BODY_KEY = "body";
 
     public String getUserId() {
@@ -20,6 +21,9 @@ public class Message extends Model{
 
     public void setUserId(String userId) {
         put(USER_ID_KEY, userId);
+    }
+    public void setToUserId(String userId) {
+        put(TO_USER_ID_KEY, userId);
     }
 
     public void setBody(String body) {
