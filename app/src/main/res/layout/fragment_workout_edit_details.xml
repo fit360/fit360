@@ -16,11 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/ivWorkoutIcon"
                 style="@style/WorkoutEditIcons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="toggleWorkout"
                 android:src="@drawable/action_bar_ic_search" />
 
             <Button
@@ -37,6 +38,7 @@
 
     <com.github.aakira.expandablelayout.ExpandableWeightLayout
         android:id="@+id/expWorkoutSelector"
+        style="@style/WorkoutEditExpandables"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -66,9 +68,8 @@
                 style="@style/WorkoutEditIcons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_light"
                 android:onClick="toggleMap"
-                android:src="@drawable/ic_actionbar_map" />
+                android:src="@drawable/ic_map_black_36dp" />
 
             <fragment
                 android:id="@+id/fragmentGplaces"
@@ -83,6 +84,7 @@
 
     <com.github.aakira.expandablelayout.ExpandableWeightLayout
         android:id="@+id/expMap"
+        style="@style/WorkoutEditExpandables"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -104,7 +106,6 @@
 
     </com.github.aakira.expandablelayout.ExpandableWeightLayout>
 
-
     <android.support.v7.widget.CardView
         style="@style/WorkoutEditCardView"
         android:layout_width="wrap_content"
@@ -114,74 +115,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/ibTimeIcon"
-                style="@style/WorkoutEditIcons"
-                android:onClick="toggleTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_chat" />
-
-            <Button
-                android:id="@+id/btnTime"
-                style="@style/WorkoutEditFormButtons"
-                android:onClick="toggleTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/ibTimeIcon"
-                android:layout_toRightOf="@+id/ibTimeIcon"
-                android:text="How often?" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <com.github.aakira.expandablelayout.ExpandableWeightLayout
-        android:id="@+id/expTimeSelector"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:ael_duration="1000"
-        app:ael_expanded="false"
-        app:ael_interpolator="anticipateOvershoot">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvTimeSelector"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
-    </com.github.aakira.expandablelayout.ExpandableWeightLayout>
-
-    <android.support.v7.widget.CardView
-        style="@style/WorkoutEditCardView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
+            <ImageView
                 android:id="@+id/ibFrequencyIcon"
                 style="@style/WorkoutEditIcons"
-                android:onClick="toggleFreq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="toggleFreq"
                 android:src="@drawable/ic_action_chat" />
 
             <Button
                 android:id="@+id/btnFrequency"
                 style="@style/WorkoutEditFormButtons"
-                android:onClick="toggleFreq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/ibFrequencyIcon"
                 android:layout_toRightOf="@+id/ibFrequencyIcon"
-                android:text="Preferred time?" />
+                android:onClick="toggleFreq"
+                android:text="How often?" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
     <com.github.aakira.expandablelayout.ExpandableWeightLayout
         android:id="@+id/expFrequencySelector"
+        style="@style/WorkoutEditExpandables"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -197,21 +153,78 @@
 
     </com.github.aakira.expandablelayout.ExpandableWeightLayout>
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
+        style="@style/WorkoutEditCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ibTimeIcon"
+                style="@style/WorkoutEditIcons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="toggleTime"
+                android:src="@drawable/ic_action_chat" />
+
+            <Button
+                android:id="@+id/btnTime"
+                style="@style/WorkoutEditFormButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ibTimeIcon"
+                android:layout_toRightOf="@+id/ibTimeIcon"
+                android:onClick="toggleTime"
+                android:text="Preferred time?" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <com.github.aakira.expandablelayout.ExpandableWeightLayout
+        android:id="@+id/expTimeSelector"
+        style="@style/WorkoutEditExpandables"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:ael_duration="1000"
+        app:ael_expanded="false"
+        app:ael_interpolator="anticipateOvershoot">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvTimeSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+    </com.github.aakira.expandablelayout.ExpandableWeightLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:text="SAVE" />
 
-        <Button
-            android:id="@+id/btnCancel"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CANCEL" />
+            android:layout_weight="1" />
     </LinearLayout>
+
 
 </LinearLayout>
