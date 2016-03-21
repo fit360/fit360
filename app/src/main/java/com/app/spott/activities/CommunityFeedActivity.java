@@ -55,7 +55,9 @@ public class CommunityFeedActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        if (savedInstanceState == null){
+            fragmentPostsList = (PostsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_community_feed);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabCreatePost);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,10 +66,6 @@ public class CommunityFeedActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if (savedInstanceState == null){
-            fragmentPostsList = (PostsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_community_feed);
-        }
-
         fetchFeeds();
     }
 
@@ -80,7 +78,7 @@ public class CommunityFeedActivity extends AppCompatActivity {
             public void done(List<Post> posts, ParseException e) {
                 if (e == null) {
                     // Access data using the `getGender` methods for the object
-                    fragmentPostsList.addAll((ArrayList)posts);
+                    fragmentPostsList.addAll((ArrayList) posts);
                     swipeContainer.setRefreshing(false);
                 } else {
                     // something went wrong
