@@ -42,11 +42,6 @@ public class Post extends Model {
         put(USER, user);
     }
 
-    // Associate each item with a user
-    public void setOwner(User user) {
-        put(USER, user);
-    }
-
     public void setImageUrl(String imageUrl){
         put(IMAGE_URL, imageUrl);
     }
