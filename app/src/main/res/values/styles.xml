@@ -40,6 +40,11 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="WorkoutEditExpandables">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:background">#e0e0e0</item>
+    </style>
+
     <style name="TransparentToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- This would set the toolbar's background color -->
         <item name="android:background">@android:color/transparent</item>
