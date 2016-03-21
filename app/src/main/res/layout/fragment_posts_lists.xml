@@ -14,12 +14,5 @@
             android:layout_height="wrap_content"
             android:id="@+id/rvFeed" />
     </android.support.v4.widget.SwipeRefreshLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabCreatePost"
-        android:src="@drawable/ic_compose_white_48dp"
-        app:fabSize="normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"/>
+
 </LinearLayout>

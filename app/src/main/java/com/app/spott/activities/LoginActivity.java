@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        app = (SpottApplication) getApplicationContext();
         if (ParseUser.getCurrentUser() != null) { // start with existing user
             startWithCurrentUser();
         } else { // If not logged in, login as a new anonymous user

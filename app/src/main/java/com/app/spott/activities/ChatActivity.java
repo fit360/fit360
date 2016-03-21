@@ -54,7 +54,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         theirUserId = getIntent().getStringExtra("theirUserId");
-//        theirUserId = "J90tjqnxYc";
         if(mUser == null){
             User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
                 @Override
@@ -75,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         mMessages = new ArrayList<>();
         // Automatically scroll to the bottom when a data set change notification is received and only if the last item is already visible on screen. Don't scroll to the bottom otherwise.
         mFirstLoad = true;
-        mAdapter = new ChatListAdapter(ChatActivity.this, userId, mMessages);
+        mAdapter = new ChatListAdapter(ChatActivity.this, mUser.getObjectId(), mMessages);
         lvChat.setAdapter(mAdapter);
         // When send button is clicked, create message object on Parse
         btSend.setOnClickListener(new View.OnClickListener() {
