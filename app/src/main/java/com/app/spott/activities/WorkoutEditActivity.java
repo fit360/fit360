@@ -120,6 +120,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ButterKnife.bind(this);
 
@@ -137,6 +138,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private void initializeViews(Bundle savedInstanceState) {
         workoutTypeAdapter = new GridTileAdapter(this, WorkoutType.getAll());
         StaggeredGridLayoutManager lmWorkout = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        lmWorkout.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         rvWorkoutSelector.setAdapter(workoutTypeAdapter);
         rvWorkoutSelector.setLayoutManager(lmWorkout);
         rvWorkoutSelector.setHasFixedSize(true);
