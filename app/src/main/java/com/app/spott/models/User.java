@@ -22,12 +22,15 @@ public class User extends Model {
 
     private static ParseQuery<User> query;
 
-    public User(){super();}
+    public User() {
+        super();
+    }
 
-    public String getFirstName(){
+    public String getFirstName() {
         return getString(FIRST_NAME);
     }
-    public String getProfileImageUrl(){
+
+    public String getProfileImageUrl() {
         return getString(PROFILE_IMAGE_URL);
     }
 
@@ -35,44 +38,44 @@ public class User extends Model {
         return getString(COVER_IMAGE_URL);
     }
 
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) {
         put(FIRST_NAME, firstName);
     }
 
-    public String getLastName(){
+    public String getLastName() {
 
         return getString(LAST_NAME);
     }
 
-    public void setLastName(String lastName){
+    public void setLastName(String lastName) {
         put(LAST_NAME, lastName);
     }
 
-    public int getAge(){
+    public int getAge() {
         return getInt(AGE);
     }
 
-    public void setAge(int age){
+    public void setAge(int age) {
         put(AGE, age);
     }
 
-    public Gender getGender(){
+    public Gender getGender() {
         return Gender.valueOf(getString(GENDER));
     }
 
-    public void setGender(Gender gender){
+    public void setGender(Gender gender) {
         put(GENDER, gender.toString());
     }
 
-    public String getId(String id){
+    public String getId(String id) {
         return getObjectId();
     }
 
-    public ParseUser getOwner(){
+    public ParseUser getOwner() {
         return getParseUser(OWNER);
     }
 
-    public void setOwner(ParseUser owner){
+    public void setOwner(ParseUser owner) {
         put(OWNER, owner);
     }
 
@@ -87,7 +90,7 @@ public class User extends Model {
         query.getFirstInBackground(getCallback);
     }
 
-    public void getChosenAcitivities(FindCallback<Workout> findCallback){
+    public void getChosenAcitivities(FindCallback<Workout> findCallback) {
         ParseQuery<Workout> parseQuery = ParseQuery.getQuery(Workout.class);
         parseQuery.whereEqualTo(Workout.USER, this);
         parseQuery.orderByAscending("createdAt");

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +28,10 @@ import com.app.spott.models.User;
 import com.app.spott.models.Workout;
 import com.app.spott.models.WorkoutType;
 import com.github.aakira.expandablelayout.ExpandableWeightLayout;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,7 +46,6 @@ import com.parse.ParseGeoPoint;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEditFragmentListener,
         GridTileAdapter.TileTouchInterceptor {
@@ -60,7 +60,8 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     private GridTileAdapter frequencyAdapter;
     private GridTileAdapter workoutTypeAdapter;
     private static final String TAG = WorkoutEditActivity.class.getSimpleName();
-    private SupportPlaceAutocompleteFragment placeFragment;
+
+    private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
 
     @Bind(R.id.ivWorkoutIcon)
@@ -74,6 +75,9 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
     @Bind(R.id.btnWorkout)
     Button btnWorkout;
+
+    @Bind(R.id.btnLocation)
+    Button btnLocation;
 
     @Bind(R.id.btnTime)
     Button btnTime;
@@ -105,11 +109,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     @Bind(R.id.rvFreqSelector)
     RecyclerView rvFreqSelector;
 
-    @OnClick(R.id.btnSave)
-    void onSaveClick() {
-        saveWorkout();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +125,13 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
         initializeViews(savedInstanceState);
         initializeData(getIntent());
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_workout_edit, menu);
+        return true;
     }
 
     private void initializeViews(Bundle savedInstanceState) {
@@ -146,9 +152,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         rvFreqSelector.setAdapter(frequencyAdapter);
         rvFreqSelector.setLayoutManager(lmFreq);
         rvFreqSelector.setHasFixedSize(true);
-
-        placeFragment = (SupportPlaceAutocompleteFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentGplaces);
-        initPlaceFragment(placeFragment);
 
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
@@ -227,7 +230,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         btnFreq.setText(w.getFrequency().toString());
         ibFreqIcon.setImageResource(w.getFrequency().getIcon());
 
-        placeFragment.setText(location.getName());
+        btnLocation.setText(location.getName());
     }
 
     private void saveWorkout() {
@@ -238,35 +241,37 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         workout.setLocation(location);
         workout.setUser(currentUser);
         try {
-            workout.saveModel();
+            workout.saveModelLive();
             notifyListenerActivity(workout);
         } catch (ModelException e) {
             Toast.makeText(this, "Select all fields", Toast.LENGTH_SHORT);
             e.printStackTrace();
+        } catch (ParseException e) {
+            Toast.makeText(this, "Some error while saving model", Toast.LENGTH_SHORT);
+            e.printStackTrace();
         }
     }
 
-    private void initPlaceFragment(final SupportPlaceAutocompleteFragment frag) {
-        frag.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                frag.setText(place.getName());
-                location.setName(place.getName().toString());
-                location.setAddress(place.getAddress().toString());
-                location.setPlaceId(place.getId());
+    public void selectPlace(View v){
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            .build(this);
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
 
-                geoPoint.setLatitude(place.getLatLng().latitude);
-                geoPoint.setLongitude(place.getLatLng().longitude);
-                location.setPoint(geoPoint);
-                expandableMap.expand();
-                animateMap(geoPoint);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE){
+            if (resultCode == RESULT_OK) {
+                setWorkoutLocation(PlaceAutocomplete.getPlace(this, data));
             }
-
-            @Override
-            public void onError(Status status) {
-                frag.setText(status.toString());
-            }
-        });
+        }
     }
 
     @Override
@@ -292,9 +297,11 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.actionSaveWorkout:
+                saveWorkout();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -361,5 +368,19 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         ibFreqIcon.setImageResource(f.getIcon());
         workout.setFrequency(f);
         expandableFreq.collapse();
+    }
+
+    private void setWorkoutLocation(Place place){
+        location.setName(place.getName().toString());
+        location.setAddress(place.getAddress().toString());
+        location.setPlaceId(place.getId());
+
+        geoPoint.setLatitude(place.getLatLng().latitude);
+        geoPoint.setLongitude(place.getLatLng().longitude);
+        location.setPoint(geoPoint);
+
+        btnLocation.setText(location.getName());
+        expandableMap.expand();
+        animateMap(geoPoint);
     }
 }
