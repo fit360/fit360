@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Morning"
+            android:text="Black Friday"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:background="#4dd0e1"/>
