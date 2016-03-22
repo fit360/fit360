@@ -1,6 +1,8 @@
 package com.app.spott.models;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseQuery;
 
 /**
  * Created by aparnajain on 3/10/16.
@@ -49,5 +51,13 @@ public class Post extends Model {
     @Override
     public String getLogTag() {
         return null;
+    }
+
+    public static void fetchUserPosts(User user, FindCallback<Post> findCallback){
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.whereEqualTo(USER, user);
+        query.include(USER);
+        query.orderByDescending("updatedAt");
+        query.findInBackground(findCallback);
     }
 }
