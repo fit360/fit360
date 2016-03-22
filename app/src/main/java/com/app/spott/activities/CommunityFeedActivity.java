@@ -3,6 +3,7 @@ package com.app.spott.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
@@ -25,6 +27,9 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class CommunityFeedActivity extends AppCompatActivity {
     private SpottApplication app;
     private PostsListFragment fragmentPostsList;
@@ -32,19 +37,20 @@ public class CommunityFeedActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
     private static final String USER = "user";
 
+    @Bind(R.id.pbLoading) ProgressBar pbLoading;
+    MenuItem miActionProgressItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_feed);
+        ButterKnife.bind(this);
         app = (SpottApplication) getApplicationContext();
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 fetchFeeds();
             }
         });
@@ -68,16 +74,16 @@ public class CommunityFeedActivity extends AppCompatActivity {
         });
         fetchFeeds();
     }
-
     void fetchFeeds(){
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(USER);
         query.orderByDescending("updatedAt");
         //TODO: get posts for this user
+        pbLoading.setVisibility(View.VISIBLE);
         query.findInBackground(new FindCallback<Post>() {
             public void done(List<Post> posts, ParseException e) {
                 if (e == null) {
-                    // Access data using the `getGender` methods for the object
+                    pbLoading.setVisibility(View.GONE);
                     fragmentPostsList.addAll((ArrayList) posts);
                     swipeContainer.setRefreshing(false);
                 } else {
@@ -137,6 +143,25 @@ public class CommunityFeedActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_community_feed_activity, menu);
         return true;
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Extract the action-view from the menu item
+        ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+        return super.onPrepareOptionsMenu(menu);
+
+    }
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -98,7 +98,7 @@ public class ProfileHeaderFragment extends Fragment {
                 }
             });
         }
-//        animateHeaderAndProfilePic();
+        animateHeaderAndProfilePic();
     }
 
     @Override
