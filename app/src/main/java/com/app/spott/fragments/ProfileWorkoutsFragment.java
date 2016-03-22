@@ -17,9 +17,7 @@ import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.app.spott.models.Workout;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,21 +70,7 @@ public class ProfileWorkoutsFragment extends Fragment {
             }
         });
 
-        if(mUser == null){
-            User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
-                @Override
-                public void done(User user, ParseException e) {
-                    mUser = user;
-                    render();
-                }
-            });
-        } else {
-            render();
-        }
-    }
-
-    private void render(){
-        if(mUser.getOwner().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())){
+        if(isLoggedInUser){
             ivAddActivity.setVisibility(View.VISIBLE);
         } else {
             ivAddActivity.setVisibility(View.GONE);
