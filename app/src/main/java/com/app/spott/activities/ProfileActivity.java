@@ -10,12 +10,18 @@ import android.view.Menu;
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.adapters.ProfileWorkoutsAdapter;
+import com.app.spott.fragments.PostsListFragment;
 import com.app.spott.fragments.ProfileWorkoutsFragment;
 import com.app.spott.interfaces.ProfileFragmentListener;
+import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.app.spott.models.Workout;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener,
         ProfileFragmentListener,
@@ -25,6 +31,9 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     private boolean isLoggedInUser;
     public static final String WORKOUT_ID_INTENT_KEY = "workout_id";
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
+
+    private PostsListFragment mFragmentPostsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +56,19 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        mFragmentPostsList = (PostsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_community_feed);
+        fetchUserPosts();
     }
+
+    private void fetchUserPosts(){
+        Post.fetchUserPosts(getUser(), new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                mFragmentPostsList.addAll((ArrayList) posts);
+            }
+        });
+    }
+
 
     @Override
     public User getUser() {
