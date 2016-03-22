@@ -1,5 +1,7 @@
 package com.app.spott.fragments;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.spott.R;
+import com.app.spott.SpottApplication;
 import com.app.spott.activities.ChatActivity;
 import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
@@ -40,9 +44,11 @@ public class ProfileHeaderFragment extends Fragment {
 
     private User mUser;
     private boolean isLoggedInUser;
+    private SpottApplication app;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        app = (SpottApplication)getActivity().getApplicationContext();
         return inflater.inflate(R.layout.fragment_profile_header, parent, false);
     }
 
@@ -63,19 +69,36 @@ public class ProfileHeaderFragment extends Fragment {
             render();
         }
     }
+
+    private void animateHeaderAndProfilePic() {
+        AnimatorSet set = new AnimatorSet();
+        ObjectAnimator moveToBottom = ObjectAnimator.ofFloat(ivProfilePicture, "y", 350);
+        moveToBottom.setDuration(1000);
+        moveToBottom.setInterpolator(new AccelerateInterpolator());
+        ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(ivCoverPhoto, "alpha", 1.0f);
+        moveToBottom.setDuration(1000);
+        set.playTogether(moveToBottom, fadeAnim);
+        set.start();
+    }
+
     private void render(){
         tvUserName.setText(mUser.getFirstName() + " " + mUser.getLastName() + ",");
         tvGenderAge.setText(mUser.getGender().getName() + " " + mUser.getAge());
         Glide.with(this).load(mUser.getCoverImageUrl()).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivCoverPhoto);
         Glide.with(this).load(mUser.getProfileImageUrl()).centerCrop().into(ivProfilePicture);
-        ivChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ChatActivity.class);
-                i.putExtra("theirUserId", mUser.getObjectId());
-                getActivity().startActivity(i);
-            }
-        });
+        if (mUser == app.getCurrentUser()){
+            ivChat.setVisibility(View.GONE);
+        }else {
+            ivChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), ChatActivity.class);
+                    i.putExtra("theirUserId", mUser.getObjectId());
+                    getActivity().startActivity(i);
+                }
+            });
+        }
+//        animateHeaderAndProfilePic();
     }
 
     @Override
