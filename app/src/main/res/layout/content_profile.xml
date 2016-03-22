@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slidingPanelLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    sothree:umanoFadeColor="@android:color/transparent"
+    sothree:umanoOverlay="false"
+    sothree:umanoPanelHeight="120dp"
+    sothree:umanoParallaxOffset="200dp"
+    sothree:umanoShadowHeight="0dp"
+    sothree:umanoScrollableView="@+id/fragment_community_feed">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.ProfileActivity"
     tools:showIn="@layout/activity_profile">
 
@@ -24,13 +40,27 @@
         />
 
     <TextView
+        android:id="@+id/tvPosts"
         android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/fragProfileWorkouts"
         android:layout_alignParentLeft="true"
         android:text="Posts"
-        android:textStyle="bold"/>
-</RelativeLayout>
+        android:textColor="@android:color/black"
+        android:textSize="16dp"/>
+
+    </RelativeLayout>
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:name="com.app.spott.fragments.PostsListFragment"
+        android:layout_below="@id/tvPosts"
+        android:id="@+id/fragment_community_feed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
