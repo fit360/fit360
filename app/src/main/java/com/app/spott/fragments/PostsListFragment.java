@@ -34,6 +34,7 @@ public class PostsListFragment extends Fragment {
         rvPosts.setAdapter(aPosts);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         rvPosts.setLayoutManager(linearLayoutManager);
+        rvPosts.setNestedScrollingEnabled(true);
         return v;
     }
 
