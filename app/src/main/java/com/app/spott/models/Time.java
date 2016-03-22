@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public enum Time implements Illustrable {
-    EARLY_MORNING("Early morning", R.drawable.ic_early_morning),
-    LATE_MORNING("Late morning", R.drawable.ic_late_morning),
-    NOON("Noon", R.drawable.ic_noon),
-    LATE_NOON("Late noon", R.drawable.ic_late_noon),
-    EVENING("Evening", R.drawable.ic_evening),
-    NIGHT("Night", R.drawable.ic_night);
+    EARLY_MORNING("Early AM", R.drawable.ic_time_6am),
+    LATE_MORNING("Late AM", R.drawable.ic_time_9am),
+    NOON("Noon", R.drawable.ic_time_12pm),
+    LATE_NOON("Late noon", R.drawable.ic_time_3pm),
+    EVENING("Evening", R.drawable.ic_time_6pm),
+    NIGHT("Night", R.drawable.ic_time_9pm);
 
     private String value;
     private int icon;
