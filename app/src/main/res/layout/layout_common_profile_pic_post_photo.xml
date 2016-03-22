@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ivPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:riv_corner_radius="7dp"
-        android:layout_margin="5dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:minHeight="50dp" />
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
     <com.makeramen.roundedimageview.RoundedImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivProfilePic"
         android:maxHeight="35dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="270dp"
-        android:layout_marginRight="30dp"
-        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
         app:riv_corner_radius="30dp"
         app:riv_border_width="2dp"
         app:riv_border_color="#E0E0E0"
@@ -28,4 +16,58 @@
         app:riv_tile_mode="repeat"
         app:riv_oval="true"
         />
-</merge>
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@+id/ivProfilePic"
+        android:layout_marginTop="20dp"
+        android:text="\@beansandBananas"
+        android:textColor="#90000000"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvRealName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toRightOf="@+id/ivProfilePic"
+        android:layout_below="@+id/tvUsername"
+        android:textSize="10dp"
+        android:text="beansandBananas"
+        android:textColor="#80000000" />
+    <TextView
+        android:id="@+id/tvCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/ivProfilePic"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="10dp"
+        android:text="12m"
+        android:textColor="#80000000" />
+
+    <ImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="0dp"
+        android:layout_below="@+id/ivProfilePic"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:minHeight="50dp" />
+    <TextView
+        android:id="@+id/tvCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivPhoto"
+        android:layout_margin="10dp"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:textSize="14dp"
+        android:text="Test"
+        android:textColor="#78000000" />
+</RelativeLayout>
