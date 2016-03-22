@@ -107,6 +107,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     @Override
     public void addWorkout() {
         Intent intent = new Intent(this, WorkoutEditActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, WORKOUT_EDIT_REQUEST_CODE);
     }
 }
