@@ -32,8 +32,8 @@ public enum WorkoutType implements Illustrable {
         for(WorkoutType workoutType : EnumSet.allOf(WorkoutType.class)) {
             lookup.put(workoutType.name(), workoutType);
             readableStrings.add(workoutType.toString());
+            all.add(workoutType);
         }
-        all = new ArrayList<>(lookup.values());
     }
 
     WorkoutType(String value, int icon) {

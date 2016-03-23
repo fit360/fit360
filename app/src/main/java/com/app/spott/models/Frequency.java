@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public enum Frequency implements Illustrable {
-    DAILY("Daily", R.drawable.ic_calendar_daily),
-    WEEKLY("Weekly", R.drawable.ic_calendar_weekly),
+    BLACK_FRIDAY("Black Friday",R.drawable.ic_calendar_bf),
     MONTHLY("Monthly",R.drawable.ic_calendar_monthly),
-    BLACK_FRIDAY("Black Friday",R.drawable.ic_calendar_bf);
+    WEEKLY("Weekly", R.drawable.ic_calendar_weekly),
+    DAILY("Daily", R.drawable.ic_calendar_daily);
 
     private String value;
     private int icon;
@@ -23,8 +23,8 @@ public enum Frequency implements Illustrable {
         for (Frequency f : EnumSet.allOf(Frequency.class)) {
             lookup.put(f.toString(), f);
             readableNames.add(f.toString());
+            all.add(f);
         }
-        all = new ArrayList<>((lookup.values()));
     }
 
     Frequency(String value, int icon) {

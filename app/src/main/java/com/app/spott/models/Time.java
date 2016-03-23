@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public enum Time implements Illustrable {
-    MORNING("Morning", R.drawable.ic_time_sunrise),
-    NOON("Noon", R.drawable.ic_time_noon),
+    NIGHT("Night", R.drawable.ic_time_night),
     EVENING("Evening", R.drawable.ic_time_sunset),
-    NIGHT("Night", R.drawable.ic_time_night);
+    NOON("Noon", R.drawable.ic_time_noon),
+    MORNING("Morning", R.drawable.ic_time_sunrise);
 
     private String value;
     private int icon;
@@ -23,8 +23,8 @@ public enum Time implements Illustrable {
         for (Time t : EnumSet.allOf(Time.class)) {
             lookup.put(t.toString(), t);
             readableNames.add(t.toString());
+            all.add(t);
         }
-        all = new ArrayList<>(lookup.values());
     }
 
     Time(String value, int icon) {
