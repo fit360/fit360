@@ -26,7 +26,7 @@ public enum WorkoutType implements Illustrable {
 
     private static final Map<String, WorkoutType> lookup = new HashMap<>();
     private static final ArrayList<String> readableStrings = new ArrayList<>();
-    private static ArrayList<WorkoutType> all;
+    private static ArrayList<WorkoutType> all = new ArrayList<>();
 
     static {
         for(WorkoutType workoutType : EnumSet.allOf(WorkoutType.class)) {
