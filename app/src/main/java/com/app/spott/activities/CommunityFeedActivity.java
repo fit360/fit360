@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.app.spott.R;
@@ -19,6 +20,7 @@ import com.app.spott.fragments.PostsListFragment;
 import com.app.spott.models.Gender;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
+import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -30,7 +32,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class CommunityFeedActivity extends AppCompatActivity {
+public class CommunityFeedActivity extends AppCompatActivity implements PostsListFragment.OnFragmentInteractionListener {
     private SpottApplication app;
     private PostsListFragment fragmentPostsList;
 
@@ -149,6 +151,20 @@ public class CommunityFeedActivity extends AppCompatActivity {
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         // Extract the action-view from the menu item
         ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+
+        MenuItem actionViewItem = menu.findItem(R.id.action_profile_pic);
+        View view = MenuItemCompat.getActionView(actionViewItem);
+        ImageView imageView  = (ImageView)view.findViewById(R.id.ivProfilePic);
+
+        Glide.with(this).load(((SpottApplication) this.getApplication()).getCurrentUser().getProfileImageUrl()).error(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CommunityFeedActivity.this, ProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
         return super.onPrepareOptionsMenu(menu);
 
     }
@@ -173,14 +189,15 @@ public class CommunityFeedActivity extends AppCompatActivity {
             Intent mapIntent = new Intent(this, MapActivity.class);
             startActivity(mapIntent);
             return true;
-        } else if (id == R.id.action_profile) {
+        } else if (id == R.id.action_profile_pic) {
             Intent i = new Intent(this, ProfileActivity.class);
-            startActivity(i);
-        } else if (id == R.id.action_chat) {
-            Intent i = new Intent(this, ChatActivity.class);
             startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void hasPosts(Boolean hasPosts) {
     }
 }

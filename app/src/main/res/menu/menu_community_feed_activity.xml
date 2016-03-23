@@ -10,21 +10,21 @@
         app:showAsAction="ifRoom"
         app:actionLayout="@layout/action_view_progress" />
     <item
-        android:id="@+id/action_profile"
-        android:orderInCategory="10"
-        android:title="@string/action_profile"
-        android:icon="@drawable/ic_action_profile"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_map"
-        android:orderInCategory="10"
+        android:orderInCategory="1"
         android:title="@string/action_map"
         android:icon="@drawable/ic_actionbar_map"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_chat"
         android:orderInCategory="10"
-        android:title="@string/action_chat"
-        android:icon="@drawable/ic_action_chat"
-        app:showAsAction="ifRoom" />
+        android:title="@string/action_map"
+        android:icon="@drawable/ic_chat_inbox"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_profile_pic"
+        android:orderInCategory="1000"
+        android:title="Profile Pic"
+        app:actionLayout="@layout/action_view_profile_pic"
+        app:showAsAction="always" />
 </menu>
