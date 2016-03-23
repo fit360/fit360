@@ -34,7 +34,7 @@
     <style name="WorkoutEditIcons">
         <item name="android:scaleType">fitXY</item>
         <item name="android:elevation">4dp</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">14dp</item>
         <item name="android:background">@drawable/gradient_stroke_circle</item>
     </style>
 

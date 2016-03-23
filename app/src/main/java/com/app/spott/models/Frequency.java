@@ -17,14 +17,14 @@ public enum Frequency implements Illustrable {
     private int icon;
     private static HashMap<String, Frequency> lookup = new HashMap<>();
     private static ArrayList<String> readableNames = new ArrayList<>();
-    private static ArrayList<Frequency> all;
+    private static ArrayList<Frequency> all = new ArrayList<>();
 
     static {
         for (Frequency f : EnumSet.allOf(Frequency.class)) {
             lookup.put(f.toString(), f);
             readableNames.add(f.toString());
+            all.add(f);
         }
-        all = new ArrayList<>((lookup.values()));
     }
 
     Frequency(String value, int icon) {

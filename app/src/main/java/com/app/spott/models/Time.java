@@ -8,25 +8,23 @@ import java.util.HashMap;
 import java.util.List;
 
 public enum Time implements Illustrable {
-    EARLY_MORNING("Early AM", R.drawable.ic_time_6am),
-    LATE_MORNING("Late AM", R.drawable.ic_time_9am),
-    NOON("Noon", R.drawable.ic_time_12pm),
-    LATE_NOON("Late noon", R.drawable.ic_time_3pm),
-    EVENING("Evening", R.drawable.ic_time_6pm),
-    NIGHT("Night", R.drawable.ic_time_9pm);
+    MORNING("Morning", R.drawable.ic_time_sunrise),
+    NOON("Noon", R.drawable.ic_time_noon),
+    EVENING("Evening", R.drawable.ic_time_sunset),
+    NIGHT("Night", R.drawable.ic_time_night);
 
     private String value;
     private int icon;
     private static HashMap<String, Time> lookup = new HashMap<>();
     private static ArrayList<String> readableNames = new ArrayList<>();
-    private static ArrayList<Time> all;
+    private static ArrayList<Time> all = new ArrayList<>();
 
     static {
         for (Time t : EnumSet.allOf(Time.class)) {
             lookup.put(t.toString(), t);
             readableNames.add(t.toString());
+            all.add(t);
         }
-        all = new ArrayList<>(lookup.values());
     }
 
     Time(String value, int icon) {
