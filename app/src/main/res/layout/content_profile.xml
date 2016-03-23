@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     sothree:umanoFadeColor="@android:color/transparent"
     sothree:umanoOverlay="false"
-    sothree:umanoPanelHeight="120dp"
+    sothree:umanoPanelHeight="250dp"
     sothree:umanoParallaxOffset="200dp"
     sothree:umanoShadowHeight="0dp"
     sothree:umanoScrollableView="@+id/fragment_community_feed">
