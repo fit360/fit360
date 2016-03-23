@@ -22,7 +22,7 @@
         android:ellipsize="end"
         android:maxLines="4"
         android:fontFamily="sans-serif-light"
-        android:textSize="16dp"
+        android:textSize="18sp"
         android:text="Testing a long long tedt here with san serif light font"
         android:textColor="#90000000" />
     <TextView
