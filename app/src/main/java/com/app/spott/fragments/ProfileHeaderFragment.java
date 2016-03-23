@@ -41,7 +41,6 @@ public class ProfileHeaderFragment extends Fragment {
     private User mUser;
     private boolean isLoggedInUser;
     private SpottApplication app;
-    public static final String CHAT_WITH_USERID_KEY = "chat_with";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {

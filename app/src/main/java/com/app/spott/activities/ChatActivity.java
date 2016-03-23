@@ -15,7 +15,6 @@ import android.widget.ListView;
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.adapters.ChatListAdapter;
-import com.app.spott.fragments.ProfileHeaderFragment;
 import com.app.spott.models.Message;
 import com.app.spott.models.User;
 import com.parse.FindCallback;
@@ -65,7 +64,7 @@ public class ChatActivity extends AppCompatActivity implements ChatListAdapter.C
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         ButterKnife.bind(this);
-        otherUserId = getIntent().getStringExtra(ProfileHeaderFragment.CHAT_WITH_USERID_KEY);
+        otherUserId = getIntent().getStringExtra(ProfileActivity.CHAT_WITH_USERID_KEY);
         app = (SpottApplication) getApplicationContext();
         selfUser = app.getCurrentUser();
         if(otherUser == null){
