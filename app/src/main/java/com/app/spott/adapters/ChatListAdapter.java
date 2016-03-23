@@ -1,7 +1,7 @@
 package com.app.spott.adapters;
 
 import android.content.Context;
-import android.view.Gravity;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +54,10 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
             final ViewHolder holder = new ViewHolder();
             holder.imageOther = (ImageView) convertView.findViewById(R.id.ivProfileOther);
             holder.imageMe = (ImageView) convertView.findViewById(R.id.ivProfileMe);
-            holder.body = (TextView) convertView.findViewById(R.id.tvBody);
+            holder.cvOtherMessage = (CardView) convertView.findViewById(R.id.cvOtherMessage);
+            holder.cvMyMessage = (CardView) convertView.findViewById(R.id.cvMyMessage);
+            holder.tvOtherMessage = (TextView) convertView.findViewById(R.id.tvOtherMessage);
+            holder.tvMyMessage = (TextView) convertView.findViewById(R.id.tvMyMessage);
             convertView.setTag(holder);
         }
         final Message message = getItem(position);
@@ -62,23 +65,35 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
         final boolean isMe = message.getUserId().equals(selfUserId);
         if (isMe) {
             holder.imageMe.setVisibility(View.VISIBLE);
+            holder.cvMyMessage.setVisibility(View.VISIBLE);
+            holder.tvMyMessage.setVisibility(View.VISIBLE);
+            holder.tvMyMessage.setText(message.getBody());
             Glide.with(mContext).load(selfUser.getProfileImageUrl()).into(holder.imageMe);
+
             holder.imageOther.setVisibility(View.GONE);
-            holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
+            holder.cvOtherMessage.setVisibility(View.GONE);
+            holder.tvOtherMessage.setVisibility(View.GONE);
         } else {
             holder.imageOther.setVisibility(View.VISIBLE);
+            holder.cvOtherMessage.setVisibility(View.VISIBLE);
+            holder.tvOtherMessage.setVisibility(View.VISIBLE);
+            holder.tvOtherMessage.setText(message.getBody());
             Glide.with(mContext).load(otherUser.getProfileImageUrl()).into(holder.imageOther);
+
             holder.imageMe.setVisibility(View.GONE);
-            holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+            holder.cvMyMessage.setVisibility(View.GONE);
+            holder.tvMyMessage.setVisibility(View.GONE);
         }
-        holder.body.setText(message.getBody());
         return convertView;
     }
 
     final class ViewHolder {
         public ImageView imageOther;
         public ImageView imageMe;
-        public TextView body;
+        public CardView cvOtherMessage;
+        public CardView cvMyMessage;
+        public TextView tvMyMessage;
+        public TextView tvOtherMessage;
     }
 
 }

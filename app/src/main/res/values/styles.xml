@@ -57,6 +57,22 @@
         <item name="android:layout_marginTop">12dp</item>
     </style>
 
+    <style name="ChatUserImage">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/ic_launcher</item>
+        <item name="app:riv_border_radius">30dp</item>
+        <item name="app:riv_border_width">2dp</item>
+    </style>
+
+    <style name="ChatUserImage.Other">
+        <item name="android:contentDescription">@string/profile_other</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="app:riv_border_color">@color/chatOther</item>
+    </style>
+
     <style name="TransparentToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColorPrimary">@android:color/white</item>
