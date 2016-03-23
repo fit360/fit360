@@ -103,16 +103,17 @@
     <style name="ChatTextView">
         <item name="android:textSize">14sp</item>
         <item name="android:padding">6dp</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 
     <style name="ChatTextView.Other">
-        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
         <item name="android:paddingLeft">@dimen/chat_text_margin</item>
         <item name="android:paddingStart">@dimen/chat_text_margin</item>
     </style>
 
     <style name="ChatTextView.My">
-        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
         <item name="android:paddingRight">@dimen/chat_text_margin</item>
         <item name="android:paddingEnd">@dimen/chat_text_margin</item>
     </style>

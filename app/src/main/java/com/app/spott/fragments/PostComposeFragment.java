@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -84,6 +85,9 @@ public class PostComposeFragment extends Fragment {
         final Uri imageUri = Utils.getPhotoFileUri(mContext, PostImageCaptureFragment.FINAL_IMAGE_NAME);
         ivPhoto.setImageURI(imageUri);
         etPostMessage.requestFocus();
+
+        InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etPostMessage, InputMethodManager.SHOW_IMPLICIT);
 
         User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
             @Override

@@ -27,7 +27,7 @@
     <string name="title_activity_login">@string/app_name</string>
     <string name="title_activity_workout_edit">WorkoutEditActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
-    <string name="message_hint">Make your healthy plans...</string>
+    <string name="message_hint">Say something...</string>
     <string name="send">Send</string>
     <string name="profile_me">My Profile Pic</string>
     <string name="profile_other">Other profile pic</string>

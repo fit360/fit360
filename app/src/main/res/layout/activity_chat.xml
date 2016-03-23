@@ -56,6 +56,6 @@
             android:background="@drawable/ic_action_send_accent"
             android:gravity="center_vertical|right"
             android:paddingRight="10dp"
-            android:textSize="18sp"></Button>
+            android:textSize="14sp"></Button>
     </RelativeLayout>
 </RelativeLayout>
