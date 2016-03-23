@@ -39,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
     private static final String BUNDLE_USERID_KEY = "userId";
     private static final String BUNDLE_LOGGED_IN_USER_KEY = "is_logged_in_user";
+    public static final String CHAT_WITH_USERID_KEY = "chat_with";
 
     private PostsListFragment mFragmentPostsList;
 
@@ -70,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
-                intent.putExtra("theirUserId", user.getObjectId());
+                intent.putExtra(CHAT_WITH_USERID_KEY, user.getObjectId());
                 startActivity(intent);
             }
         });
