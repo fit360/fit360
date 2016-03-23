@@ -26,7 +26,7 @@ public class Post extends Model {
 
     // Use getString and others to access fields
     public String getBody() {
-        return getString("tvMyMessage");
+        return getString("body");
     }
     public String getImageUrl() {
         return getString("image_url");
