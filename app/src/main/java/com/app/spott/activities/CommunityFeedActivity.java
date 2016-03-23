@@ -22,6 +22,7 @@ import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -156,7 +157,20 @@ public class CommunityFeedActivity extends AppCompatActivity implements PostsLis
         View view = MenuItemCompat.getActionView(actionViewItem);
         ImageView imageView  = (ImageView)view.findViewById(R.id.ivProfilePic);
 
-        Glide.with(this).load(((SpottApplication) this.getApplication()).getCurrentUser().getProfileImageUrl()).error(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(imageView);
+        if(app.getCurrentUser() != null){
+            Glide.with(this).load(app.getCurrentUser().getProfileImageUrl()).error(R.drawable.ic_action_profile).error(R.drawable.ic_action_profile).dontAnimate().into(imageView);
+        } else {
+            User.getByOwner(ParseUser.getCurrentUser(), new GetCallback<User>() {
+                @Override
+                public void done(User user, ParseException e) {
+                    if (e == null) {
+                        app.setCurrentUser(user);
+                    } else {
+                    }
+                }
+            });
+        }
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -40,6 +40,7 @@
         android:layout_alignParentEnd="true" />
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabCreatePost"
+        app:layout_behavior="com.app.spott.misc.ScrollAwareFABBehavior"
         android:src="@drawable/ic_compose_white_48dp"
         app:fabSize="normal"
         android:layout_width="wrap_content"
