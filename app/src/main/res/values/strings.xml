@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Spott</string>
+    <string name="app_name">LiveFit</string>
     <string name="action_settings">Settings</string>
     <string name="action_profile">Profile</string>
     <string name="action_community">Community</string>
@@ -24,7 +24,7 @@
     <string name="title_activity_map">Find your Partner!</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_community_feed">CommunityFeedActivity</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">@string/app_name</string>
     <string name="title_activity_workout_edit">WorkoutEditActivity</string>
     <string name="title_activity_chat">ChatActivity</string>
     <string name="message_hint">Make your healthy plans...</string>
