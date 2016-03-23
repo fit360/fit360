@@ -30,6 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_profile_header" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabStartChat"
+        android:src="@drawable/ic_action_chat"
+        app:fabSize="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="120dp"
+        />
     <fragment
         android:layout_margin="8dp"
         android:name="com.app.spott.fragments.ProfileWorkoutsFragment"

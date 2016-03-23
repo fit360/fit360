@@ -47,16 +47,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         super.onCreate(savedInstanceState);
 
         SpottApplication app = (SpottApplication) this.getApplicationContext();
-
-        Intent intent = getIntent();
-        if (intent.hasExtra(MapActivity.INTENT_USER_ID)) {
-//            setUser(intent.getStringExtra(MapActivity.INTENT_USER_ID));
-            setUserOnUIThread(intent.getStringExtra(MapActivity.INTENT_USER_ID));
-            isLoggedInUser = false;
-        } else {
-            user = app.getCurrentUser();
-            isLoggedInUser = true;
-        }
         setContentView(R.layout.activity_profile);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabStartChat);
@@ -68,6 +58,18 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
                 startActivity(intent);
             }
         });
+        Intent intent = getIntent();
+        if (intent.hasExtra(MapActivity.INTENT_USER_ID)) {
+//            setUser(intent.getStringExtra(MapActivity.INTENT_USER_ID));
+            setUserOnUIThread(intent.getStringExtra(MapActivity.INTENT_USER_ID));
+            isLoggedInUser = false;
+        } else {
+            user = app.getCurrentUser();
+            isLoggedInUser = true;
+            fab.setVisibility(View.GONE);
+        }
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
