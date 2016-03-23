@@ -45,6 +45,7 @@ public class ProfileHeaderFragment extends Fragment {
     private User mUser;
     private boolean isLoggedInUser;
     private SpottApplication app;
+    public static final String CHAT_WITH_USERID_KEY = "chat_with";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -52,8 +53,6 @@ public class ProfileHeaderFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_profile_header, parent, false);
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
@@ -93,7 +92,7 @@ public class ProfileHeaderFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(getActivity(), ChatActivity.class);
-                    i.putExtra("theirUserId", mUser.getObjectId());
+                    i.putExtra(CHAT_WITH_USERID_KEY, mUser.getObjectId());
                     getActivity().startActivity(i);
                 }
             });

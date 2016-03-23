@@ -173,35 +173,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         });
     }
 
-    private void animateMap(ParseGeoPoint point) {
-        animateMap(new LatLng(point.getLatitude(), point.getLongitude()));
-    }
-
-    private void animateMap(LatLng latLng) {
-        map.clear();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
-        map.animateCamera(cameraUpdate);
-        map.addMarker(new MarkerOptions().position(latLng));
-    }
-
-    public void toggleWorkout(View view) {
-        expandableWorkouts.toggle();
-    }
-
-    public void toggleTime(View view) {
-        expandableTime.toggle();
-    }
-
-    public void toggleMap(View v) {
-        expandableMap.toggle();
-
-        if (location != null && location.isSet())
-            animateMap(location.getPoint());
-    }
-
-    public void toggleFreq(View v){
-        expandableFreq.toggle();
-    }
 
     private void initializeData(Intent i) {
         if (i.hasExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY)) {
@@ -228,21 +199,19 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     private void populateViews(Workout w) {
-//        btnWorkout.setText(w.getWorkoutType().toString());
-//        ivWorkoutIcon.setImageResource(w.getWorkoutType().getIcon());
-//
-//        btnTime.setText(w.getTime().toString());
-//        ivTimeIcon.setImageResource(w.getTime().getIcon());
-//
-//        btnFreq.setText(w.getFrequency().toString());
-//        ivFreqIcon.setImageResource(w.getFrequency().getIcon());
-//
-//        btnLocation.setText(location.getName());
-
         setWorkoutType(w.getWorkoutType());
         setWorkoutLocation(w.getLocation());
         setWorkoutTime(w.getTime());
         setWorkoutFrequency(w.getFrequency());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                setWorkoutLocation(PlaceAutocomplete.getPlace(this, data));
+            }
+        }
     }
 
     private void saveWorkout() {
@@ -264,7 +233,50 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         }
     }
 
-    public void selectPlace(View v){
+    private void setWorkoutType(WorkoutType wt) {
+        btnWorkout.setText(wt.toString());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivWorkoutIcon);
+        ivWorkoutIcon.setImageResource(wt.getIcon());
+        workout.setWorkoutType(wt);
+        expandableWorkouts.collapse();
+    }
+
+    private void setWorkoutTime(Time t) {
+        btnTime.setText(t.toString());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivTimeIcon);
+        ivTimeIcon.setImageResource(t.getIcon());
+        workout.setTime(t);
+        expandableTime.collapse();
+    }
+
+    private void setWorkoutFrequency(Frequency f) {
+        btnFreq.setText(f.toString());
+        YoYo.with((Techniques.BounceIn)).duration(700).playOn(ivFreqIcon);
+        ivFreqIcon.setImageResource(f.getIcon());
+        workout.setFrequency(f);
+        expandableFreq.collapse();
+    }
+
+    private void setWorkoutLocation(Location location) {
+        btnLocation.setText(location.getName());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivMapIcon);
+        ivMapIcon.setImageResource(R.drawable.ic_maps_pin_drop);
+        expandableMap.expand();
+        animateMap(geoPoint);
+    }
+
+    private void setWorkoutLocation(Place place) {
+        location.setName(place.getName().toString());
+        location.setAddress(place.getAddress().toString());
+        location.setPlaceId(place.getId());
+
+        geoPoint.setLatitude(place.getLatLng().latitude);
+        geoPoint.setLongitude(place.getLatLng().longitude);
+        location.setPoint(geoPoint);
+        setWorkoutLocation(location);
+    }
+
+    public void selectPlace(View v) {
         try {
             Intent intent =
                     new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
@@ -278,12 +290,43 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE){
-            if (resultCode == RESULT_OK) {
-                setWorkoutLocation(PlaceAutocomplete.getPlace(this, data));
-            }
-        }
+    public void onTileSelect(Illustrable obj) {
+        if (obj instanceof WorkoutType)
+            setWorkoutType((WorkoutType) obj);
+        else if (obj instanceof Time)
+            setWorkoutTime((Time) obj);
+        else if (obj instanceof Frequency)
+            setWorkoutFrequency((Frequency) obj);
+    }
+
+    private void animateMap(ParseGeoPoint point) {
+        animateMap(new LatLng(point.getLatitude(), point.getLongitude()));
+    }
+
+    private void animateMap(LatLng latLng) {
+        map.clear();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(latLng);
+        map.animateCamera(cameraUpdate);
+        map.addMarker(new MarkerOptions().position(latLng));
+    }
+
+    public void toggleWorkout(View view) {
+        expandableWorkouts.toggle();
+    }
+
+    public void toggleTime(View view) {
+        expandableTime.toggle();
+    }
+
+    public void toggleMap(View v) {
+        expandableMap.toggle();
+
+        if (location != null && location.isSet())
+            animateMap(location.getPoint());
+    }
+
+    public void toggleFreq(View v) {
+        expandableFreq.toggle();
     }
 
     @Override
@@ -349,58 +392,5 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         i.putExtra(ProfileActivity.WORKOUT_ID_INTENT_KEY, w.getObjectId());
         setResult(RESULT_OK, i);
         finish();
-    }
-
-    @Override
-    public void onTileSelect(Illustrable obj) {
-        if (obj instanceof WorkoutType)
-            setWorkoutType((WorkoutType) obj);
-        else if (obj instanceof Time)
-            setWorkoutTime((Time) obj);
-        else if (obj instanceof Frequency)
-            setWorkoutFrequency((Frequency) obj);
-    }
-
-    private void setWorkoutType(WorkoutType wt) {
-        btnWorkout.setText(wt.toString());
-        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivWorkoutIcon);
-        ivWorkoutIcon.setImageResource(wt.getIcon());
-        workout.setWorkoutType(wt);
-        expandableWorkouts.collapse();
-    }
-
-    private void setWorkoutTime(Time t) {
-        btnTime.setText(t.toString());
-        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivTimeIcon);
-        ivTimeIcon.setImageResource(t.getIcon());
-        workout.setTime(t);
-        expandableTime.collapse();
-    }
-
-    private void setWorkoutFrequency(Frequency f){
-        btnFreq.setText(f.toString());
-        YoYo.with((Techniques.BounceIn)).duration(700).playOn(ivFreqIcon);
-        ivFreqIcon.setImageResource(f.getIcon());
-        workout.setFrequency(f);
-        expandableFreq.collapse();
-    }
-
-    private void setWorkoutLocation(Location location){
-        btnLocation.setText(location.getName());
-        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivMapIcon);
-        ivMapIcon.setImageResource(R.drawable.ic_maps_pin_drop);
-        expandableMap.expand();
-        animateMap(geoPoint);
-    }
-
-    private void setWorkoutLocation(Place place){
-        location.setName(place.getName().toString());
-        location.setAddress(place.getAddress().toString());
-        location.setPlaceId(place.getId());
-
-        geoPoint.setLatitude(place.getLatLng().latitude);
-        geoPoint.setLongitude(place.getLatLng().longitude);
-        location.setPoint(geoPoint);
-        setWorkoutLocation(location);
     }
 }
