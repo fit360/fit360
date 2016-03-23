@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.app.spott.R;
-import com.app.spott.models.Location;
+import com.app.spott.models.Workout;
 
 import java.util.List;
 
@@ -18,19 +18,19 @@ import butterknife.ButterKnife;
 /**
  * Created by sshah on 3/15/16.
  */
-public class LocationsSpinnerAdapter extends ArrayAdapter<Location> {
+public class LocationsSpinnerAdapter extends ArrayAdapter<Workout> {
 
     private Context mContext;
 
-    public LocationsSpinnerAdapter(Context context, List<Location> locations) {
-        super(context, R.layout.support_simple_spinner_dropdown_item, locations);
+    public LocationsSpinnerAdapter(Context context, List<Workout> workouts) {
+        super(context, R.layout.support_simple_spinner_dropdown_item, workouts);
         mContext = context;
     }
 
     public static class ViewHolder {
 
         @Bind(android.R.id.text1)
-        TextView tvAddress;
+        TextView tvActivityLocation;
 
         public ViewHolder(View view){
             ButterKnife.bind(this, view);
@@ -48,7 +48,7 @@ public class LocationsSpinnerAdapter extends ArrayAdapter<Location> {
     }
 
     private View initView(int position, View convertView, ViewGroup parent){
-        Location location = getItem(position);
+        Workout workout = getItem(position);
 
         ViewHolder viewHolder;
         if (convertView == null) {
@@ -60,7 +60,7 @@ public class LocationsSpinnerAdapter extends ArrayAdapter<Location> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvAddress.setText(location.getAddress());
+        viewHolder.tvActivityLocation.setText(workout.getWorkoutType().toString() + " at " + workout.getLocation().getName());
 
         return convertView;
     }
