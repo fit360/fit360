@@ -57,6 +57,66 @@
         <item name="android:layout_marginTop">12dp</item>
     </style>
 
+    <style name="ChatUserImage">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/ic_launcher</item>
+    </style>
+
+    <style name="ChatUserImage.Other">
+        <item name="android:contentDescription">@string/profile_other</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+
+    <style name="ChatUserImage.My">
+        <item name="android:contentDescription">@string/profile_me</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+    </style>
+
+    <style name="ChatCardView">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginStart">@dimen/chat_text_margin</item>
+        <item name="android:layout_marginLeft">@dimen/chat_text_margin</item>
+        <item name="android:layout_marginEnd">@dimen/chat_text_margin</item>
+        <item name="android:layout_marginRight">@dimen/chat_text_margin</item>
+        <item name="android:elevation">4dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <style name="ChatCardView.Other">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="cardBackgroundColor">@color/chatOther</item>
+    </style>
+
+    <style name="ChatCardView.My">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="cardBackgroundColor">@color/chatMy</item>
+    </style>
+
+    <style name="ChatTextView">
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">6dp</item>
+    </style>
+
+    <style name="ChatTextView.Other">
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:paddingLeft">@dimen/chat_text_margin</item>
+        <item name="android:paddingStart">@dimen/chat_text_margin</item>
+    </style>
+
+    <style name="ChatTextView.My">
+        <item name="android:textColor">@android:color/primary_text_dark</item>
+        <item name="android:paddingRight">@dimen/chat_text_margin</item>
+        <item name="android:paddingEnd">@dimen/chat_text_margin</item>
+    </style>
+
     <style name="TransparentToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColorPrimary">@android:color/white</item>

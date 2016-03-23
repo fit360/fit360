@@ -146,6 +146,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         TextView tvCaption;
         ImageView ivPhoto;
         ImageView ivProfilePic;
+
+
         private Context context;
 
         public ViewHolder(Context context, View itemView) {

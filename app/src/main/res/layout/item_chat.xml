@@ -1,38 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivProfileOther"
-        android:contentDescription="@string/profile_other"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:riv_corner_radius="30dp"
+        style="@style/ChatUserImage.Other"
+        android:layout_width="@dimen/chat_user_image_radius"
+        android:layout_height="@dimen/chat_user_image_radius"
+        app:riv_border_color="@color/chatOther"
         app:riv_border_width="2dp"
-        app:riv_border_color="#E0E0E0"
-        android:layout_margin="10dp"
-        android:src="@mipmap/ic_launcher" />
-    <TextView
-        android:textSize="18sp"
-        android:id="@+id/tvBody"
-        android:padding="20dp"
-        android:lines="3"
-        android:layout_marginRight="64dp"
-        android:layout_width="match_parent"
-        android:layout_height="64dp">
-    </TextView>
+        app:riv_corner_radius="30dp" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvOtherMessage"
+        style="@style/ChatCardView.Other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvOtherMessage"
+            style="@style/ChatTextView.Other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvMyMessage"
+        style="@style/ChatCardView.My"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvMyMessage"
+            style="@style/ChatTextView.My"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
+
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivProfileMe"
-        android:contentDescription="@string/profile_me"
-        android:layout_marginLeft="-74dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:riv_corner_radius="30dp"
+        style="@style/ChatUserImage.My"
+        android:layout_width="@dimen/chat_user_image_radius"
+        android:layout_height="@dimen/chat_user_image_radius"
+        app:riv_border_color="@color/chatMy"
         app:riv_border_width="2dp"
-        app:riv_border_color="#E0E0E0"
-        android:src="@mipmap/ic_launcher" />
-</LinearLayout>
+        app:riv_corner_radius="30dp" />
+</RelativeLayout>
