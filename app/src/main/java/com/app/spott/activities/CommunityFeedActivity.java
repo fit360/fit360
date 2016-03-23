@@ -182,16 +182,6 @@ public class CommunityFeedActivity extends AppCompatActivity implements PostsLis
         return super.onPrepareOptionsMenu(menu);
 
     }
-    public void showProgressBar() {
-        // Show progress item
-        miActionProgressItem.setVisible(true);
-    }
-
-    public void hideProgressBar() {
-        // Hide progress item
-        miActionProgressItem.setVisible(false);
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

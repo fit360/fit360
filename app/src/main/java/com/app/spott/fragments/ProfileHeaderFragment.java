@@ -3,7 +3,6 @@ package com.app.spott.fragments;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
-import com.app.spott.activities.ChatActivity;
 import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
 import com.app.spott.utils.DeviceDimensionsHelper;
@@ -40,13 +38,9 @@ public class ProfileHeaderFragment extends Fragment {
     @Bind(R.id.ivCoverPhoto)
     ImageView ivCoverPhoto;
 
-    @Bind(R.id.ivChat)
-    ImageView ivChat;
-
     private User mUser;
     private boolean isLoggedInUser;
     private SpottApplication app;
-    public static final String CHAT_WITH_USERID_KEY = "chat_with";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -86,18 +80,6 @@ public class ProfileHeaderFragment extends Fragment {
         tvGenderAge.setText(mUser.getGender().getName() + " " + mUser.getAge());
         Glide.with(this).load(mUser.getCoverImageUrl()).placeholder(R.drawable.drawable_placeholder).error(R.drawable.drawable_placeholder).dontAnimate().into(ivCoverPhoto);
         Glide.with(this).load(mUser.getProfileImageUrl()).centerCrop().into(ivProfilePicture);
-        if (mUser == app.getCurrentUser()){
-            ivChat.setVisibility(View.GONE);
-        }else {
-            ivChat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), ChatActivity.class);
-                    i.putExtra(CHAT_WITH_USERID_KEY, mUser.getObjectId());
-                    getActivity().startActivity(i);
-                }
-            });
-        }
         animateHeaderAndProfilePic();
     }
 

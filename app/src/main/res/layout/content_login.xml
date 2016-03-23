@@ -11,6 +11,7 @@
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#212121">
     </FrameLayout>
 </android.support.percent.PercentRelativeLayout>

@@ -15,4 +15,5 @@
         android:layout_height="?attr/actionBarSize"
         app:theme="@style/TransparentToolbarTheme" />
 
+
 </android.support.design.widget.CoordinatorLayout>

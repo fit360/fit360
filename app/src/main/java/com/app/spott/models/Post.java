@@ -13,6 +13,9 @@ public class Post extends Model {
     private static final String IMAGE_URL = "image_url";
     private static final String BODY = "body";
     private static final String CREATED_AT = "createdAt";
+    private static final String LIKES = "likes";
+    private static final String LOVES = "loves";
+    private static final String WOWS = "wows";
 
     public Post() {
         super();
@@ -26,7 +29,7 @@ public class Post extends Model {
 
     // Use getString and others to access fields
     public String getBody() {
-        return getString("tvMyMessage");
+        return getString("body");
     }
     public String getImageUrl() {
         return getString("image_url");
@@ -46,6 +49,26 @@ public class Post extends Model {
 
     public void setImageUrl(String imageUrl){
         put(IMAGE_URL, imageUrl);
+    }
+    public int getLikes() {
+        return getInt(LIKES);
+    }
+    public void setLikes(int value){
+        put(LIKES, value);
+    }
+
+    public int getLoves() {
+        return getInt(LOVES);
+    }
+    public void setLoves(int value){
+        put(LOVES, value);
+    }
+
+    public int getWows() {
+        return getInt(WOWS);
+    }
+    public void setWows(int value){
+        put(WOWS, value);
     }
 
     @Override
