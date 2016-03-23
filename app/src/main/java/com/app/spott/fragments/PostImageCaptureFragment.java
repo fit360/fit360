@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.spott.R;
@@ -86,6 +87,12 @@ public class PostImageCaptureFragment extends Fragment {
 
     @Bind(R.id.ivCameraTarget2)
     ImageView ivCameraTarget2;
+
+    @Bind(R.id.tvBefore)
+    TextView tvBefore;
+
+    @Bind(R.id.tvAfter)
+    TextView tvAfter;
 
 
     private ImageSurfaceView mImageSurfaceView1;
@@ -171,6 +178,8 @@ public class PostImageCaptureFragment extends Fragment {
                 ivCameraTarget2.setVisibility(View.GONE);
                 mMode = MODE_SPLIT;
                 verifyReadyToSubmit();
+                tvBefore.setVisibility(View.VISIBLE);
+                tvAfter.setVisibility(View.VISIBLE);
 
             }
         });
@@ -393,6 +402,8 @@ public class PostImageCaptureFragment extends Fragment {
         });
         ivCameraTarget1.setImageDrawable(getResources().getDrawable(R.drawable.camera_target_tbg));
         ivCameraTarget1.setVisibility(View.VISIBLE);
+        tvBefore.setVisibility(View.GONE);
+        tvAfter.setVisibility(View.GONE);
     }
 
     private Bitmap combineImages(Bitmap a, Bitmap b) {
