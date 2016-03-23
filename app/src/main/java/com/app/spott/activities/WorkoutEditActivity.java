@@ -27,6 +27,8 @@ import com.app.spott.models.Time;
 import com.app.spott.models.User;
 import com.app.spott.models.Workout;
 import com.app.spott.models.WorkoutType;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.github.aakira.expandablelayout.ExpandableWeightLayout;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -360,6 +362,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
     private void setWorkoutTime(Time t) {
         btnTime.setText(t.toString());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ibTimeIcon);
         ibTimeIcon.setImageResource(t.getIcon());
         workout.setTime(t);
         expandableTime.collapse();
