@@ -69,11 +69,14 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     @Bind(R.id.ivWorkoutIcon)
     ImageView ivWorkoutIcon;
 
-    @Bind(R.id.ibTimeIcon)
-    ImageView ibTimeIcon;
+    @Bind(R.id.ivMapIcon)
+    ImageView ivMapIcon;
 
-    @Bind(R.id.ibFrequencyIcon)
-    ImageView ibFreqIcon;
+    @Bind(R.id.ivTimeIcon)
+    ImageView ivTimeIcon;
+
+    @Bind(R.id.ivFrequencyIcon)
+    ImageView ivFreqIcon;
 
     @Bind(R.id.btnWorkout)
     Button btnWorkout;
@@ -225,16 +228,21 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
     }
 
     private void populateViews(Workout w) {
-        btnWorkout.setText(w.getWorkoutType().toString());
-        ivWorkoutIcon.setImageResource(w.getWorkoutType().getIcon());
+//        btnWorkout.setText(w.getWorkoutType().toString());
+//        ivWorkoutIcon.setImageResource(w.getWorkoutType().getIcon());
+//
+//        btnTime.setText(w.getTime().toString());
+//        ivTimeIcon.setImageResource(w.getTime().getIcon());
+//
+//        btnFreq.setText(w.getFrequency().toString());
+//        ivFreqIcon.setImageResource(w.getFrequency().getIcon());
+//
+//        btnLocation.setText(location.getName());
 
-        btnTime.setText(w.getTime().toString());
-        ibTimeIcon.setImageResource(w.getTime().getIcon());
-
-        btnFreq.setText(w.getFrequency().toString());
-        ibFreqIcon.setImageResource(w.getFrequency().getIcon());
-
-        btnLocation.setText(location.getName());
+        setWorkoutType(w.getWorkoutType());
+        setWorkoutLocation(w.getLocation());
+        setWorkoutTime(w.getTime());
+        setWorkoutFrequency(w.getFrequency());
     }
 
     private void saveWorkout() {
@@ -355,6 +363,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
     private void setWorkoutType(WorkoutType wt) {
         btnWorkout.setText(wt.toString());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivWorkoutIcon);
         ivWorkoutIcon.setImageResource(wt.getIcon());
         workout.setWorkoutType(wt);
         expandableWorkouts.collapse();
@@ -362,17 +371,26 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
 
     private void setWorkoutTime(Time t) {
         btnTime.setText(t.toString());
-        YoYo.with(Techniques.BounceIn).duration(700).playOn(ibTimeIcon);
-        ibTimeIcon.setImageResource(t.getIcon());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivTimeIcon);
+        ivTimeIcon.setImageResource(t.getIcon());
         workout.setTime(t);
         expandableTime.collapse();
     }
 
     private void setWorkoutFrequency(Frequency f){
         btnFreq.setText(f.toString());
-        ibFreqIcon.setImageResource(f.getIcon());
+        YoYo.with((Techniques.BounceIn)).duration(700).playOn(ivFreqIcon);
+        ivFreqIcon.setImageResource(f.getIcon());
         workout.setFrequency(f);
         expandableFreq.collapse();
+    }
+
+    private void setWorkoutLocation(Location location){
+        btnLocation.setText(location.getName());
+        YoYo.with(Techniques.BounceIn).duration(700).playOn(ivMapIcon);
+        ivMapIcon.setImageResource(R.drawable.ic_maps_pin_drop);
+        expandableMap.expand();
+        animateMap(geoPoint);
     }
 
     private void setWorkoutLocation(Place place){
@@ -383,9 +401,6 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         geoPoint.setLatitude(place.getLatLng().latitude);
         geoPoint.setLongitude(place.getLatLng().longitude);
         location.setPoint(geoPoint);
-
-        btnLocation.setText(location.getName());
-        expandableMap.expand();
-        animateMap(geoPoint);
+        setWorkoutLocation(location);
     }
 }
