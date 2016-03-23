@@ -3,12 +3,12 @@ package com.app.spott.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.app.spott.R;
 import com.app.spott.adapters.ProfileWorkoutsAdapter;
@@ -35,8 +35,8 @@ public class ProfileWorkoutsFragment extends Fragment {
     @Bind(R.id.rvProfileActivities)
     RecyclerView rvProfileActivities;
 
-    @Bind(R.id.ivAddActivity)
-    ImageView ivAddActivity;
+    @Bind(R.id.cvAddWorkout)
+    CardView cvAddWorkout;
 
     public interface AddWorkoutListener {
         void addWorkout();
@@ -63,7 +63,7 @@ public class ProfileWorkoutsFragment extends Fragment {
             }
         });
 
-        ivAddActivity.setOnClickListener(new View.OnClickListener() {
+        cvAddWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addWorkoutListener.addWorkout();
@@ -71,9 +71,9 @@ public class ProfileWorkoutsFragment extends Fragment {
         });
 
         if(isLoggedInUser){
-            ivAddActivity.setVisibility(View.VISIBLE);
+            cvAddWorkout.setVisibility(View.VISIBLE);
         } else {
-            ivAddActivity.setVisibility(View.GONE);
+            cvAddWorkout.setVisibility(View.GONE);
         }
     }
 

@@ -18,6 +18,7 @@ import com.app.spott.SpottApplication;
 import com.app.spott.activities.ChatActivity;
 import com.app.spott.interfaces.ProfileFragmentListener;
 import com.app.spott.models.User;
+import com.app.spott.utils.DeviceDimensionsHelper;
 import com.bumptech.glide.Glide;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -71,7 +72,7 @@ public class ProfileHeaderFragment extends Fragment {
 
     private void animateHeaderAndProfilePic() {
         AnimatorSet set = new AnimatorSet();
-        ObjectAnimator moveToBottom = ObjectAnimator.ofFloat(ivProfilePicture, "y", 350);
+        ObjectAnimator moveToBottom = ObjectAnimator.ofFloat(ivProfilePicture, "y", DeviceDimensionsHelper.convertDpToPixel(120f, this.getContext()));
         moveToBottom.setDuration(1000);
         moveToBottom.setInterpolator(new AccelerateInterpolator());
         ObjectAnimator fadeAnim = ObjectAnimator.ofFloat(ivCoverPhoto, "alpha", 1.0f);
