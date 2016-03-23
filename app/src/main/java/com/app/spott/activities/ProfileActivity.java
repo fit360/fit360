@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
@@ -23,9 +24,13 @@ import com.parse.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener,
         ProfileFragmentListener,
-        ProfileWorkoutsFragment.AddWorkoutListener {
+        ProfileWorkoutsFragment.AddWorkoutListener,
+        PostsListFragment.OnFragmentInteractionListener{
 
     private User user;
     private boolean isLoggedInUser;
@@ -33,6 +38,9 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
 
     private PostsListFragment mFragmentPostsList;
+
+    @Bind(R.id.tvPosts)
+    TextView tvPosts;
 
 
     @Override
@@ -56,6 +64,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ButterKnife.bind(this);
+
         mFragmentPostsList = (PostsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_community_feed);
         fetchUserPosts();
     }
@@ -129,5 +139,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     public void addWorkout() {
         Intent intent = new Intent(this, WorkoutEditActivity.class);
         startActivityForResult(intent, WORKOUT_EDIT_REQUEST_CODE);
+    }
+
+    @Override
+    public void hasPosts(Boolean hasPosts) {
+        if(hasPosts) {
+            tvPosts.setVisibility(View.VISIBLE);
+        } else {
+            tvPosts.setVisibility(View.GONE);
+        }
     }
 }

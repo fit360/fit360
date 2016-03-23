@@ -54,9 +54,7 @@ import com.parse.ParseUser;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -279,19 +277,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             if (workouts != null && !workouts.isEmpty()) {
 
                                 mPreferredWorkouts.addAll(workouts);
-                                final Set<com.app.spott.models.Location> preferredLocations = new HashSet<>();
-                                for (Workout workout : workouts) {
-                                    com.app.spott.models.Location location = workout.getLocation();
-                                    preferredLocations.add(location);
-                                }
-
-                                final List<com.app.spott.models.Location> locations = new ArrayList<com.app.spott.models.Location>();
-                                locations.addAll(preferredLocations);
                                 spinnerLocations.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                        com.app.spott.models.Location location = locations.get(position);
-                                        LatLng latLngLocation = new LatLng(location.getPoint().getLatitude(), location.getPoint().getLongitude());
+                                        Workout workout = mPreferredWorkouts.get(position);
+                                        LatLng latLngLocation = new LatLng(workout.getLocation().getPoint().getLatitude(), workout.getLocation().getPoint().getLongitude());
                                         updateMapAndUserList(latLngLocation);
                                         moveMapToLocation(latLngLocation);
 
@@ -302,7 +292,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                                     }
                                 });
-                                LocationsSpinnerAdapter locationsAdapter = new LocationsSpinnerAdapter(MapActivity.this, locations);
+                                LocationsSpinnerAdapter locationsAdapter = new LocationsSpinnerAdapter(MapActivity.this, mPreferredWorkouts);
                                 locationsAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                                 spinnerLocations.setAdapter(locationsAdapter);
                                 spinnerLocations.setVisibility(View.VISIBLE);
