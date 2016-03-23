@@ -71,8 +71,6 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
             holder.imageMe.setVisibility(View.GONE);
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         }
-//        final ImageView profileView = isMe ? holder.imageMe : holder.imageOther;
-//        Glide.with(getContext()).load(getProfileUrl(message.getUserId())).into(profileView);
         holder.body.setText(message.getBody());
         return convertView;
     }
