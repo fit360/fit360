@@ -3,4 +3,5 @@
     <color name="colorPrimary">#e57373</color>
     <color name="colorPrimaryDark">#ef5350</color>
     <color name="colorAccent">#26c6da</color>
+    <color name="workout_edit_accent">#4dd0e1</color>
 </resources>
