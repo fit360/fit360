@@ -38,6 +38,18 @@
             android:visibility="gone" />
 
 
+        <TextView
+            android:id="@+id/tvBefore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Before"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textColor="@android:color/white"
+            android:textSize="32dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"/>
+
+
     </FrameLayout>
 
 
@@ -72,6 +84,17 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvAfter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="After"
+            android:layout_gravity="center_horizontal|bottom"
+            android:textColor="@android:color/white"
+            android:textSize="32dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <LinearLayout
