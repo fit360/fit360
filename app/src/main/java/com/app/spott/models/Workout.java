@@ -1,5 +1,7 @@
 package com.app.spott.models;
 
+import android.util.Log;
+
 import com.app.spott.exceptions.ModelException;
 import com.app.spott.exceptions.WorkoutModelException;
 import com.parse.FindCallback;
@@ -136,6 +138,7 @@ public class Workout extends Model {
         if (!this.isSet())
             throw new WorkoutModelException();
 
+        Log.d(TAG, "saving "+ getObjectId());
         this.getLocation().save();
         this.save();
     }
