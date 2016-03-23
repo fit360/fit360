@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.fragments.PostsListFragment;
-import com.app.spott.models.Gender;
 import com.app.spott.models.Post;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
@@ -95,50 +94,6 @@ public class CommunityFeedActivity extends AppCompatActivity implements PostsLis
             }
         });
     }
-
-    private User setupNewUser() {
-        User user = new User();
-        user.setFirstName("FOO");
-        user.setAge(25);
-        user.setLastName("BAR");
-        user.setGender(Gender.MALE);
-        user.setOwner(ParseUser.getCurrentUser());
-        try {
-            user.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    private Post randomPost() {
-        Post post = new Post();
-        post.setBody("We're having so much fun!");
-        post.setImageUrl("http://www.imagesource.com/Doc/IS0/Media/TR16/a/5/d/c/38YDP0062RMG.jpg");
-        try {
-            post.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return post;
-    }
-
-
-    private User setupAJ() {
-        User user = new User();
-        user.setFirstName("A");
-        user.setAge(20);
-        user.setLastName("J");
-        user.setGender(Gender.FEMALE);
-        user.setOwner(ParseUser.getCurrentUser());
-        try {
-            user.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
