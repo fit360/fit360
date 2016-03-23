@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
+        app:titleTextColor="@android:color/primary_text_dark"
         android:elevation="4dp" />
 
     <ListView
