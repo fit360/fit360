@@ -63,7 +63,7 @@ public class ChatActivity extends AppCompatActivity implements ChatListAdapter.C
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         ButterKnife.bind(this);
         otherUserId = getIntent().getStringExtra(ProfileHeaderFragment.CHAT_WITH_USERID_KEY);
         app = (SpottApplication) getApplicationContext();
