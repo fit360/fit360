@@ -51,7 +51,7 @@
         style="@style/ChatUserImage.My"
         android:layout_width="@dimen/chat_user_image_radius"
         android:layout_height="@dimen/chat_user_image_radius"
-        app:riv_border_color="@color/colorPrimary"
+        app:riv_border_color="@color/chatMy"
         app:riv_border_width="2dp"
         app:riv_corner_radius="30dp" />
 </RelativeLayout>

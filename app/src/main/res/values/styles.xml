@@ -97,7 +97,7 @@
     <style name="ChatCardView.My">
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_alignParentEnd">true</item>
-        <item name="cardBackgroundColor">@color/colorPrimary</item>
+        <item name="cardBackgroundColor">@color/chatMy</item>
     </style>
 
     <style name="ChatTextView">
