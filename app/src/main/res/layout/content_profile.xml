@@ -29,7 +29,7 @@
         android:id="@+id/fragProfileHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        tools:layout="@layout/fragment_profile_header" />
     <fragment
         android:layout_margin="8dp"
         android:name="com.app.spott.fragments.ProfileWorkoutsFragment"
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="222dp"
         android:layout_below="@id/fragProfileHeader"
-        />
+        tools:layout="@layout/fragment_profile_workouts" />
 
     <TextView
         android:id="@+id/tvPosts"
@@ -63,5 +63,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        tools:layout="@layout/fragment_posts_lists" />
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+

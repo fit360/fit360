@@ -65,6 +65,7 @@ public class LoginVideoFragment extends Fragment {
         vvLoginVideo.setVideoURI(Uri.parse("android.resource://" + mContext.getPackageName() + "/" + R.raw.loginvid));
         vvLoginVideo.setMediaController(null);
         vvLoginVideo.requestFocus();
+
         vvLoginVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
