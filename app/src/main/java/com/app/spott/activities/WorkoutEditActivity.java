@@ -149,7 +149,7 @@ public class WorkoutEditActivity extends AppCompatActivity implements WorkoutEdi
         rvWorkoutSelector.setHasFixedSize(true);
 
         timeAdapter = new GridTileAdapter(this, Time.getAll());
-        StaggeredGridLayoutManager lmTime = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager lmTime = new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL);
         rvTimeSelector.setAdapter(timeAdapter);
         rvTimeSelector.setLayoutManager(lmTime);
         rvTimeSelector.setHasFixedSize(true);
