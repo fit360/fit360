@@ -6,5 +6,6 @@
     <color name="chatMy">#d2d2d2</color>
     <color name="chatOther">#ef9a9a</color>
     <color name="workoutEditAccent">#4dd0e1</color>
+    <color name="chatEditBox">#dccfcf</color>
 
 </resources>
