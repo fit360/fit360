@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.spott.R;
 import com.app.spott.activities.CommunityFeedActivity;
@@ -40,6 +41,12 @@ public class PostComposeFragment extends Fragment {
 
     @Bind(R.id.btnPost)
     Button btnPost;
+
+    @Bind(R.id.tvUsername)
+    TextView tvUserName;
+
+    @Bind(R.id.tvRealName)
+    TextView tvRealName;
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -83,6 +90,8 @@ public class PostComposeFragment extends Fragment {
             public void done(User user, ParseException e) {
                 mUser = user;
                 Glide.with(PostComposeFragment.this).load(user.getProfileImageUrl()).dontAnimate().into(ivProfilePic);
+                tvUserName.setText("@" + user.getFirstName() + user.getLastName());
+                tvRealName.setText(user.getFirstName() + " " + user.getLastName());
             }
 
         });
