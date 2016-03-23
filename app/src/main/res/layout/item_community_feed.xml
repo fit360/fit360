@@ -8,14 +8,11 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     card_view:cardElevation="1dp">
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <include layout="@layout/layout_common_profile_pic_post_photo" />
-
     <TextView
         android:id="@+id/tvCaption"
         android:layout_width="wrap_content"
@@ -24,10 +21,10 @@
         android:layout_margin="10dp"
         android:ellipsize="end"
         android:maxLines="4"
-        android:textSize="14dp"
-        android:text="Test"
-        android:textColor="#78000000" />
-
+        android:fontFamily="sans-serif-light"
+        android:textSize="18sp"
+        android:text="Testing a long long tedt here with san serif light font"
+        android:textColor="#90000000" />
     <TextView
         android:id="@+id/tvCreatedAt"
         android:layout_width="wrap_content"
@@ -37,8 +34,39 @@
         android:layout_alignBottom="@+id/ivProfilePic"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:textSize="10dp"
+        android:textSize="14dp"
         android:text="12m"
-        android:textColor="#80000000" />
+        android:textColor="#80000000" />v
+    <!--LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tvCaption">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibLike"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:src="@drawable/ic_action_like">
+        </ImageButton>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibLove"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:src="@drawable/ic_action_love">
+        </ImageButton>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibWow"
+            android:background="@null"
+            android:src="@drawable/ic_action_like">
+        </ImageButton>
+    </LinearLayout-->
 </RelativeLayout>
 </android.support.v7.widget.CardView>

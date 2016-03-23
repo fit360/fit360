@@ -3,6 +3,7 @@ package com.app.spott.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -38,18 +39,19 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
     private static final String BUNDLE_USERID_KEY = "userId";
     private static final String BUNDLE_LOGGED_IN_USER_KEY = "is_logged_in_user";
+    public static final String CHAT_WITH_USERID_KEY = "chat_with";
 
     private PostsListFragment mFragmentPostsList;
 
     @Bind(R.id.tvPosts)
     TextView tvPosts;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SpottApplication app = (SpottApplication) this.getApplicationContext();
+
 
         Intent intent = getIntent();
         if (intent.hasExtra(MapActivity.INTENT_USER_ID)) {
@@ -64,6 +66,18 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         }
 
         setContentView(R.layout.activity_profile);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabStartChat);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
+                intent.putExtra(CHAT_WITH_USERID_KEY, user.getObjectId());
+                startActivity(intent);
+            }
+        });
+        if (user == app.getCurrentUser()){
+            fab.setVisibility(View.GONE);
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
