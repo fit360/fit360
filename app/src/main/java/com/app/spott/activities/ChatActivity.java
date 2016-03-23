@@ -71,6 +71,7 @@ public class ChatActivity extends AppCompatActivity implements ChatListAdapter.C
         if(otherUser == null){
             try {
                 otherUser = User.findUserOnUIThread(otherUserId);
+                getSupportActionBar().setTitle(otherUser.getFirstName());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
