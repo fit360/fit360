@@ -14,8 +14,6 @@ import com.app.spott.models.Message;
 import com.app.spott.models.User;
 import com.bumptech.glide.Glide;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.List;
 
 /**
@@ -62,37 +60,21 @@ public class ChatListAdapter extends ArrayAdapter<Message> {
         final Message message = getItem(position);
         final ViewHolder holder = (ViewHolder) convertView.getTag();
         final boolean isMe = message.getUserId().equals(selfUserId);
-        // Show-hide image based on the logged-in user.
-        // Display the profile image to the right for our user, left for other users.
         if (isMe) {
             holder.imageMe.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(selfUser.getProfileImageUrl()).into(holder.imageMe);
             holder.imageOther.setVisibility(View.GONE);
-            holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+            holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
         } else {
             holder.imageOther.setVisibility(View.VISIBLE);
             Glide.with(mContext).load(otherUser.getProfileImageUrl()).into(holder.imageOther);
             holder.imageMe.setVisibility(View.GONE);
-            holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+            holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         }
 //        final ImageView profileView = isMe ? holder.imageMe : holder.imageOther;
 //        Glide.with(getContext()).load(getProfileUrl(message.getUserId())).into(profileView);
         holder.body.setText(message.getBody());
         return convertView;
-    }
-
-    // Create a gravatar image based on the hash value obtained from userId
-    private static String getProfileUrl(final String userId) {
-        String hex = "";
-        try {
-            final MessageDigest digest = MessageDigest.getInstance("MD5");
-            final byte[] hash = digest.digest(userId.getBytes());
-            final BigInteger bigInt = new BigInteger(hash);
-            hex = bigInt.abs().toString(16);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "http://www.gravatar.com/avatar/" + hex + "?d=identicon";
     }
 
     final class ViewHolder {
