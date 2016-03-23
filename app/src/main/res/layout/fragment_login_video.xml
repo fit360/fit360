@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.app.spott.fragments.LoginVideoFragment">
+    tools:context="com.app.spott.fragments.LoginVideoFragment"
+    android:background="#212121">
 
 
     <VideoView
         android:id="@+id/vvLoginVideo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"/>
 
 
     <TextView
@@ -32,6 +32,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:text="Login"
+        android:layout_marginBottom="25dp"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"/>
 
@@ -43,6 +44,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="Sign up"
+        android:layout_marginBottom="25dp"
         android:textColor="@android:color/white"
         android:background="@color/colorPrimary"/>
 </android.support.percent.PercentRelativeLayout>
