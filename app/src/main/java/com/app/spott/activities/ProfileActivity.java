@@ -30,12 +30,14 @@ import butterknife.ButterKnife;
 public class ProfileActivity extends AppCompatActivity implements ProfileWorkoutsAdapter.AdapterOnClickListener,
         ProfileFragmentListener,
         ProfileWorkoutsFragment.AddWorkoutListener,
-        PostsListFragment.OnFragmentInteractionListener{
+        PostsListFragment.OnFragmentInteractionListener {
 
     private User user;
     private boolean isLoggedInUser;
     public static final String WORKOUT_ID_INTENT_KEY = "workout_id";
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
+    private static final String BUNDLE_USERID_KEY = "userId";
+    private static final String BUNDLE_LOGGED_IN_USER_KEY = "is_logged_in_user";
 
     private PostsListFragment mFragmentPostsList;
 
@@ -51,12 +53,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
 
         Intent intent = getIntent();
         if (intent.hasExtra(MapActivity.INTENT_USER_ID)) {
-//            setUser(intent.getStringExtra(MapActivity.INTENT_USER_ID));
             setUserOnUIThread(intent.getStringExtra(MapActivity.INTENT_USER_ID));
             isLoggedInUser = false;
-        } else {
+        } else if (savedInstanceState == null) {
             user = app.getCurrentUser();
             isLoggedInUser = true;
+        } else {
+            setUserOnUIThread(savedInstanceState.getString(BUNDLE_USERID_KEY));
+            isLoggedInUser = savedInstanceState.getBoolean(BUNDLE_LOGGED_IN_USER_KEY);
         }
 
         setContentView(R.layout.activity_profile);
@@ -70,7 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         fetchUserPosts();
     }
 
-    private void fetchUserPosts(){
+    private void fetchUserPosts() {
         Post.fetchUserPosts(getUser(), new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -79,6 +83,13 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         });
     }
 
+    public void hasPosts(Boolean hasPosts) {
+        if (hasPosts) {
+            tvPosts.setVisibility(View.VISIBLE);
+        } else {
+            tvPosts.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public User getUser() {
@@ -102,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
         });
     }
 
-    public void setUserOnUIThread(String user_id){
+    public void setUserOnUIThread(String user_id) {
         try {
             user = User.findUserOnUIThread(user_id);
         } catch (ParseException e) {
@@ -120,8 +131,8 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == WORKOUT_EDIT_REQUEST_CODE){
-            if (resultCode == Activity.RESULT_OK){
+        if (requestCode == WORKOUT_EDIT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 String workoutId = data.getStringExtra(WORKOUT_ID_INTENT_KEY);
                 final ProfileWorkoutsFragment frag = (ProfileWorkoutsFragment) getSupportFragmentManager().findFragmentById(R.id.fragProfileWorkouts);
                 Workout.findOne(workoutId, true, new GetCallback<Workout>() {
@@ -142,11 +153,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     }
 
     @Override
-    public void hasPosts(Boolean hasPosts) {
-        if(hasPosts) {
-            tvPosts.setVisibility(View.VISIBLE);
-        } else {
-            tvPosts.setVisibility(View.GONE);
-        }
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(BUNDLE_USERID_KEY, user.getObjectId());
+        outState.putBoolean(BUNDLE_LOGGED_IN_USER_KEY, isLoggedInUser);
+        super.onSaveInstanceState(outState);
     }
 }

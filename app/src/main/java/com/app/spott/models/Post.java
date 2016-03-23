@@ -11,7 +11,7 @@ import com.parse.ParseQuery;
 public class Post extends Model {
     private static final String USER = "user";
     private static final String IMAGE_URL = "image_url";
-    private static final String BODY = "body";
+    private static final String BODY = "tvMyMessage";
     private static final String CREATED_AT = "createdAt";
 
     public Post() {
@@ -26,7 +26,7 @@ public class Post extends Model {
 
     // Use getString and others to access fields
     public String getBody() {
-        return getString("body");
+        return getString("tvMyMessage");
     }
     public String getImageUrl() {
         return getString("image_url");

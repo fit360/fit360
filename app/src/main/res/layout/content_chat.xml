@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/btSend"
         android:gravity="top"
-        android:hint="@string/message_hint"
         android:imeOptions="actionSend"/>
     <Button
         android:id="@+id/btSend"
