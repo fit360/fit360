@@ -3,6 +3,7 @@ package com.app.spott.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -36,12 +37,10 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
     private boolean isLoggedInUser;
     public static final String WORKOUT_ID_INTENT_KEY = "workout_id";
     public static final int WORKOUT_EDIT_REQUEST_CODE = 1;
-
     private PostsListFragment mFragmentPostsList;
 
     @Bind(R.id.tvPosts)
     TextView tvPosts;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +57,17 @@ public class ProfileActivity extends AppCompatActivity implements ProfileWorkout
             user = app.getCurrentUser();
             isLoggedInUser = true;
         }
-
         setContentView(R.layout.activity_profile);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabStartChat);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
+                intent.putExtra("theirUserId", user.getObjectId());
+                startActivity(intent);
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

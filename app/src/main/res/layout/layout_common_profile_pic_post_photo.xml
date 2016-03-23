@@ -33,10 +33,9 @@
         android:layout_gravity="center_vertical"
         android:layout_toRightOf="@+id/ivProfilePic"
         android:layout_below="@+id/tvUsername"
-        android:textSize="10dp"
+        android:textSize="14dp"
         android:text="beansandBananas"
         android:textColor="#80000000" />
-
     <ImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivPhoto"
@@ -47,5 +46,4 @@
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:minHeight="50dp" />
-
 </merge>
