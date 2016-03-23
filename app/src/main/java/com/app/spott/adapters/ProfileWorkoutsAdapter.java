@@ -24,6 +24,7 @@ public class ProfileWorkoutsAdapter extends RecyclerView.Adapter {
     private int currentEditPosition = -1;
     private AdapterOnClickListener listener;
 
+
     public interface AdapterOnClickListener{
         void editWorkout(Workout workout);
     }
