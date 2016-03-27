@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
             login();
         }
 
-        startLoginVideoScreen();
+//        startLoginVideoScreen();
     }
 
     private void startLoginVideoScreen(){
