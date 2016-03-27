@@ -46,7 +46,7 @@ public class LoginDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_login_screen, container, false);
         ButterKnife.bind(this, view);
         return view;
     }

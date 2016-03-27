@@ -8,10 +8,22 @@
     tools:context="com.app.spott.activities.LoginActivity"
     tools:showIn="@layout/activity_login">
 
+    <TextView
+        android:id="@+id/tvLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LiveFit"
+        android:layout_centerHorizontal="true"
+        android:textSize="58dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif-black"/>
+
     <FrameLayout
         android:id="@+id/fragmentPlaceholder"
+        android:layout_below="@+id/tvLogo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#212121">
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/chatEditBox"/>
+
 </android.support.percent.PercentRelativeLayout>
