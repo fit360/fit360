@@ -54,8 +54,6 @@
             android:fontFamily="sans-serif"
             android:layout_alignParentBottom="true"
             android:inputType="textShortMessage" />
-            <!--android:layout_alignBottom="@+id/btSend"-->
-            <!--android:layout_alignTop="@+id/btSend"-->
 
         <Button
             android:id="@+id/btSend"
