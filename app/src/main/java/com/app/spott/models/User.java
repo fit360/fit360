@@ -84,8 +84,14 @@ public class User extends Model {
         return TAG;
     }
 
+    private static ParseQuery<User> getQuery(){
+        ParseQuery<User> query = ParseQuery.getQuery(User.class);
+        query.include(OWNER);
+        return query;
+    }
+
     public static void getByOwner(ParseUser owner, GetCallback<User> getCallback) {
-        query = ParseQuery.getQuery(User.class);
+        query = getQuery();
         query.whereEqualTo(OWNER, owner);
         query.getFirstInBackground(getCallback);
     }
@@ -100,7 +106,7 @@ public class User extends Model {
     }
 
     public static User findUserOnUIThread(String id) throws ParseException {
-        query = ParseQuery.getQuery(User.class);
+        query = getQuery();
         query.whereEqualTo(objectId, id);
         return query.getFirst();
     }

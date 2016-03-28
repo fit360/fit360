@@ -11,11 +11,9 @@ import com.app.spott.R;
 import com.app.spott.SpottApplication;
 import com.app.spott.fragments.LoginScreenFragment;
 import com.app.spott.fragments.LoginVideoFragment;
-import com.app.spott.models.Gender;
 import com.app.spott.models.User;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -30,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
     private SpottApplication app;
     private static final String VIDEO_FRAGMENT_TAG = "FRAGMENT_LOGIN_VIDEO";
     private static final String LOGIN_FRAGMENT_TAG = "FRAGMENT_LOGIN_DETAIL";
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +36,11 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         app = (SpottApplication) getApplicationContext();
-        if (ParseUser.getCurrentUser() != null) {
-            startWithCurrentUser();
-        } else {
+        ParseUser loggedInUser = ParseUser.getCurrentUser();
+        if (loggedInUser == null)
             startLogin();
-        }
+        else
+            setPrimaryUser(loggedInUser);
     }
 
     private void startLoginVideoScreen() {
@@ -50,34 +49,19 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         ft.commit();
     }
 
-    void startWithCurrentUser() {
-        ParseUser loggedInUser = ParseUser.getCurrentUser();
-        Log.d("login", loggedInUser.getSessionToken());
+    void setPrimaryUser(ParseUser loggedInUser) {
+        Log.d(TAG, loggedInUser.getSessionToken());
         User.getByOwner(loggedInUser, new GetCallback<User>() {
             @Override
             public void done(User user, ParseException e) {
                 if (e == null) {
-                    onLoginSuccess(user);
+                    app.setCurrentUser(user);
+                    redirectHome();
                 } else {
-                    app.setCurrentUser(setupAdil());
+                    startLogin();
                 }
             }
         });
-    }
-
-    private User setupAdil() {
-        User user = new User();
-        user.setFirstName("Adil");
-        user.setAge(25);
-        user.setLastName("Ansari");
-        user.setGender(Gender.MALE);
-        user.setOwner(ParseUser.getCurrentUser());
-        try {
-            user.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return user;
     }
 
     @Override
@@ -88,37 +72,29 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         ft.commit();
     }
 
-    // Create an anonymous user using ParseAnonymousUtils and set sUserId
-    void login() {
-        ParseAnonymousUtils.logIn(new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e != null) {
-                    Log.e("DEBUG", "Anonymous login failed: ", e);
-                } else {
-                    startWithCurrentUser();
-                }
-            }
-        });
-
-    }
-
-    private void redirectHome(){
+    private void redirectHome() {
         Intent intent = new Intent(LoginActivity.this, CommunityFeedActivity.class);
         startActivity(intent);
     }
-
 
     @Override
     public void startSignup() {
 
     }
 
-
     @Override
-    public void onLoginSuccess(User user) {
-        app.setCurrentUser(user);
-        redirectHome();
+    public void onLoginSuccess(final ParseUser loggedInUser) {
+        // update ParseUser.currentUser
+        ParseUser.becomeInBackground(loggedInUser.getSessionToken(), new LogInCallback() {
+            @Override
+            public void done(ParseUser owner, ParseException e) {
+                if (e == null) {
+                    setPrimaryUser(owner);
+                } else {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        });
     }
 
     @Override
