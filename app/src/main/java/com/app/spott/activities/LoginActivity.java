@@ -1,5 +1,6 @@
 package com.app.spott.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,7 @@ import android.widget.FrameLayout;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
-import com.app.spott.fragments.LoginDetailFragment;
+import com.app.spott.fragments.LoginScreenFragment;
 import com.app.spott.fragments.LoginVideoFragment;
 import com.app.spott.models.Gender;
 import com.app.spott.models.User;
@@ -21,12 +22,14 @@ import com.parse.ParseUser;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity implements LoginVideoFragment.OnFragmentInteractionListener, LoginDetailFragment.OnFragmentInteractionListener {
+public class LoginActivity extends AppCompatActivity implements LoginVideoFragment.OnFragmentInteractionListener, LoginScreenFragment.LoginFragmentListener {
 
     @Bind(R.id.fragmentPlaceholder)
     FrameLayout fragmentPlaceHolder;
 
     private SpottApplication app;
+    private static final String VIDEO_FRAGMENT_TAG = "FRAGMENT_LOGIN_VIDEO";
+    private static final String LOGIN_FRAGMENT_TAG = "FRAGMENT_LOGIN_DETAIL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +37,19 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         app = (SpottApplication) getApplicationContext();
-        if (ParseUser.getCurrentUser() != null) { // start with existing user
+        if (ParseUser.getCurrentUser() != null) {
             startWithCurrentUser();
-        } else { // If not logged in, login as a new anonymous user
-            login();
+        } else {
+            startLogin();
         }
-
-//        startLoginVideoScreen();
     }
 
-    private void startLoginVideoScreen(){
+    private void startLoginVideoScreen() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragmentPlaceholder, new LoginVideoFragment(), "FRAGMENT_LOGIN_VIDEO");
+        ft.replace(R.id.fragmentPlaceholder, new LoginVideoFragment(), VIDEO_FRAGMENT_TAG);
         ft.commit();
     }
-    // Get the userId from the cached currentUser object
+
     void startWithCurrentUser() {
         ParseUser loggedInUser = ParseUser.getCurrentUser();
         Log.d("login", loggedInUser.getSessionToken());
@@ -56,13 +57,14 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
             @Override
             public void done(User user, ParseException e) {
                 if (e == null) {
-                    app.setCurrentUser(user);
+                    onLoginSuccess(user);
                 } else {
                     app.setCurrentUser(setupAdil());
                 }
             }
         });
     }
+
     private User setupAdil() {
         User user = new User();
         user.setFirstName("Adil");
@@ -77,13 +79,15 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         }
         return user;
     }
+
     @Override
     public void startLogin() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragmentPlaceholder, new LoginDetailFragment(), "FRAGMENT_LOGIN_DETAIL");
-        ft.addToBackStack("FRAGMENT_LOGIN_VIDEO");
+        ft.replace(R.id.fragmentPlaceholder, new LoginScreenFragment(), LOGIN_FRAGMENT_TAG);
+        ft.addToBackStack(VIDEO_FRAGMENT_TAG);
         ft.commit();
     }
+
     // Create an anonymous user using ParseAnonymousUtils and set sUserId
     void login() {
         ParseAnonymousUtils.logIn(new LogInCallback() {
@@ -99,6 +103,11 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
 
     }
 
+    private void redirectHome(){
+        Intent intent = new Intent(LoginActivity.this, CommunityFeedActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void startSignup() {
@@ -106,4 +115,14 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
     }
 
 
+    @Override
+    public void onLoginSuccess(User user) {
+        app.setCurrentUser(user);
+        redirectHome();
+    }
+
+    @Override
+    public void onLoginFailure() {
+
+    }
 }
