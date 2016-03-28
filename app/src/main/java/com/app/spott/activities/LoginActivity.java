@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.app.spott.R;
 import com.app.spott.SpottApplication;
@@ -98,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
     }
 
     @Override
-    public void onLoginFailure() {
-
+    public void onLoginFailure(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }
