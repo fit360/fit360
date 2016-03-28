@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.app.spott.R;
+import com.app.spott.models.User;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,7 +18,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sshah on 3/18/16.
  */
-public class LoginDetailFragment extends Fragment {
+public class LoginScreenFragment extends Fragment {
 
     @Bind(R.id.etUserName)
     EditText etUserName;
@@ -29,9 +30,9 @@ public class LoginDetailFragment extends Fragment {
     Button btnLogin;
 
     private Context mContext;
-    private OnFragmentInteractionListener mListener;
+    private LoginFragmentListener mListener;
 
-    public LoginDetailFragment() {
+    public LoginScreenFragment() {
         // Required empty public constructor
     }
 
@@ -45,7 +46,6 @@ public class LoginDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login_screen, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -60,7 +60,7 @@ public class LoginDetailFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mListener = (OnFragmentInteractionListener) context;
+        mListener = (LoginFragmentListener) context;
     }
 
     @Override
@@ -69,6 +69,8 @@ public class LoginDetailFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
+    public interface LoginFragmentListener {
+        void onLoginSuccess(User user);
+        void onLoginFailure();
     }
 }

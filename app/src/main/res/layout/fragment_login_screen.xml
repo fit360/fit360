@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.app.spott.fragments.LoginDetailFragment">
+    tools:context=".fragments.LoginScreenFragment">
 
     <EditText
         android:id="@+id/etUserName"
@@ -31,6 +31,9 @@
         android:background="@drawable/drawable_rounded_rectangle"
         android:backgroundTint="@color/colorPrimary"
         android:text="Login"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:fontFamily="sans-serif"
         android:textColor="@android:color/white" />
 
     <RelativeLayout
