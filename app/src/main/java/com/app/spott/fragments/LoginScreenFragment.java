@@ -88,8 +88,8 @@ public class LoginScreenFragment extends Fragment {
                 if (e == null)
                     mListener.onLoginSuccess(owner);
                 else {
-                    Log.e(TAG, "User failed: "+ e.getMessage());
-                    mListener.onLoginFailure();
+                    Log.e(TAG, "User login failed: "+ e.getMessage());
+                    mListener.onLoginFailure(e);
                 }
             }
         });
@@ -111,6 +111,6 @@ public class LoginScreenFragment extends Fragment {
 
     public interface LoginFragmentListener {
         void onLoginSuccess(ParseUser logedInUser);
-        void onLoginFailure();
+        void onLoginFailure(Exception e);
     }
 }
