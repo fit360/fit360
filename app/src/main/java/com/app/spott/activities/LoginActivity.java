@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -95,5 +96,8 @@ public class LoginActivity extends AppCompatActivity implements LoginScreenFragm
     @Override
     public void onLoginFailure(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void startSignUp(View view) {
     }
 }
