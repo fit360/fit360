@@ -19,9 +19,6 @@ import com.parse.SignUpCallback;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * Created by sshah on 3/18/16.
- */
 public class LoginScreenFragment extends Fragment {
 
     @Bind(R.id.etUserName)
@@ -33,8 +30,7 @@ public class LoginScreenFragment extends Fragment {
     @Bind(R.id.btnLogin)
     Button btnLogin;
 
-    private Context mContext;
-    private LoginFragmentListener mListener;
+    private LoginAdapter mListener;
     private static final String TAG = LoginScreenFragment.class.getSimpleName();
 
     public LoginScreenFragment() {
@@ -69,8 +65,7 @@ public class LoginScreenFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext = context;
-        mListener = (LoginFragmentListener) context;
+        mListener = (LoginAdapter) context;
     }
 
     @Override
@@ -109,7 +104,7 @@ public class LoginScreenFragment extends Fragment {
         });
     }
 
-    public interface LoginFragmentListener {
+    public interface LoginAdapter {
         void onLoginSuccess(ParseUser logedInUser);
         void onLoginFailure(Exception e);
     }
