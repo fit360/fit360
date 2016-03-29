@@ -7,3 +7,6 @@ android:
     - android-23
     - extra-google-m2repository
     - extra-android-m2repository
+
+addons:
+  artifacts: true
