@@ -10,32 +10,64 @@
 
     <EditText
         android:id="@+id/etUserName"
+        style="@style/LoginScreen.EditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="User name"
-        android:textSize="16dp" />
+        android:hint="User name" />
 
-    <EditText
-        android:id="@+id/etPassword"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:password="true"
-        android:textSize="16dp" />
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-    <Button
-        android:id="@+id/btnLogin"
+        <EditText
+            android:id="@+id/etPassword"
+            style="@style/LoginScreen.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:password="true" />
+
+        <TextView
+            style="@style/LoginScreen.EditText.ForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/login_forgot_password"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/drawable_rounded_rectangle"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Login"
-        android:textSize="24sp"
-        android:textAllCaps="false"
-        android:fontFamily="sans-serif"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnLogin"
+            style="@style/LoginScreen.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_screen_btn_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Login"
+            android:layout_marginRight="4dp"/>
+
+        <Button
+            android:id="@+id/btnSignUp"
+            style="@style/LoginScreen.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_screen_btn_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:onClick="startSignUp"
+            android:text="Sign Up"
+            android:layout_marginLeft="4dp"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -62,8 +94,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp">
+        android:layout_height="@dimen/login_screen_btn_height"
+        android:layout_marginTop="@dimen/login_screen_marginTop">
 
         <Button
             android:id="@+id/btntwitterBackground"
@@ -83,17 +115,4 @@
             android:src="@drawable/twitter_login_text" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/drawable_rounded_rectangle"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Sign Up"
-        android:textSize="24sp"
-        android:textAllCaps="false"
-        android:fontFamily="sans-serif"
-        android:onClick="startSignUp"
-        android:textColor="@android:color/white" />
 </LinearLayout>
