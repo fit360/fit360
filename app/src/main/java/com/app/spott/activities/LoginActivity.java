@@ -21,7 +21,7 @@ import com.parse.ParseUser;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity implements LoginVideoFragment.OnFragmentInteractionListener, LoginScreenFragment.LoginFragmentListener {
+public class LoginActivity extends AppCompatActivity implements LoginScreenFragment.LoginAdapter {
 
     @Bind(R.id.fragmentPlaceholder)
     FrameLayout fragmentPlaceHolder;
@@ -65,8 +65,7 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
         });
     }
 
-    @Override
-    public void startLogin() {
+    private void startLogin() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentPlaceholder, new LoginScreenFragment(), LOGIN_FRAGMENT_TAG);
         ft.addToBackStack(VIDEO_FRAGMENT_TAG);
@@ -76,11 +75,6 @@ public class LoginActivity extends AppCompatActivity implements LoginVideoFragme
     private void redirectHome() {
         Intent intent = new Intent(LoginActivity.this, CommunityFeedActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void startSignup() {
-
     }
 
     @Override
