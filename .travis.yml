@@ -9,4 +9,5 @@ android:
     - extra-android-m2repository
 
 addons:
-  artifacts: true
+  artifacts:
+    paths - '/home/travis/build/fit360/spott/app/build/outputs/lint-results.html'
