@@ -108,7 +108,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 //                relativeDate = Integer.toString(Months.monthsBetween(createdDateTime.toLocalDateTime(), currentDateTime.toLocalDateTime()).getMonths())+"M";
                 String dateFormat = "MM/dd/yyyy";
                 SimpleDateFormat nf = new SimpleDateFormat(dateFormat);
-                relativeDate = nf.format(sf.parse(rawJsonDate)).toString();
+                relativeDate = nf.format(sf.parse(rawJsonDate));
 
             }
         } catch (ParseException e) {

@@ -1,15 +1,12 @@
 language: android
 android:
   components:
-    - platform-tools
     - tools
+    - platform-tools
     - build-tools-23.0.2
     - android-23
-
-    # Additional components
-    - extra-google-google_play_services
     - extra-google-m2repository
     - extra-android-m2repository
-    
-    - sys-img-armeabi-v7a-android-19
-    - sys-img-x86-android-17
+
+addons:
+  artifacts: true

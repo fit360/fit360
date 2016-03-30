@@ -30,7 +30,6 @@ public class LoginVideoFragment extends Fragment {
     Button btnSignup;
 
     private Context mContext;
-    private OnFragmentInteractionListener mListener;
 
     public LoginVideoFragment() {
         // Required empty public constructor
@@ -95,18 +94,10 @@ public class LoginVideoFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        mListener = (OnFragmentInteractionListener) context;
     }
 
         @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void startLogin();
-
-        void startSignup();
     }
 }

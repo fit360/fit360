@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".fragments.LoginScreenFragment">
+
+    <EditText
+        android:id="@+id/etUserName"
+        style="@style/LoginScreen.EditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="User name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <EditText
+            android:id="@+id/etPassword"
+            style="@style/LoginScreen.EditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:password="true" />
+
+        <TextView
+            style="@style/LoginScreen.EditText.ForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/login_forgot_password"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnLogin"
+            style="@style/LoginScreen.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_screen_btn_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Login"
+            android:layout_marginRight="4dp"/>
+
+        <Button
+            android:id="@+id/btnSignUp"
+            style="@style/LoginScreen.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_screen_btn_height"
+            android:layout_weight="1"
+            android:backgroundTint="@color/colorPrimary"
+            android:onClick="startSignUp"
+            android:text="Sign Up"
+            android:layout_marginLeft="4dp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btnFbBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/drawable_rounded_rectangle"
+            android:backgroundTint="@color/fbPrimary"
+            android:elevation="4dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="8dp"
+            android:paddingLeft="48dp"
+            android:paddingRight="48dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/fb_login_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_screen_btn_height"
+        android:layout_marginTop="@dimen/login_screen_marginTop">
+
+        <Button
+            android:id="@+id/btntwitterBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/drawable_rounded_rectangle"
+            android:backgroundTint="@color/twitterPrimary"
+            android:elevation="4dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="8dp"
+            android:paddingLeft="48dp"
+            android:paddingRight="48dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/twitter_login_text" />
+    </RelativeLayout>
+
+</LinearLayout>
