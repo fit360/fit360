@@ -11,8 +11,6 @@
                 android:endColor="#f8bbd0"
                 android:startColor="#f44336"
                 />
-                <!--android:endColor="#00838f"-->
-                <!--android:startColor="#b2ebf2"-->
             <padding
                 android:bottom="8dp"
                 android:left="8dp"

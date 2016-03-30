@@ -14,7 +14,7 @@
         <item name="android:scaleType">fitXY</item>
         <item name="android:elevation">4dp</item>
         <item name="android:padding">10dp</item>
-        <item name="android:background">@drawable/gradient_stroke_circle</item>
+        <item name="android:background">@drawable/drawable_gradient_stroke_circle</item>
         <item name="android:layout_width">64dp</item>
         <item name="android:height">64dp</item>
     </style>

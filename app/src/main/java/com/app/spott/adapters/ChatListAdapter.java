@@ -16,9 +16,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-/**
- * Created by aparnajain on 3/14/16.
- */
 public class ChatListAdapter extends ArrayAdapter<Message> {
     private String selfUserId;
     private ChatAssetsProvider provider;

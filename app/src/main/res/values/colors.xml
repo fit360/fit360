@@ -7,5 +7,8 @@
     <color name="chatOther">#ef9a9a</color>
     <color name="workoutEditAccent">#4dd0e1</color>
     <color name="chatEditBox">#dccfcf</color>
-
+    <color name="fbPrimary">#3b5998</color>
+    <color name="fbSecondary">#9facca</color>
+    <color name="twitterPrimary">#55acee</color>
+    <color name="twitterSecondary">#8899a6</color>
 </resources>
