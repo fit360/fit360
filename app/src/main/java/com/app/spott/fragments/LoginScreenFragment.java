@@ -92,16 +92,53 @@ public class LoginScreenFragment extends Fragment {
 
     private void temp_signup(){
         ParseUser user = new ParseUser();
-        user.setUsername("police");
-        user.setPassword("thulla");
-        user.setEmail("ansari.adil20@gmail.com");
+        user.setUsername("maria");
+        user.setPassword("maria");
+        user.setEmail("maria.sharapova@gmail.com");
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
-                if (e!=null)
+                if (e != null)
                     Log.e(TAG, "Signup fail" + e.getMessage());
             }
         });
+
+        ParseUser user2 = new ParseUser();
+        user2.setUsername("messi");
+        user2.setPassword("messi");
+        user2.setEmail("lionel.messi@gmail.com");
+        user2.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Signup fail" + e.getMessage());
+            }
+        });
+
+        ParseUser user3 = new ParseUser();
+        user3.setUsername("sagar");
+        user3.setPassword("sagar");
+        user3.setEmail("shah.sagar.nilesh@gmail.com");
+        user3.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Signup fail" + e.getMessage());
+            }
+        });
+
+        ParseUser user4 = new ParseUser();
+        user4.setUsername("aparna");
+        user4.setPassword("aparna");
+        user4.setEmail("aparna.rsjain@gmail.com");
+        user4.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null)
+                    Log.e(TAG, "Signup fail" + e.getMessage());
+            }
+        });
+
     }
 
     public interface LoginAdapter {
