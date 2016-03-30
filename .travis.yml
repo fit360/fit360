@@ -11,8 +11,6 @@ android:
 addons:
   artifacts:
     debug: true
-    paths:
-      - /home/travis/build/fit360/spott/app/build/outputs/lint-results.html
     key: AKIAJ7PERFIVVPEHXOVA
     secret: rvTPS9HzCQddg1Xg3yeDVBtzDxk9bsVwffViAra
     bucket: travisci-logs
