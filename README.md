@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/fit360/spott.svg?branch=master)](https://travis-ci.org/fit360/spott)
 
-# spott
-Workout buddy finder
+# LiveFit
+An Android app that keeps you fit by engaging you with the community and helping you find workout buddies. 
 
 ####Required user stories-
 
@@ -19,16 +19,7 @@ Workout buddy finder
 - [x] The user can browse through the community feed to get inspiration(before and after pictures) and ideas about meal prep etc.
 - [x] User can easily create before/after pics and upload it to the community page.
 
-#####Optionals
-* [ ] The user can connect with their friends and exchange messages on this page.
-* [ ] Onboarding screen to enter personalized data.
+####Optionals
+* [x] The user can connect with their friends and exchange messages on this page.
+* [x] Onboarding screen to enter personalized data.
 * [ ] Show different types of feeds for different users(using a/b testing)
-
-####Gif- Milestone 2
-![Alt text](https://github.com/fit360/spott/blob/master/milestone2.gif)
-
-####Preview-
-![Landing page](https://raw.githubusercontent.com/fit360/wireframes/master/home_layouts/landing.png)
-![Map search](https://raw.githubusercontent.com/fit360/wireframes/master/home_layouts/map_search_fragment.png)
-![Users list](https://raw.githubusercontent.com/fit360/wireframes/master/home_layouts/user_list_fragment.png)
-
